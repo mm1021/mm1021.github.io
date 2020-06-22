@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="DuanChaojie的个人博客">
+  <meta name="author" content="DuanChaojie">
+  <meta name="keywords" content="">
+  <title>leetcode-数组与矩阵/3.leetCode--1389按既定顺序创建目标数组 - it❤ld</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>苗先生</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类专栏
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                联系me
+              </a>
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-06-22 10:41">
+      2020年6月22日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      718 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h2 id="1-leetCode—1389按既定顺序创建目标数组"><a href="#1-leetCode—1389按既定顺序创建目标数组" class="headerlink" title="1. leetCode—1389按既定顺序创建目标数组"></a>1. <code>leetCode</code>—1389按既定顺序创建目标数组</h2><blockquote>
+<ul>
+<li>题目连接：<a href="https://leetcode-cn.com/problems/create-target-array-in-the-given-order/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/create-target-array-in-the-given-order/</a></li>
+<li>题目类型： 简单数组</li>
+</ul>
+</blockquote>
+<h4 id="1-1-问题描述"><a href="#1-1-问题描述" class="headerlink" title="1.1 问题描述"></a>1.1 问题描述</h4><blockquote>
+<ol>
+<li><p>给你两个整数数组 <strong><code>nums</code></strong> 和 <strong><code>index</code></strong>。你需要按照以下规则创建目标数组：</p>
+<ul>
+<li>目标数组 target 最初为空。</li>
+<li>按从左到右的顺序依次读取 <strong><code>nums[i]</code></strong> 和 <strong><code>index[i]</code></strong>，在 target 数组中的下标 <strong><code>index[i]</code></strong> 处插入值 <strong><code>nums[i]</code></strong> 。</li>
+<li>重复上一步，直到在 <strong><code>nums</code></strong> 和 <strong><code>index</code></strong> 中都没有要读取的元素。</li>
+</ul>
+</li>
+<li><p>请你返回目标数组。</p>
+</li>
+<li><p>题目保证数字插入位置总是存在。</p>
+</li>
+<li><p>示例 1：</p>
+<pre><code class="hljs java">输入：nums = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>], index = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+输出：[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]
+解释：
+nums       index     target
+<span class="hljs-number">0</span>            <span class="hljs-number">0</span>        [<span class="hljs-number">0</span>]
+<span class="hljs-number">1</span>            <span class="hljs-number">1</span>        [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+<span class="hljs-number">2</span>            <span class="hljs-number">2</span>        [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+<span class="hljs-number">3</span>            <span class="hljs-number">2</span>        [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]
+<span class="hljs-number">4</span>            <span class="hljs-number">1</span>        [<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>]</code></pre>
+</li>
+<li><p><strong>示例 2：</strong></p>
+<pre><code class="hljs java">输入：nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>], index = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">0</span>]
+输出：[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+解释：
+nums       index     target
+<span class="hljs-number">1</span>            <span class="hljs-number">0</span>        [<span class="hljs-number">1</span>]
+<span class="hljs-number">2</span>            <span class="hljs-number">1</span>        [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+<span class="hljs-number">3</span>            <span class="hljs-number">2</span>        [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+<span class="hljs-number">4</span>            <span class="hljs-number">3</span>        [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-number">0</span>            <span class="hljs-number">0</span>        [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+</code></pre>
+</li>
+<li><p>提示：</p>
+<pre><code class="hljs java"><span class="hljs-number">1</span> &lt;= nums.length, index.length &lt;= <span class="hljs-number">100</span>
+nums.length == index.length
+<span class="hljs-number">0</span> &lt;= nums[i] &lt;= <span class="hljs-number">100</span>
+<span class="hljs-number">0</span> &lt;= index[i] &lt;= i</code></pre>
+</li>
+</ol>
+</blockquote>
+<h4 id="1-2-问题分析"><a href="#1-2-问题分析" class="headerlink" title="1.2 问题分析"></a>1.2 问题分析</h4><blockquote>
+<ol>
+<li><p>我们知道index数组是目标target数组的下标，根据示例2我们可知，其实就是不断在数组的指定的索引<code>index[i]</code>处插入元素，遇到重复下标的情况下需要把该下标后面的所有位置都往后移一位，这是我们需要解决的问题。</p>
+</li>
+<li><p>这里使用java中<code>ArrayList</code>类中的<code>add(int index, Object o)</code>函数即可将制定元素插入到指定位置。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// jdk1.8 API </span>
+<span class="hljs-comment">// 将指定的元素追加到此列表的末尾</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">add</span><span class="hljs-params">(E e)</span></span>
+<span class="hljs-function">    </span>
+<span class="hljs-function"><span class="hljs-comment">// 在此列表中的指定位置插入指定的元素。 将当前位于该位置的元素（如果有）和任何后续元素（向其索引添加一个）移动。</span></span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index,E element)</span></span></code></pre>
+</li>
+<li><p>最后再将List中元素依次放到目标target数组中即可。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="1-3-代码实现"><a href="#1-3-代码实现" class="headerlink" title="1.3 代码实现"></a>1.3 代码实现</h4><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span>[] createTargetArray(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span>[] index) &#123;
+      List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+    	  <span class="hljs-comment">// 核心逻辑</span>
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) &#123;
+          list.add(index[i],nums[i]);
+       &#125;
+    
+    	  <span class="hljs-comment">// 创建要返回的目标数组</span>
+      <span class="hljs-keyword">int</span>[] target = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[list.size()];
+    
+    	  <span class="hljs-comment">// 将List中元素依次放到目标target数组</span>
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; list.size(); i++) &#123;
+          target[i] = list.get(i);
+       &#125;
+    	  <span class="hljs-comment">// 返回</span>
+      <span class="hljs-keyword">return</span> target;
+  &#125;</code></pre>
+
+<h4 id="1-4-测试代码"><a href="#1-4-测试代码" class="headerlink" title="1.4 测试代码"></a>1.4 测试代码</h4><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateTargetArray</span> </span>&#123;
+   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+       
+        <span class="hljs-keyword">int</span>[] nums = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>&#125;;
+        <span class="hljs-keyword">int</span>[] index = &#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>&#125;;
+       
+        <span class="hljs-keyword">int</span>[] targetArray = createTargetArray(nums, index);
+         <span class="hljs-comment">// 输出结果</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; targetArray.length; i++) &#123;
+            System.out.println(<span class="hljs-string">"targetArray = "</span> + targetArray[i]);
+         &#125;
+    &#125;
+&#125;</code></pre>
+
+
+<p>​                </p>
+<h4 id="1-5-结果分析"><a href="#1-5-结果分析" class="headerlink" title="1.5 结果分析"></a>1.5 结果分析</h4><blockquote>
+<p>执行结果：</p>
+<ol>
+<li>执行用时 :1 ms, 在所有 Java 提交中击败了89.32%的用户</li>
+<li>内存消耗 :38.4 MB, 在所有 Java 提交中击败了100.00%的用户</li>
+</ol>
+</blockquote>
+<p>​    </p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/06/22/leetcode-%E6%95%B0%E7%BB%84%E4%B8%8E%E7%9F%A9%E9%98%B5/4.leetCode--217%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">leetcode-数组与矩阵/4.leetCode--217存在重复元素</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/06/22/leetcode-%E6%95%B0%E7%BB%84%E4%B8%8E%E7%9F%A9%E9%98%B5/2.leetCode--485%E6%9C%80%E5%A4%A7%E8%BF%9E%E7%BB%AD1%E7%9A%84%E4%B8%AA%E6%95%B0/">
+                        <span class="hidden-mobile">leetcode-数组与矩阵/2.leetCode--485最大连续1的个数</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+    
+  <!-- 备案信息 -->
+  <div class="beian">
+    <a href="http://beian.miit.gov.cn/" target="_blank"
+       rel="nofollow noopener">京ICP证123456号</a>
+    
+      <a
+        href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=19032710"
+        rel="nofollow noopener"
+        class="beian-police"
+        target="_blank"
+      >
+        <span class="beian-police-sep">&nbsp;|&nbsp;</span>
+        
+          <img src="/img/police_beian.png" srcset="/img/loading.gif" alt="police-icon" />
+        
+        <span>豫ICP备19032710号</span>
+      </a>
+     
+  </div>
+
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "leetcode-数组与矩阵/3.leetCode--1389按既定顺序创建目标数组&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>
