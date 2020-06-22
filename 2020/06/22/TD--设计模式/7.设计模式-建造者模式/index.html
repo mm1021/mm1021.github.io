@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="DuanChaojie的个人博客">
+  <meta name="author" content="DuanChaojie">
+  <meta name="keywords" content="">
+  <title>TD--设计模式/7.设计模式-建造者模式 - it❤ld</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>苗先生</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类专栏
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                联系me
+              </a>
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-06-22 10:46">
+      2020年6月22日 上午
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h2 id="设计模式-建造者模式"><a href="#设计模式-建造者模式" class="headerlink" title="设计模式-建造者模式"></a>设计模式-建造者模式</h2><h4 id="1-通过案例引入建造者模式"><a href="#1-通过案例引入建造者模式" class="headerlink" title="1. 通过案例引入建造者模式"></a>1. 通过案例引入建造者模式</h4><h5 id="盖房项目需求"><a href="#盖房项目需求" class="headerlink" title="盖房项目需求"></a>盖房项目需求</h5><blockquote>
+<ol>
+<li>需要建房子：我们简化这一过程为打桩、砌墙、封顶。</li>
+<li>房子有各种各样的，比如普通房，高楼，各种房子的过程虽然一样，但是要求不要相同的。</li>
+</ol>
+</blockquote>
+<h5 id="传统方式解决盖房需求"><a href="#传统方式解决盖房需求" class="headerlink" title="传统方式解决盖房需求"></a>传统方式解决盖房需求</h5><h6 id="AbstractHouse"><a href="#AbstractHouse" class="headerlink" title="AbstractHouse"></a><code>AbstractHouse</code></h6><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Date</span> 2020/6/14 10:51</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Version</span> 10.21</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Author</span> DuanChaojie</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbstractHouse</span> </span>&#123;
+
+    <span class="hljs-comment">// 打地基</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildBasic</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">// 砌墙</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildWalls</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">// 封顶</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">roofed</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">build</span><span class="hljs-params">()</span></span>&#123;
+        buildBasic();
+        buildWalls();
+        roofed();
+    &#125;
+
+&#125;</code></pre>
+
+<h6 id="CommonHouse"><a href="#CommonHouse" class="headerlink" title="CommonHouse"></a><code>CommonHouse</code></h6><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonHouse</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractHouse</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildBasic</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"普通房子打地基"</span>);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildWalls</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"普通房子砌墙"</span>);
+    &#125;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">roofed</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"普通房子封顶"</span>);
+    &#125;
+&#125;</code></pre>
+
+<h6 id="Client"><a href="#Client" class="headerlink" title="Client"></a><code>Client</code></h6><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        <span class="hljs-comment">/**</span>
+<span class="hljs-comment">         * 普通房子打地基</span>
+<span class="hljs-comment">         * 普通房子砌墙</span>
+<span class="hljs-comment">         * 普通房子封顶</span>
+<span class="hljs-comment">         */</span>
+        CommonHouse commonHouse = <span class="hljs-keyword">new</span> CommonHouse();
+        commonHouse.build();
+    &#125;
+&#125;</code></pre>
+
+<h5 id="传统方式的问题分析"><a href="#传统方式的问题分析" class="headerlink" title="传统方式的问题分析"></a>传统方式的问题分析</h5><blockquote>
+<p>优点：比较好理解，简单易操作。</p>
+<p>缺点：设计的程序结构，过于简单，没有设计缓存层对象，程序的扩展和维护不好. 也就是说，这种设计方案，把<code>产品(房子)</code> 和 <code>创建产品的过程(建房子流程)</code> 封装在一起，耦合性增强了。</p>
+</blockquote>
+<h4 id="2-建造者模式改进"><a href="#2-建造者模式改进" class="headerlink" title="2. 建造者模式改进"></a>2. 建造者模式改进</h4><blockquote>
+<ol>
+<li>将产品和产品建造过程解耦  </li>
+<li>建造者模式（Builder Pattern） 又叫生成器模式，是一种对象构建模式。它可以将复杂对象的建造过程抽象出来（抽象类别），使这个抽象过程的不同实现方法可以构造出不同表现（属性）的对象。</li>
+<li>建造者模式 是一步一步创建一个复杂的对象，它允许用户只通过指定复杂对象的类型和内容就可以构建它们，用户不需要知道内部的具体构建细节。</li>
+</ol>
+</blockquote>
+<h5 id="建造者模式的四个角色☆"><a href="#建造者模式的四个角色☆" class="headerlink" title="建造者模式的四个角色☆"></a>建造者模式的四个角色☆</h5><blockquote>
+<ol>
+<li><code>Product（产品角色）</code>： 一个具体的产品对象。</li>
+<li><code>Builder（抽象建造者）</code>： 创建一个 Product 对象的各个部件指定的  接口/ 抽象类</li>
+<li><code>ConcreteBuilder（具体建造者）</code>： 实现接口，构建和装配各个部件。</li>
+<li><code>Director（指挥者）</code>： 构建一个使用 Builder 接口的对象。它主要是用于创建一个复杂的对象。它主要有两个作用：<ul>
+<li>一是：隔离了客户与对象的生产过程</li>
+<li>二是：负责控制产品对象的生产过程。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h5 id="建造者模式创建房子"><a href="#建造者模式创建房子" class="headerlink" title="建造者模式创建房子"></a>建造者模式创建房子</h5><p><img src="assets/image-20200614124704789.png" srcset="/img/loading.gif" alt="image-20200614124704789"></p>
+<h6 id="House产品类"><a href="#House产品类" class="headerlink" title="House产品类"></a>House产品类</h6><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Date</span> 2020/6/14 10:59</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Version</span> 10.21</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Author</span> DuanChaojie</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">House</span> </span>&#123;
+    <span class="hljs-keyword">private</span> String baise;
+
+    <span class="hljs-keyword">private</span> String wall;
+
+    <span class="hljs-keyword">private</span> String roofed;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getBaise</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> baise;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setBaise</span><span class="hljs-params">(String baise)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.baise = baise;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getWall</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> wall;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setWall</span><span class="hljs-params">(String wall)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.wall = wall;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getRoofed</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> roofed;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setRoofed</span><span class="hljs-params">(String roofed)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.roofed = roofed;
+    &#125;
+&#125;</code></pre>
+
+
+
+<h6 id="HouseBuilder抽象建造者"><a href="#HouseBuilder抽象建造者" class="headerlink" title="HouseBuilder抽象建造者"></a><code>HouseBuilder</code>抽象建造者</h6><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Date</span> 2020/6/14 11:01</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Version</span> 10.21</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Author</span> DuanChaojie</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HouseBuilder</span> </span>&#123;
+
+
+    <span class="hljs-keyword">protected</span> House house = <span class="hljs-keyword">new</span> House();
+
+    <span class="hljs-comment">// 将建造的流程写好, 抽象的方法</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildBasic</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildWalls</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">roofed</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">//建造房子好， 将产品(房子) 返回</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> House <span class="hljs-title">buildHouse</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> house;
+    &#125;
+&#125;</code></pre>
+
+<h6 id="CommonHouse具体的建造者"><a href="#CommonHouse具体的建造者" class="headerlink" title="CommonHouse具体的建造者"></a><code>CommonHouse</code>具体的建造者</h6><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Date</span> 2020/6/14 10:53</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Version</span> 10.21</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Author</span> DuanChaojie</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonHouse</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HouseBuilder</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildBasic</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"普通房子打地基"</span>);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">buildWalls</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"普通房子砌墙"</span>);
+    &#125;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">roofed</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"普通房子封顶"</span>);
+    &#125;
+&#125;</code></pre>
+
+
+
+<h6 id="HouseDirector指挥者"><a href="#HouseDirector指挥者" class="headerlink" title="HouseDirector指挥者"></a><code>HouseDirector</code>指挥者</h6><pre><code class="hljs java"><span class="hljs-comment">// 指挥者，这里去指定制作流程，返回产品</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HouseDirector</span> </span>&#123;
+
+    HouseBuilder houseBuilder = <span class="hljs-keyword">null</span>;
+
+    <span class="hljs-comment">// 构造器传入 houseBuilder</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HouseDirector</span><span class="hljs-params">(HouseBuilder houseBuilder)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.houseBuilder = houseBuilder;
+    &#125;
+
+    <span class="hljs-comment">// 通过setter 传入 houseBuilder</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setHouseBuilder</span><span class="hljs-params">(HouseBuilder houseBuilder)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.houseBuilder = houseBuilder;
+    &#125;
+
+    <span class="hljs-comment">// 如何处理建造房子的流程，交给指挥者</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> House <span class="hljs-title">constructHouse</span><span class="hljs-params">()</span> </span>&#123;
+        houseBuilder.buildBasic();
+        houseBuilder.buildWalls();
+        houseBuilder.roofed();
+        <span class="hljs-keyword">return</span> houseBuilder.buildHouse();
+    &#125;
+
+&#125;</code></pre>
+
+<h6 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h6><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Date</span> 2020/6/14 10:55</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Version</span> 10.21</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Author</span> DuanChaojie</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        <span class="hljs-comment">//盖普通房子</span>
+        CommonHouse commonHouse = <span class="hljs-keyword">new</span> CommonHouse();
+
+        <span class="hljs-comment">//准备创建房子的指挥者（这里也可以通过setter注入）</span>
+        HouseDirector houseDirector = <span class="hljs-keyword">new</span> HouseDirector(commonHouse);
+
+        <span class="hljs-comment">//完成盖房子，返回产品(普通房子)</span>
+        House house = houseDirector.constructHouse();
+
+        <span class="hljs-comment">//System.out.println("输出流程");</span>
+    &#125;
+&#125;</code></pre>
+
+
+
+
+
+
+
+
+
+<h4 id="3-建造者模式在-JDK-的应用和源码分析"><a href="#3-建造者模式在-JDK-的应用和源码分析" class="headerlink" title="3. 建造者模式在 JDK 的应用和源码分析"></a>3. 建造者模式在 JDK 的应用和源码分析</h4><blockquote>
+<ol>
+<li><code>Appendable 接口</code>定义了多个 append 方法(抽象方法), 即 Appendable 为抽象建造者, 定义了抽象方法。</li>
+<li><code>AbstractStringBuilder</code> 实现了 Appendable 接口方法，这里的 AbstractStringBuilder 已经是建造者，只是不能实例化。</li>
+<li>StringBuilder 即充当了指挥者角色，同时充当了具体的建造者，建造方法的实现是由AbstractStringBuilder 完成, 而 StringBuilder 继承了 AbstractStringBuilder</li>
+</ol>
+</blockquote>
+<pre><code class="hljs java">
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Date</span> 2020/6/14 12:03</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Version</span> 10.21</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@Author</span> DuanChaojie</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestStringBuilder</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        StringBuilder stringBuilder = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"hello mm"</span>);
+        System.out.println(<span class="hljs-string">"stringBuilder = "</span> + stringBuilder);
+    &#125;
+&#125;
+
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StringBuilder</span></span>
+<span class="hljs-class">    <span class="hljs-keyword">extends</span> <span class="hljs-title">AbstractStringBuilder</span></span>
+<span class="hljs-class">    <span class="hljs-keyword">implements</span> <span class="hljs-title">java</span>.<span class="hljs-title">io</span>.<span class="hljs-title">Serializable</span>, <span class="hljs-title">CharSequence</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">// .....</span>
+&#125;
+
+<span class="hljs-comment">// 建造者</span>
+<span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbstractStringBuilder</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Appendable</span>, <span class="hljs-title">CharSequence</span> </span>&#123;
+&#125;
+
+<span class="hljs-comment">// 抽象建造者</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Appendable</span> </span>&#123;
+
+    <span class="hljs-function">Appendable <span class="hljs-title">append</span><span class="hljs-params">(CharSequence csq)</span> <span class="hljs-keyword">throws</span> IOException</span>;
+
+    <span class="hljs-function">Appendable <span class="hljs-title">append</span><span class="hljs-params">(CharSequence csq, <span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> end)</span> <span class="hljs-keyword">throws</span> IOException</span>;
+
+    <span class="hljs-function">Appendable <span class="hljs-title">append</span><span class="hljs-params">(<span class="hljs-keyword">char</span> c)</span> <span class="hljs-keyword">throws</span> IOException</span>;
+&#125;</code></pre>
+
+<h4 id="4-建造者模式的细节"><a href="#4-建造者模式的细节" class="headerlink" title="4. 建造者模式的细节"></a>4. 建造者模式的细节</h4><blockquote>
+<ol>
+<li>客户端(使用程序)不必知道产品内部组成的细节，将产品本身与产品的创建过程解耦，使得相同的创建过程可以创建不同的产品对象。</li>
+<li>每一个具体建造者都相对独立，而与其他的具体建造者无关，因此可以很方便地替换具体建造者或增加新的具体建造者， 用户使用不同的具体建造者即可得到不同的产品对象。</li>
+<li>可以更加精细地控制产品的创建过程 。将复杂产品的创建步骤分解在不同的方法中，使得创建过程更加清晰，也更方便使用程序来控制创建过程。</li>
+<li>增加新的具体建造者无须修改原有类库的代码，指挥者类针对抽象建造者类编程，系统扩展方便，符合“开闭原则”。</li>
+<li>建造者模式所创建的产品一般具有较多的共同点，其组成部分相似，如果产品之间的差异性很大，则不适合使用建造者模式，因此其使用范围受到一定的限制。</li>
+<li>如果产品的内部变化复杂，可能会导致需要定义很多具体建造者类来实现这种变化，导致系统变得很庞大，因此在这种情况下，要考虑是否选择建造者模式.</li>
+</ol>
+</blockquote>
+<h6 id="抽象工厂模式-VS-建造者模式"><a href="#抽象工厂模式-VS-建造者模式" class="headerlink" title="抽象工厂模式 VS 建造者模式"></a>抽象工厂模式 VS 建造者模式</h6><blockquote>
+<p>抽象工厂模式实现对产品家族的创建，一个产品家族是这样的一系列产品：具有不同分类维度的产品组合，采用抽象工厂模式不需要关心构建过程，只关心什么产品由什么工厂生产即可。而建造者模式则是要求按照指定的蓝图建造产品，它的主要目的是通过组装零配件而产生一个新产品。</p>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/06/22/TD--%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/8.%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TD--设计模式/8.设计模式-适配器模式</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/06/22/TD--%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/6.%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/">
+                        <span class="hidden-mobile">TD--设计模式/6.设计模式-原型模式</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+    
+  <!-- 备案信息 -->
+  <div class="beian">
+    <a href="http://beian.miit.gov.cn/" target="_blank"
+       rel="nofollow noopener">京ICP证123456号</a>
+    
+      <a
+        href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=19032710"
+        rel="nofollow noopener"
+        class="beian-police"
+        target="_blank"
+      >
+        <span class="beian-police-sep">&nbsp;|&nbsp;</span>
+        
+          <img src="/img/police_beian.png" srcset="/img/loading.gif" alt="police-icon" />
+        
+        <span>豫ICP备19032710号</span>
+      </a>
+     
+  </div>
+
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "TD--设计模式/7.设计模式-建造者模式&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 80,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>
