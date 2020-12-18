@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="rabbitmq笔记/9.RabbitMQ高级特性"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>rabbitmq笔记/9.RabbitMQ高级特性【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/avatar.jpg"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RabbitMQ高级特性"><span class="toc-number">1.</span> <span class="toc-text">RabbitMQ高级特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-消息可靠性投递"><span class="toc-number">1.1.</span> <span class="toc-text">1. 消息可靠性投递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Consumer-ACK"><span class="toc-number">1.2.</span> <span class="toc-text">2. Consumer ACK</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#消息可靠性总结"><span class="toc-number">1.2.1.</span> <span class="toc-text">消息可靠性总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-消费端限流"><span class="toc-number">1.3.</span> <span class="toc-text">3. 消费端限流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-TTL"><span class="toc-number">1.4.</span> <span class="toc-text">4. TTL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-死信队列☆"><span class="toc-number">1.5.</span> <span class="toc-text">5. 死信队列☆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-延迟队列☆"><span class="toc-number">1.6.</span> <span class="toc-text">6. 延迟队列☆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-日志与监控"><span class="toc-number">1.7.</span> <span class="toc-text">7. 日志与监控</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-RabbitMQ日志"><span class="toc-number">1.7.1.</span> <span class="toc-text">7.1 RabbitMQ日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-web管控台监控"><span class="toc-number">1.7.2.</span> <span class="toc-text">7.2 web管控台监控</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-rabbitmqctl管理和监控"><span class="toc-number">1.7.3.</span> <span class="toc-text">7.3 rabbitmqctl管理和监控</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-消息可靠性分析与追踪"><span class="toc-number">1.8.</span> <span class="toc-text">8. 消息可靠性分析与追踪</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-number">2.</span> <span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/avatar.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ:1585636331<i class="icon-dot bg-color9"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color3"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">20</span></a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/archives">归档</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">rabbitmq笔记/9.RabbitMQ高级特性</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-15</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>[toc]</p>
+<h2 id="RabbitMQ高级特性"><a href="#RabbitMQ高级特性" class="headerlink" title="RabbitMQ高级特性"></a>RabbitMQ高级特性</h2><h3 id="1-消息可靠性投递"><a href="#1-消息可靠性投递" class="headerlink" title="1. 消息可靠性投递"></a>1. 消息可靠性投递</h3><p>在使用 RabbitMQ 的时候，作为消息发送方希望杜绝任何消息丢失或者投递失败场景。RabbitMQ 为我们提供了两种方式用来控制消息的投递可靠性模式。</p>
+<ol>
+<li><code>confirm 确认模式</code></li>
+<li><code>return  退回模式</code></li>
+</ol>
+<p>rabbitmq 整个消息投递的路径为：==producer—&gt;rabbitmq broker—&gt;exchange—&gt;queue—&gt;consumer==</p>
+<ol>
+<li>消息从 producer 到 exchange 则会返回一个 confirmCallback 。</li>
+<li>消息从 exchange–&gt;queue 投递失败则会返回一个 returnCallback 。</li>
+</ol>
+<p>我们将利用这两个 callback 控制消息的可靠性投递。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">设置ConnectionFactory的publisher-confirms=<span class="string">"true"</span> 开启 确认模式。</span><br><span class="line"></span><br><span class="line">使用rabbitTemplate.setConfirmCallback设置回调函数。当消息发送到exchange后回调confirm方法。在方法中判断ack，如果为<span class="keyword">true</span>，则发送成功，如果为<span class="keyword">false</span>，则发送失败，需要处理。</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">设置ConnectionFactory的publisher-returns=<span class="string">"true"</span> 开启 退回模式。</span><br><span class="line"></span><br><span class="line">使用rabbitTemplate.setReturnCallback设置退回函数，当消息从exchange路由到queue失败后，如果设置了rabbitTemplate.setMandatory(<span class="keyword">true</span>)参数，则会将消息退回给producer。并执行回调函数returnedMessage。</span><br><span class="line"></span><br><span class="line">在RabbitMQ中也提供了事务机制，但是性能较差，此处不做讲解。</span><br><span class="line">使用channel下列方法，完成事务控制：</span><br><span class="line">    txSelect(), 用于将当前channel设置成transaction模式</span><br><span class="line">    txCommit()，用于提交事务</span><br><span class="line">    txRollback(),用于回滚事务</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Consumer-ACK"><a href="#2-Consumer-ACK" class="headerlink" title="2. Consumer ACK"></a>2. Consumer ACK</h3><p>ack指Acknowledge，确认。 表示消费端收到消息后的确认方式。有三种确认方式：</p>
+<ol>
+<li>自动确认：acknowledge=”none”</li>
+<li>手动确认：acknowledge=”manual”</li>
+<li>根据异常情况确认：acknowledge=”auto”，（这种方式使用麻烦，不作讲解）</li>
+</ol>
+<p>其中自动确认是指，当消息一旦被Consumer接收到，则自动确认收到，并将相应 message 从 RabbitMQ 的消息缓存中移除。但是在实际业务处理中，很可能消息接收到，业务处理出现异常，那么该消息就会丢失<code>。如果设置了手动确认方式，则需要在业务处理成功后，调用channel.basicAck()，手动签收，如果出现异常，则调用channel.basicNack()方法，让其自动重新发送消息。</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">在rabbit:listener-container标签中设置acknowledge属性，设置ack方式 </span><br><span class="line">    none：自动确认</span><br><span class="line">    manual：手动确认</span><br><span class="line">如果在消费端没有出现异常，则调用channel.basicAck(deliveryTag,<span class="keyword">false</span>);方法确认签收消息</span><br><span class="line"></span><br><span class="line">如果出现异常，则在<span class="keyword">catch</span>中调用 basicNack或 basicReject，拒绝消息，让MQ重新发送消息。</span><br></pre></td></tr></table></figure>
+
+<h4 id="消息可靠性总结"><a href="#消息可靠性总结" class="headerlink" title="消息可靠性总结"></a>消息可靠性总结</h4><ol>
+<li>持久化<ul>
+<li>exchange要持久化</li>
+<li>queue要持久化</li>
+<li>message要持久化</li>
+</ul>
+</li>
+<li>生产方确认Confirm</li>
+<li>消费方确认Ack</li>
+<li><code>Broker高可用</code></li>
+</ol>
+<h3 id="3-消费端限流"><a href="#3-消费端限流" class="headerlink" title="3. 消费端限流"></a>3. 消费端限流</h3><p><img src="assets/image-20201215194346929.png" alt="image-20201215194346929"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在<span class="tag">&lt;<span class="name">rabbit:listener-container</span>&gt;</span> 中配置 prefetch属性设置消费端一次拉取多少消息</span><br><span class="line"></span><br><span class="line">消费端的确认模式一定为手动确认。acknowledge="manual"</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-TTL"><a href="#4-TTL" class="headerlink" title="4. TTL"></a>4. TTL</h3><ol>
+<li>TTL 全称 Time To Live（存活时间/过期时间）。</li>
+<li>当消息到达存活时间后，还没有被消费，会被自动清除。</li>
+<li>RabbitMQ可以对消息设置过期时间，也可以对整个队列（Queue）设置过期时间。</li>
+</ol>
+<p><img src="assets/image-20201215194457685.png" alt="image-20201215194457685"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">设置队列过期时间使用参数：x-message-ttl，单位：ms(毫秒)，会对整个队列消息统一过期。</span><br><span class="line"></span><br><span class="line">设置消息过期时间使用参数：expiration。单位：ms(毫秒)，当该消息在队列头部时（消费时），会单独判断这一消息是否过期。</span><br><span class="line"></span><br><span class="line">如果两者都进行了设置，以时间短的为准。</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-死信队列☆"><a href="#5-死信队列☆" class="headerlink" title="5. 死信队列☆"></a>5. 死信队列☆</h3><p><code>死信队列，英文缩写：DLX  。Dead Letter Exchange（死信交换机）</code>，当消息成为Dead message后，可以被重新发送到另一个交换机，这个交换机就是DLX。</p>
+<p><img src="assets/image-20201215200048724.png" alt="image-20201215200048724"></p>
+<p>==消息成为死信的三种情况：==</p>
+<ol>
+<li>队列消息长度到达限制；</li>
+<li>消费者拒接消费消息，<code>basicNack/basicReject,并且不把消息重新放入原目标队列,requeue=false；</code></li>
+<li>原队列存在消息过期设置，消息到达超时时间未被消费；</li>
+</ol>
+<p>队列绑定死信交换机：</p>
+<ol>
+<li><code>给队列设置参数： x-dead-letter-exchange 和 x-dead-letter-routing-key</code></li>
+<li><img src="assets/image-20201215200152842.png" alt="image-20201215200152842"></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 死信交换机和死信队列和普通的没有区别</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>. 当消息成为死信后，如果该队列绑定了死信交换机，则消息会被死信交换机重新路由到死信队列</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-延迟队列☆"><a href="#6-延迟队列☆" class="headerlink" title="6. 延迟队列☆"></a>6. 延迟队列☆</h3><p>延迟队列，即消息进入队列后不会立即被消费，只有到达指定时间后，才会被消费。</p>
+<p>需求：</p>
+<ol>
+<li>下单后，30分钟未支付，取消订单，回滚库存。</li>
+<li>新用户注册成功7天后，发送短信问候。</li>
+</ol>
+<p>实现方式：</p>
+<ol>
+<li>定时器</li>
+<li><code>延迟队列</code></li>
+</ol>
+<p><img src="assets/image-20201215204106248.png" alt="image-20201215204106248"></p>
+<p><code>很可惜，在RabbitMQ中并未提供延迟队列功能。</code>但是可以使用：==TTL+死信队列 组合实现延迟队列的效果。==</p>
+<p><img src="assets/image-20201215204134505.png" alt="image-20201215204134505"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 延迟队列 指消息进入队列后，可以被延迟一定时间，再进行消费。</span><br><span class="line"><span class="number">2</span>. RabbitMQ没有提供延迟队列功能，但是可以使用 ： TTL + DLX 来实现延迟队列效果。</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-日志与监控"><a href="#7-日志与监控" class="headerlink" title="7. 日志与监控"></a>7. 日志与监控</h3><h4 id="7-1-RabbitMQ日志"><a href="#7-1-RabbitMQ日志" class="headerlink" title="7.1 RabbitMQ日志"></a>7.1 RabbitMQ日志</h4><p>RabbitMQ默认日志存放路径： <code>/var/log/rabbitmq/rabbit@xxx.log</code></p>
+<p>日志包含了RabbitMQ的版本号、Erlang的版本号、RabbitMQ服务节点名称、cookie的hash值、RabbitMQ配置文件地址、内存限制、磁盘限制、默认账户guest的创建以及权限配置等等。</p>
+<h4 id="7-2-web管控台监控"><a href="#7-2-web管控台监控" class="headerlink" title="7.2 web管控台监控"></a>7.2 web管控台监控</h4><h4 id="7-3-rabbitmqctl管理和监控"><a href="#7-3-rabbitmqctl管理和监控" class="headerlink" title="7.3 rabbitmqctl管理和监控"></a>7.3 rabbitmqctl管理和监控</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看队列</span></span><br><span class="line">rabbitmqctl list_queues</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看exchanges</span></span><br><span class="line">rabbitmqctl list_exchanges</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看用户</span></span><br><span class="line">rabbitmqctl list_users</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看连接</span></span><br><span class="line">rabbitmqctl list_connections</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看消费者信息</span></span><br><span class="line">rabbitmqctl list_consumers</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看环境变量</span></span><br><span class="line">rabbitmqctl environment</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看未被确认的队列</span></span><br><span class="line">rabbitmqctl list_queues  name messages_unacknowledged</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看单个队列的内存使用</span></span><br><span class="line">rabbitmqctl list_queues name memory</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看准备就绪的队列</span></span><br><span class="line">rabbitmqctl list_queues name messages_ready</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-消息可靠性分析与追踪"><a href="#8-消息可靠性分析与追踪" class="headerlink" title="8. 消息可靠性分析与追踪"></a>8. 消息可靠性分析与追踪</h3><p>在使用任何消息中间件的过程中，难免会出现某条消息异常丢失的情况。对于RabbitMQ而言，可能是因为生产者或消费者与RabbitMQ断开了连接，而它们与RabbitMQ又采用了不同的确认机制；也有可能是因为交换器与队列之间不同的转发策略；甚至是交换器并没有与任何队列进行绑定，生产者又不感知或者没有采取相应的措施；另外RabbitMQ本身的集群策略也可能导致消息的丢失。这个时候就需要有一个较好的机制跟踪记录消息的投递过程，以此协助开发和运维人员进行问题的定位。</p>
+<p><code>在RabbitMQ中可以使用Firehose和rabbitmq_tracing插件功能来实现消息追踪。</code></p>
+<p>Firehose的机制是将生产者投递给rabbitmq的消息，rabbitmq投递给消费者的消息按照指定的格式发送到默认的exchange上。<code>这个默认的exchange的名称为amq.rabbitmq.trace</code>，它是一个topic类型的exchange。发送到这个exchange上的消息的routing key为 publish.exchangename 和 deliver.queuename。其中exchangename和queuename为实际exchange和queue的名称，分别对应生产者投递到exchange的消息，和消费者从queue上获取的消息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">注意：打开 trace 会影响消息写入功能，适当打开后请关闭。</span></span><br><span class="line"></span><br><span class="line">rabbitmqctl trace_on #开启Firehose命令</span><br><span class="line">rabbitmqctl trace_off #关闭Firehose命令</span><br></pre></td></tr></table></figure>
+
+<p>消息追踪rabbitmq_tracing</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq_tracing和Firehose在实现上如出一辙，只不过rabbitmq_tracing的方式比Firehose多了一层GUI的包装，更容易使用和管理。</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启用插件：</span></span><br><span class="line">rabbitmq-plugins enable rabbitmq_tracing</span><br></pre></td></tr></table></figure>
+
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/9.RabbitMQ%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/">http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/9.RabbitMQ%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/HELP/"><i class="fas fa-angle-left">&nbsp;</i><span>rabbitmq笔记/rabbitmq/rabbitmq-springboot/consumer-springboot/HELP</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/8.SpringBoot%E6%95%B4%E5%90%88RabbitMQ/"><span>rabbitmq笔记/8.SpringBoot整合RabbitMQ</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>
