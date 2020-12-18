@@ -6,7 +6,7 @@
   <link href="http://www.itbuild.cn/atom.xml" rel="self"/>
   
   <link href="http://www.itbuild.cn/"/>
-  <updated>2020-12-14T12:00:27.618Z</updated>
+  <updated>2020-12-15T13:01:59.257Z</updated>
   <id>http://www.itbuild.cn/</id>
   
   <author>
@@ -15,126 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>rabbitmq笔记/rabbitmq/配置文件/springboot/application</title>
-    <link href="http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/springboot/application/"/>
-    <id>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/springboot/application/</id>
-    <published>2020-12-18T16:05:49.154Z</published>
-    <updated>2020-12-14T12:00:27.618Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>{"spring":{"rabbitmq":{"host":"172.16.98.133","username":"guest","password":"guest","virtual-host":"/","port":5672}}}]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>rabbitmq笔记/rabbitmq/rabbitmq-springboot/producer-springboot/target/classes/application</title>
-    <link href="http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/producer-springboot/target/classes/application/"/>
-    <id>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/producer-springboot/target/classes/application/</id>
-    <published>2020-12-18T16:05:48.318Z</published>
-    <updated>2020-12-15T08:21:38.001Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>{"spring":{"rabbitmq":{"host":"106.15.72.229","port":5672,"username":"heima","password":"heima","virtual-host":"/itcast"}}}]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>rabbitmq笔记/rabbitmq/rabbitmq-springboot/producer-springboot/src/main/resources/application</title>
-    <link href="http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/producer-springboot/src/main/resources/application/"/>
-    <id>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/producer-springboot/src/main/resources/application/</id>
-    <published>2020-12-18T16:05:48.050Z</published>
-    <updated>2020-12-15T04:29:24.555Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>{"spring":{"rabbitmq":{"host":"106.15.72.229","port":5672,"username":"heima","password":"heima","virtual-host":"/itcast"}}}]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>rabbitmq笔记/rabbitmq/rabbitmq-springboot/consumer-springboot/target/classes/application</title>
-    <link href="http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/target/classes/application/"/>
-    <id>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/target/classes/application/</id>
-    <published>2020-12-18T16:05:47.248Z</published>
-    <updated>2020-12-15T08:22:58.465Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>{"spring":{"rabbitmq":{"host":"106.15.72.229","port":5672,"username":"heima","password":"heima","virtual-host":"/itcast"}}}]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>rabbitmq笔记/rabbitmq/rabbitmq-springboot/consumer-springboot/src/main/resources/application</title>
-    <link href="http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/src/main/resources/application/"/>
-    <id>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/src/main/resources/application/</id>
-    <published>2020-12-18T16:05:47.012Z</published>
-    <updated>2020-12-15T08:10:09.691Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>{"spring":{"rabbitmq":{"host":"106.15.72.229","port":5672,"username":"heima","password":"heima","virtual-host":"/itcast"}}}]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>rabbitmq笔记/rabbitmq/rabbitmq-springboot/consumer-springboot/HELP</title>
-    <link href="http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/HELP/"/>
-    <id>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/HELP/</id>
-    <published>2020-12-18T16:05:43.684Z</published>
-    <updated>2019-08-19T12:15:55.504Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h1><h3 id="Reference-Documentation"><a href="#Reference-Documentation" class="headerlink" title="Reference Documentation"></a>Reference Documentation</h3><p>For further reference, please consider the following sections:</p><ul><li><a href="https://maven.apache.org/guides/index.html" target="_blank" rel="noopener">Official Apache Maven documentation</a></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
-      
-    
-    
-    
-    
-  </entry>
   
   <entry>
     <title>rabbitmq笔记/9.RabbitMQ高级特性</title>

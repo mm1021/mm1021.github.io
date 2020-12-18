@@ -44,34 +44,6 @@
   </url>
   
   <url>
-    <loc>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/target/classes/application/</loc>
-    
-    <lastmod>2020-12-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/producer-springboot/target/classes/application/</loc>
-    
-    <lastmod>2020-12-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/src/main/resources/application/</loc>
-    
-    <lastmod>2020-12-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/producer-springboot/src/main/resources/application/</loc>
-    
-    <lastmod>2020-12-15</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/7.Spring%E6%95%B4%E5%90%88RabbitMQ/</loc>
     
     <lastmod>2020-12-15</lastmod>
@@ -114,13 +86,6 @@
   </url>
   
   <url>
-    <loc>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/springboot/application/</loc>
-    
-    <lastmod>2020-12-14</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.itbuild.cn/2020/08/24/itbuild-JavaEE/</loc>
     
     <lastmod>2020-11-15</lastmod>
@@ -131,13 +96,6 @@
     <loc>http://www.itbuild.cn/2020/08/06/itbuild-hadoop%E7%94%9F%E6%80%81%E5%9C%88/</loc>
     
     <lastmod>2020-08-24</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.itbuild.cn/2020/12/19/rabbitmq%E7%AC%94%E8%AE%B0/rabbitmq/rabbitmq-springboot/consumer-springboot/HELP/</loc>
-    
-    <lastmod>2019-08-19</lastmod>
     
   </url>
   
