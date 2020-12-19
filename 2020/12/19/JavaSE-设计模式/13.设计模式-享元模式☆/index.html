@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-设计模式/13.设计模式-享元模式☆"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-设计模式/13.设计模式-享元模式☆【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#设计模式-享元模式"><span class="toc-text">设计模式-享元模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-享元模式概述"><span class="toc-text">1. 享元模式概述</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-1-享元模式是什么？"><span class="toc-text">1.1 享元模式是什么？</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-2-享元模式何时使用？"><span class="toc-text">1.2 享元模式何时使用？</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-3-享元模式应用场景？"><span class="toc-text">1.3 享元模式应用场景？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-内部状态和外部状态"><span class="toc-text">2. 内部状态和外部状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-享元模式类图"><span class="toc-text">3. 享元模式类图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-享元模式优缺点"><span class="toc-text">4. 享元模式优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-享元模式在JDK源码中的应用"><span class="toc-text">5. 享元模式在JDK源码中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#String中的体现"><span class="toc-text">String中的体现</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Integer中的体现"><span class="toc-text">Integer中的体现</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color4"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color3"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">89</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">7</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-设计模式/13.设计模式-享元模式☆</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">JavaSE-设计模式</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>花城人去今萧索，春梦绕胡沙。</p>
+<p align="right">——赵佶《眼儿媚》</p>
+<a id="more"></a>
+
+
+<h2 id="设计模式-享元模式"><a href="#设计模式-享元模式" class="headerlink" title="设计模式-享元模式"></a>设计模式-享元模式</h2><h4 id="1-享元模式概述"><a href="#1-享元模式概述" class="headerlink" title="1. 享元模式概述"></a>1. 享元模式概述</h4><h6 id="1-1-享元模式是什么？"><a href="#1-1-享元模式是什么？" class="headerlink" title="1.1 享元模式是什么？"></a>1.1 享元模式是什么？</h6><blockquote>
+<ol>
+<li><p>享元模式<code>主要用于减少创建对象的数量，以减少内存占用和提高性能。</code>这种类型的设计模式属于结构型模式，它提供了减少对象数量从而改善应用所需的对象结构的方式。</p>
+</li>
+<li><p><code>享元模式（Flyweight Pattern） 也叫 蝇量模式：</code> 运用<code>共享技术（共享对象的方式）</code>有效地支持大量细粒度的对象。</p>
+<ul>
+<li>细粒度对象（可以理解为不使用线程池情况下的线程对象） : 是内存中的数量庞大的对象 ，实际使用的数量庞大的对象 ;</li>
+<li>共享对象（可以理解为线程池中的对象） : <ul>
+<li>多个细粒度对象共享的部分数据 ;</li>
+<li>对象缓存池中存储的对象 ;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h6 id="1-2-享元模式何时使用？"><a href="#1-2-享元模式何时使用？" class="headerlink" title="1.2 享元模式何时使用？"></a>1.2 享元模式何时使用？</h6><blockquote>
+<ol>
+<li>系统中有大量对象。 </li>
+<li>这些对象消耗大量内存。 </li>
+<li>这些对象的状态大部分可以外部化。 </li>
+<li>这些对象可以按照内蕴状态分为很多组，当把外蕴对象从对象中剔除出来时，每一组对象都可以用一个对象来代替。 </li>
+<li>系统不依赖于这些对象身份，这些对象是不可分辨的。</li>
+</ol>
+</blockquote>
+<h6 id="1-3-享元模式应用场景？"><a href="#1-3-享元模式应用场景？" class="headerlink" title="1.3 享元模式应用场景？"></a>1.3 享元模式应用场景？</h6><ol start="2">
+<li>常用于系统底层开发，解决系统的性能问题。像数据库连接池，里面都是创建好的连接对象，在这些连接对象中有我们需要的则直接拿来用，避免重新创建，如果没有我们需要的，则创建一个 。</li>
+<li><code>享元模式能够解决重复对象的内存浪费的问题，当系统中有大量相似对象，需要缓冲池时。不需总是创建新对象，可以从缓冲池里拿。这样可以降低系统内存，同时提高效率。</code></li>
+<li>享元模式经典的应用场景就是池技术了，String 常量池、数据库连接池、缓冲池等等都是享元模式的应用，享元模式是池技术的重要实现方式。</li>
+</ol>
+<h4 id="2-内部状态和外部状态"><a href="#2-内部状态和外部状态" class="headerlink" title="2. 内部状态和外部状态"></a>2. 内部状态和外部状态</h4><blockquote>
+<p>使用享元模式时，==注意划分内部状态和外部状态==：</p>
+<ol>
+<li><code>IntrinsicState内部状态 :</code> 有些数据所有的对象都一样 , 显然不能当做对象一致性对比的依据 , 这就是内部状态 ;享元对象共享内部状态</li>
+<li><code>ExtrinsicState外部状态 :</code> 有些数据每个对象都不一样 , 根据该数据确定对象的唯一性 , 相当于 哈希码 , 身份证号 , 档案编号 这一类的数据 , 这就是外部状态 ;每个享元对象的外部状态不同</li>
+</ol>
+</blockquote>
+<h4 id="3-享元模式类图"><a href="#3-享元模式类图" class="headerlink" title="3. 享元模式类图"></a>3. 享元模式类图</h4><blockquote>
+<ul>
+<li><code>Flyweight</code>：享元对象–是产品的抽象类, 同时定义出对象的外部状态和内部状态（抽象类/接口）</li>
+<li><code>ConcreteFlyWeight：</code>是具体的享元角色，是具体的产品类，实现抽象角色定义相关业务。</li>
+<li><code>FlyWeightFactory 享元工厂类</code>，用于构建一个池容器(集合)， 同时提供从池中获取对象方法。<ul>
+<li><code>从Client的角度去解释享元工厂类：</code>使用对象时 , 先从对象池中获取对象 , 如果对象池中没有 , 创建一个 , 放入对象池 , 然后再从对象池中获取 。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/5f5c22d5-9c0e-49e1-b5b0-6cc7032724d4.png"/> </div><br>
+
+<h4 id="4-享元模式优缺点"><a href="#4-享元模式优缺点" class="headerlink" title="4. 享元模式优缺点"></a>4. 享元模式优缺点</h4><h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><blockquote>
+<ol>
+<li>大大较少对象的创建，降低系统的内存，使效率提高。</li>
+</ol>
+</blockquote>
+<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><blockquote>
+<ol>
+<li>系统的复杂度：<ul>
+<li>需要分类出外部状态和内容状态也就是说将一个类拆解成多个类 ，而且外部状态具有固有化的性质，不应该随着内部状态的变化而变化，否则会造成系统的混乱。</li>
+<li>系统复杂性增加了 ，但是对客户端使用层面来说是简单的。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h4 id="5-享元模式在JDK源码中的应用"><a href="#5-享元模式在JDK源码中的应用" class="headerlink" title="5. 享元模式在JDK源码中的应用"></a>5. 享元模式在JDK源码中的应用</h4><h5 id="String中的体现"><a href="#String中的体现" class="headerlink" title="String中的体现"></a>String中的体现</h5><blockquote>
+<ol>
+<li><p>Java的虚拟机会开辟一个内存区域（叫<code>字符串缓冲池</code>）来存储字符串常量，而通过new创建的字符串对象是存储在堆内存中。</p>
+</li>
+<li><p>当新建一个字符串常量时，首先会从字符串缓冲池中查找，如果找到则返回该常量的引用地址，如果找不到则新建一个字符串常量再返回地址引用。</p>
+</li>
+<li><p>当通过new新建一个字符串对象时，会在堆内存中开辟一个新建的空间，再初始化，即使两个字符串的值是一样的但它们的引用地址是不一样的，属于两个不同的对象。</p>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlyWeightString</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String s1 = <span class="string">"abc"</span>;</span><br><span class="line">        String s2 = <span class="string">"abc"</span>;</span><br><span class="line">        String s3 = <span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br><span class="line">        String s4 = <span class="keyword">new</span> String(<span class="string">"abc"</span>);</span><br><span class="line">        System.out.println(s1 == s2);<span class="comment">//true</span></span><br><span class="line">        System.out.println(s3 == s4);<span class="comment">//false</span></span><br><span class="line">        System.out.println(s1 == s3);<span class="comment">//false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Integer中的体现"><a href="#Integer中的体现" class="headerlink" title="Integer中的体现"></a>Integer中的体现</h5><blockquote>
+<ol>
+<li>如果 <code>Integer.valueOf(x)</code> ，x 在  <code>-128 -127</code> 直接就是使用享元模式返回，如果不在范围类，则仍然 new。</li>
+<li>在valueOf 方法中，先判断值是否在 IntegerCache 中，如果不在，就创建新的Integer, 否则，就直接从缓存池返回。</li>
+<li>valueOf 方法，就使用到享元模式</li>
+<li>如果使用valueOf 方法得到一个Integer 实例，范围在 <code>-128 -127</code> ，执行速度比 new 快。</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlyWeightInteger</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 得到 x 实例，类型 Integer</span></span><br><span class="line">		Integer x = Integer.valueOf(<span class="number">127</span>);</span><br><span class="line">		Integer y = <span class="keyword">new</span> Integer(<span class="number">127</span>);</span><br><span class="line">		Integer z = Integer.valueOf(<span class="number">127</span>);</span><br><span class="line">		Integer w = <span class="keyword">new</span> Integer(<span class="number">127</span>);</span><br><span class="line"></span><br><span class="line">		System.out.println(x == y ); <span class="comment">//  false</span></span><br><span class="line">		System.out.println(x == z ); <span class="comment">// true</span></span><br><span class="line">        </span><br><span class="line">		System.out.println(w == x ); <span class="comment">// false</span></span><br><span class="line">		System.out.println(w == y ); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		Integer x1 = Integer.valueOf(<span class="number">200</span>);</span><br><span class="line">		Integer x2 = Integer.valueOf(<span class="number">200</span>);</span><br><span class="line">		System.out.println(<span class="string">"x1==x2 :"</span> + (x1 == x2)); <span class="comment">// false</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>Integer中的valueOf方法</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>Integer静态内部类IntegerCache</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerCache</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> low = -<span class="number">128</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> high;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Integer cache[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="comment">// high value may be configured by property</span></span><br><span class="line">        <span class="keyword">int</span> h = <span class="number">127</span>;</span><br><span class="line">        String integerCacheHighPropValue =</span><br><span class="line">            sun.misc.VM.getSavedProperty(<span class="string">"java.lang.Integer.IntegerCache.high"</span>);</span><br><span class="line">        <span class="keyword">if</span> (integerCacheHighPropValue != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">int</span> i = parseInt(integerCacheHighPropValue);</span><br><span class="line">                i = Math.max(i, <span class="number">127</span>);</span><br><span class="line">                <span class="comment">// Maximum array size is Integer.MAX_VALUE</span></span><br><span class="line">                h = Math.min(i, Integer.MAX_VALUE - (-low) -<span class="number">1</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span>( NumberFormatException nfe) &#123;</span><br><span class="line">                <span class="comment">// If the property cannot be parsed into an int, ignore it.</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        high = h;</span><br><span class="line"></span><br><span class="line">        cache = <span class="keyword">new</span> Integer[(high - low) + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> j = low;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; cache.length; k++)</span><br><span class="line">            cache[k] = <span class="keyword">new</span> Integer(j++);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// range [-128, 127] must be interned (JLS7 5.1.7)</span></span><br><span class="line">        <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">IntegerCache</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/13.%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E2%98%86/">http://www.itbuild.cn/2020/12/19/JavaSE-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/13.%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F%E2%98%86/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/14.%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-设计模式/14.设计模式-代理模式</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/12.%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/"><span>JavaSE-设计模式/12.设计模式-外观模式</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>
