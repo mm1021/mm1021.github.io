@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/1.Java及JVM简介"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/1.Java及JVM简介【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java及JVM简介"><span class="toc-text">Java及JVM简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Java-跨平台的语言"><span class="toc-text">1. Java-跨平台的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-JVM-跨语言的平台"><span class="toc-text">2. JVM-跨语言的平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-字节码"><span class="toc-text">3. 字节码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-多语言混合编程"><span class="toc-text">4. 多语言混合编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Java发展的重大事件"><span class="toc-text">5. Java发展的重大事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-虚拟机与Java虚拟机"><span class="toc-text">6. 虚拟机与Java虚拟机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-虚拟机"><span class="toc-text">6.1 虚拟机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-Java虚拟机"><span class="toc-text">6.2 Java虚拟机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-JVM的位置"><span class="toc-text">6.3 JVM的位置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color1"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color8"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/1.Java及JVM简介</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>天上星河转，人间帘幕垂。凉生枕簟泪痕滋。</p>
+<p align="right">——李清照《南歌子》</p>
+<a id="more"></a>
+天下事有难易乎？
+
+<p>为之，则难者亦易矣；不为，则易者亦难矣</p>
+<!-- more -->
+
+
+
+<h2 id="Java及JVM简介"><a href="#Java及JVM简介" class="headerlink" title="Java及JVM简介"></a>Java及JVM简介</h2><blockquote>
+<ol>
+<li>如果我们把Java核心类库的 API 比做数学公式的话，那么Java虚拟机的知识就好比公式的推导过程。</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200909203523005.png" alt="image-20200909203523005"></li>
+<li>计算机系统体系对我们来说越来越远，在不了解底层实现方式的前提下，通过高级语言很容易编写程序代码。但事实上计算机并不认识高级语言。</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200909203652846.png" alt="image-20200909203652846"></li>
+<li>垃圾收集机制为我们打理了很多繁琐的工作，大大提高了开发的效率，但是，垃圾收集也不是万能的，<code>懂得JVM内部的内存结构、工作机制，是设计高扩展性应用和诊断运行时问题的基础，也是Java工程师进阶的必备能力。</code></li>
+</ol>
+</blockquote>
+<h3 id="1-Java-跨平台的语言"><a href="#1-Java-跨平台的语言" class="headerlink" title="1. Java-跨平台的语言"></a>1. Java-跨平台的语言</h3><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/ssss.jpg" alt="ssss"></p>
+<h3 id="2-JVM-跨语言的平台"><a href="#2-JVM-跨语言的平台" class="headerlink" title="2. JVM-跨语言的平台"></a>2. JVM-跨语言的平台</h3><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200909205421140.png" alt="image-20200909205421140"></p>
+<blockquote>
+<ol>
+<li>随着<code>Java7</code>的正式发布，Java虚拟机的设计者们通过<code>JSR-292规范</code>基本实现在Java虚拟机平台上运行非Java语言编写的程序。</li>
+<li>Java虚拟机根本不关心运行在其内部的程序到底是使用何种编程语言编写的，<code>它只关心“字节码”文件</code>。也就是说<code>Java虚拟机拥有语言无关性</code>，并不会单纯地与Java语言“终身绑定”，只要其他编程语言的编译结果满足并包含Java虚拟机的内部指令集、符号表以及其他的辅助信息，它就是一个有效的字节码文件，就能够被虚拟机所识别并装载运行。</li>
+</ol>
+</blockquote>
+<h3 id="3-字节码"><a href="#3-字节码" class="headerlink" title="3. 字节码"></a>3. 字节码</h3><blockquote>
+<ol>
+<li>我们平时说的java字节码，指的是用java语言编译成的字节码。准确的说任何能在JVM平台上执行的字节码格式都是一样的。所以应该统称为–<code>JVM字节码。</code></li>
+<li>不同的编译器，可以编译出相同的字节码文件，字节码文件也可以在不同的JVM上运行。Java虚拟机与Java 语言并没有必然的联系，它只与特定的二进制文件格式——class文件格式所关联，<code>class 文件中包含了Java虚拟机指令集（或者称为字节码、Bytecodes）和符号表，还有一些其他辅助信息。</code></li>
+</ol>
+</blockquote>
+<h3 id="4-多语言混合编程"><a href="#4-多语言混合编程" class="headerlink" title="4. 多语言混合编程"></a>4. 多语言混合编程</h3><blockquote>
+<ol>
+<li>Java平台上的多语言混合编程正成为主流，通过特定领域的语言去解决特定领域的问题是当前软件开发应对日趋复杂的项目需求的一个方向。</li>
+<li>试想一下，在一个项目之中，并行处理用<code>clojure</code>语言编写，展示层使用<code>JRuby/Rails</code>，中间层则是<code>Java</code>，每个应用层都将使用不同的编程语言来完成，而且，接口对每一层的开发者都是透明的，各种语言之间的交互不存在任何困难，就像使用自己语言的原生API一样方便，因为它们最终都运行在一个虚拟机之上。</li>
+<li>对这些运行于Java虚拟机之上、Java之外的语言，来自系统级的、底层的支持正在迅速增强，以<code>JSR-292</code>为核心的一系列项目和功能改进<code>（如Davinci Machine项目、Nashorn引擎、InvokeDynamic指令、java.lang.invoke包等）</code>，<code>推动Java虚拟机从“Java语言的虚拟机”向“多语言虚拟机”的方向发展。</code></li>
+</ol>
+</blockquote>
+<h3 id="5-Java发展的重大事件"><a href="#5-Java发展的重大事件" class="headerlink" title="5. Java发展的重大事件"></a>5. Java发展的重大事件</h3><blockquote>
+<ul>
+<li><code>1990年</code>，在 sun计算机公司中，由Patrick Naughton、Mike Sheridan及<code>James Gosling</code>领导的小组Green Team，开发出的新的程序语言，<code>命名为oak，后期命名为Java</code></li>
+<li><code>1995年</code>，sun正式发布Java和<code>lHotJava</code>产品，Java首次公开亮相。</li>
+<li><code>1996年1月23日</code>，sun Microsystems发布了JDK 1.0。</li>
+<li><code>1998年，JDK 1.2版本发布。</code>同时，sun发布了JSP/Servlet、EJB规范，以及<code>将Java分成了J2EE、J2SE和J2ME。</code>这表明了Java开始向企业、桌面应用和移动设备应用3大领域挺进。</li>
+<li><code>2000年，JDK 1.3发布</code>，Java HotSpot Virtual Machine正式发布，成为Java的默认虚拟机。</li>
+<li><code>2002年，JDK 1.4发布，</code>古老的classic虚拟机退出历史舞台。</li>
+<li>2003年年底，Java平台的scala正式发布，同年Groovy也加入了Java阵营。</li>
+<li><code>2004年，JDK 1.5发布。</code>同时JDK 1.5改名为JavaSE 5.0。</li>
+<li><code>2006年，JDK 6发布。</code>同年，Java开源并建立了OpenJDK。顺理成章，Hotspot虚拟机也成为了openJDK中的默认虚拟机。</li>
+<li>2007年，Java平台迎来了新伙伴clojure.</li>
+<li><code>2008年，oracle收购了BEA，得到了JRockit虚拟机。</code></li>
+<li>2009年，Twitter宣布把后台大部分程序从Ruby迁移到scala，这是Java平台的又一次大规模应用。</li>
+<li>2010年，oracle收购了sun，获得Java商标和最具价值的HotSpot虚拟机。此时，oracle拥有市场占用率最高的两款虚拟机HotSpot和JRockit，<code>并计划在未来对它们进行整合:HotRockit</code></li>
+<li><code>2011年，JDK7发布。在JDK 1.7u4中，正式启用了新的垃圾回收器G1。</code></li>
+<li><code>2017年，JDK9发布。将G1设置为默认GC，替代CMS</code></li>
+<li><code>同年，IBM的J9开源，形成了现在的open J9社区</code></li>
+<li>2018年，Android的Java侵权案判决，Google赔偿oracle计88亿美元</li>
+<li>同年，oracle宣告JavaEE成为历史名词，JDBC、JMS、Servlet赠予Eclipse基金会</li>
+<li><code>同年，JDK11发布，LTS版木的JDK,发布革命性的ZGC，调整JDK授权许可。在JDK11之前，oracleJDK中还会存在一些openJDK中没有的、闭源的功能。但在JDK11中，我们可以认为openJDK利loracleJDK代码实质上已经完全一致的程度。</code></li>
+<li>2019年，JDK12发布，加入RedHat领导开发的Shenandoah GC。</li>
+</ul>
+</blockquote>
+<h3 id="6-虚拟机与Java虚拟机"><a href="#6-虚拟机与Java虚拟机" class="headerlink" title="6. 虚拟机与Java虚拟机"></a>6. 虚拟机与Java虚拟机</h3><h4 id="6-1-虚拟机"><a href="#6-1-虚拟机" class="headerlink" title="6.1 虚拟机"></a>6.1 虚拟机</h4><blockquote>
+<p>所谓虚拟机(virtual Machine)，就是一台虚拟的计算机它是一款软件，用来执行一系列虚拟计算机指令。大体上，<code>虚拟机可以分为系统虚拟机和程序虚拟机</code>。</p>
+<ul>
+<li><code>大名鼎鼎的Visual Box，VMware就属于系统虚拟机</code>，它们完全是对物理计算机的仿真，提供了一个可运行完整操作系统的软件平台。</li>
+<li><code>程序虚拟机的典型代表就是Java虚拟机</code>，它专门为执行单个计算机程序而设计，在Java虚拟机中执行的指令我们称为Java字节码指令。</li>
+</ul>
+<p><code>无论是系统虚拟机还是程序虚拟机，在上面运行的软件都被限制于虚拟机提供的资源中。</code></p>
+</blockquote>
+<h4 id="6-2-Java虚拟机"><a href="#6-2-Java虚拟机" class="headerlink" title="6.2 Java虚拟机"></a>6.2 Java虚拟机</h4><blockquote>
+<ol>
+<li>Java虚拟机是一台执行Java字节码的虚拟计算机，它拥有独立的运行机制，其运行的Java字节码也未必由Java语言编译而成。</li>
+<li>JVM平台的各种语言可以共享Java虚拟机带来的跨平台性、优秀的垃圾回器，以及可靠的即时编译器。</li>
+<li><code>Java技术的核心就是Java虚拟机（JVM，Java Virtual Machine) ,因为所有的Java程序都运行在Java虚拟机内部。</code></li>
+<li>作用：<ul>
+<li>Java虚拟机就是二进制字节码的运行环境，负责装载字节码到其内部，<code>解释/编译为对应平台上的机器指令执行。</code>每一条Java指令Java虚拟机规范中都有详细定义，如怎么取操作数，怎么处理操作数，处理结果放在哪里。</li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>一次编译，到处运行</li>
+<li>自动内存管理</li>
+<li>自动垃圾回收功能</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h4 id="6-3-JVM的位置"><a href="#6-3-JVM的位置" class="headerlink" title="6.3 JVM的位置"></a>6.3 JVM的位置</h4><blockquote>
+<p>JVM是运行在操作系统之上的，它与硬件没有直接的交互。</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200909215528770.png" alt="image-20200909215528770"></p>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/1.Java%E5%8F%8AJVM%E7%AE%80%E4%BB%8B/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/1.Java%E5%8F%8AJVM%E7%AE%80%E4%BB%8B/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/10.JVM%E4%B9%8B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%96%B9%E6%B3%95%E5%8C%BA/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/10.JVM之深入理解方法区</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-IO%E6%B5%81/11.NIO/"><span>JavaSE-IO流/11.NIO</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/5.JVM运行时数据区概述"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/5.JVM运行时数据区概述【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM运行时数据区概述"><span class="toc-text">JVM运行时数据区概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-运行时数据区的完整图"><span class="toc-text">1. 运行时数据区的完整图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-系统线程与JVM线程☆"><span class="toc-text">2. 系统线程与JVM线程☆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-JVM系统线程"><span class="toc-text">2.1 JVM系统线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-RunTime类和Thread类"><span class="toc-text">2.2 RunTime类和Thread类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color8"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color7"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/5.JVM运行时数据区概述</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>道是梨花不是。道是杏花不是。白白与红红，别是东风情味。</p>
+<p align="right">——严蕊《如梦令》</p>
+<a id="more"></a>
+
+
+<h2 id="JVM运行时数据区概述"><a href="#JVM运行时数据区概述" class="headerlink" title="JVM运行时数据区概述"></a>JVM运行时数据区概述</h2><blockquote>
+<ol>
+<li>本文主要讲的是运行时数据区，也就是下图这部分，它是在类加载完成后的阶段</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200705111640511.png" alt="image-20200705111640511"></li>
+<li>当我们通过前面的：类的加载-&gt; 验证 -&gt; 准备 -&gt; 解析 -&gt; 初始化 这几个阶段完成后，<code>就会用到执行引擎对我们的类进行使用，同时执行引擎将会使用到我们运行时数据区</code></li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200705111843003.png" alt="image-20200705111843003"></li>
+<li><code>我们把大厨后面的东西（切好的菜，刀，调料），比作是运行时数据区。而厨师可以类比于执行引擎，</code>将通过准备的东西进行制作成精美的菜品。</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200705112036630.png" alt="image-20200705112036630"></li>
+</ol>
+</blockquote>
+<h3 id="1-运行时数据区的完整图"><a href="#1-运行时数据区的完整图" class="headerlink" title="1. 运行时数据区的完整图"></a>1. 运行时数据区的完整图</h3><blockquote>
+<ol>
+<li><p>内存是非常重要的系统资源，是硬盘和CPU的中间仓库及桥梁，承载着操作系统和应用程序的实时运行<code>JVM内存布局规定了Java在运行过程中内存申请、分配、管理的策略，保证了JVM的高效稳定运行。</code>不同的JVM对于内存的划分方式和管理机制存在着部分差异。结合JVM虚拟机规范，来探讨一下经典的JVM内存布局。</p>
+</li>
+<li><p>我们通过磁盘或者网络IO得到的数据，都需要先加载到内存中，然后CPU从内存中获取数据进行读取，也就是说内存充当了CPU和磁盘之间的桥梁</p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200705112416101.png" alt="image-20200705112416101"></p>
+<blockquote>
+<p>Java虚拟机定义了若干种程序运行期间会使用到的运行时数据区：</p>
+<ul>
+<li>其中有一些会随着虚拟机启动而创建，随着虚拟机退出而销毁。</li>
+<li>另外一些则是与线程一一对应的，这些与线程对应的数据区域会随着线程开始和结束而创建和销毁。</li>
+</ul>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200705112601211.png" alt="image-20200705112601211"></p>
+<blockquote>
+<p>灰色的为单独线程私有的，红色的为多个线程共享的。即：</p>
+<ul>
+<li><code>每个线程：独立包括程序计数器、栈、本地栈。</code></li>
+<li><code>线程间共享：堆、堆外内存（永久代或元空间、代码缓存）</code></li>
+</ul>
+</blockquote>
+<h3 id="2-系统线程与JVM线程☆"><a href="#2-系统线程与JVM线程☆" class="headerlink" title="2. 系统线程与JVM线程☆"></a>2. 系统线程与JVM线程☆</h3><blockquote>
+<ol>
+<li>线程是一个程序里的运行单元。<code>JVM允许一个应用有多个线程并行的执行。</code></li>
+<li><code>在Hotspot JVM里，每个线程都与操作系统的本地线程直接映射。</code><ul>
+<li>当一个Java线程准备好执行以后，此时一个操作系统的本地线程也同时创建。Java线程执行终止后，本地线程也会回收。</li>
+</ul>
+</li>
+<li>操作系统负责所有线程的安排调度到任何一个可用的CPU上。一旦本地线程初始化成功，<code>它就会调用Java线程中的run（）方法。</code></li>
+</ol>
+</blockquote>
+<h4 id="2-1-JVM系统线程"><a href="#2-1-JVM系统线程" class="headerlink" title="2.1 JVM系统线程"></a>2.1 JVM系统线程</h4><blockquote>
+<p>如果你使用<code>jconsole</code>或者是任何一个调试工具，都能看到在后台有许多线程在运行。<code>这些后台线程不包括调用public static void main（String[]）的main线程以及所有这个main线程自己创建的线程。这些主要的后台系统线程在Hotspot JVM里主要是以下几个：</code></p>
+<ol>
+<li><code>虚拟机线程：</code>这种线程的操作是需要JVM达到安全点才会出现。这些操作必须在不同的线程中发生的原因是他们都需要JVM达到安全点，这样堆才不会变化。这种线程的执行类型包括”stop-the-world”的垃圾收集，线程栈收集，线程挂起以及偏向锁撤销。</li>
+<li><code>周期任务线程：</code>这种线程是时间周期事件的体现（比如中断），他们一般用于周期性操作的调度执行。</li>
+<li><code>GC线程：</code>这种线程对在JVM里不同种类的垃圾收集行为提供了支持。</li>
+<li><code>编译线程：</code>这种线程在运行时会将字节码编译成到本地代码。</li>
+<li><code>信号调度线程：</code>这种线程接收信号并发送给JVM，在它内部通过调用适当的方法进行处理。</li>
+</ol>
+</blockquote>
+<h4 id="2-2-RunTime类和Thread类"><a href="#2-2-RunTime类和Thread类" class="headerlink" title="2.2 RunTime类和Thread类"></a>2.2 RunTime类和Thread类</h4><blockquote>
+<ol>
+<li><code>java.lang.RunTime</code><ul>
+<li>每个Java应用程序都有一个Runtime类的Runtime ，允许应用程序与运行应用程序的环境进行接口。 </li>
+<li>当前运行时可以从<code>getRuntime方法</code>获得。 </li>
+<li>应用程序无法创建自己的此类的实例。 </li>
+</ul>
+</li>
+<li><code>java.lang.Thread</code><ul>
+<li>线程是程序中执行的线程。 Java虚拟机允许应用程序同时执行多个执行线程。 </li>
+<li>每个线程都有优先权。 具有较高优先级的线程优先于优先级较低的线程执行。 </li>
+<li>每个线程可能也可能不会被标记为守护程序。 </li>
+<li><code>当在某个线程中运行的代码创建一个新的Thread对象时，新线程的优先级最初设置为等于创建线程的优先级，并且当且仅当创建线程是守护进程时才是守护线程。</code> </li>
+<li>当Java虚拟机启动时，通常有一个非守护进程线程（通常调用某些指定类的名为main的方法）。Java虚拟机将继续执行线程，直到发生以下任一情况： <ul>
+<li>已经调用了Runtime类的exit方法，并且安全管理器已经允许进行退出操作。 </li>
+<li>所有不是守护进程线程的线程都已经死亡，无论是从调用返回到run方法还是抛出超出run方法的run 。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/5.JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E6%A6%82%E8%BF%B0/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/5.JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E6%A6%82%E8%BF%B0/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/6.JVM%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/6.JVM程序计数器</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/4.JVM-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/"><span>JavaSE-JVM/4.JVM-类加载子系统</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

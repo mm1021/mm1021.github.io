@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE/01.Java的历史和演变"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE/01.Java的历史和演变【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java的历史和演变"><span class="toc-text">Java的历史和演变</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-计算机语言的历史"><span class="toc-text">1. 计算机语言的历史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-C语言之前的高级语言"><span class="toc-text">1.1 C语言之前的高级语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-C语言诞生"><span class="toc-text">1.2 C语言诞生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-C-带类的C语言"><span class="toc-text">1.3 C++ (带类的C语言)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-Java的诞生"><span class="toc-text">1.4 Java的诞生</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-1-推动Java发展的两大动力"><span class="toc-text">1.4.1 推动Java发展的两大动力</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-2-Java-和其他计算机语言"><span class="toc-text">1.4.2 Java 和其他计算机语言</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Java改变-Internet-的方式"><span class="toc-text">2. Java改变 Internet 的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Java的关键特性"><span class="toc-text">3. Java的关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Java的演变历史"><span class="toc-text">4. Java的演变历史</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color0"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color8"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE/01.Java的历史和演变</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE/">JavaSE</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>花自飘零水自流。一种相思，两处闲愁。</p>
+<p align="right">——李清照《一剪梅》</p>
+<a id="more"></a>
+[TOC]
+
+
+
+<h1 id="Java的历史和演变"><a href="#Java的历史和演变" class="headerlink" title="Java的历史和演变"></a>Java的历史和演变</h1><h2 id="1-计算机语言的历史"><a href="#1-计算机语言的历史" class="headerlink" title="1. 计算机语言的历史"></a>1. 计算机语言的历史</h2><blockquote>
+<p>​        第一代语言：机器语言</p>
+<p>​                 主要编写二进制码，直接编写100101010101这样的二进制，以打孔机为代表。</p>
+<p>​        第二代语言: 低级语言</p>
+<p>​                 主要以汇编语言为代表</p>
+<p>​                 在低级语言当中已经引入了一些英语单词。</p>
+<p>​        第三代语言：高级语言</p>
+<p>​                 列如：c语言  c++ Java、…..</p>
+</blockquote>
+<h3 id="1-1-C语言之前的高级语言"><a href="#1-1-C语言之前的高级语言" class="headerlink" title="1.1 C语言之前的高级语言"></a>1.1 C语言之前的高级语言</h3><ul>
+<li><a href="https://baike.baidu.com/item/FORTRAN/674319" target="_blank" rel="noopener">FORTRAN</a>  -1957  , 第一种被广泛使用的高级语言，高效的汇编语言。</li>
+<li><a href="https://baike.baidu.com/item/BASIC%E8%AF%AD%E8%A8%80/5964339?fr=aladdin" target="_blank" rel="noopener">BASIC</a>  -1964 ，易学习，功能弱。</li>
+<li><a href="https://baike.baidu.com/item/COBOL%E8%AF%AD%E8%A8%80?fromtitle=COBOL&fromid=1641359" target="_blank" rel="noopener">COBOL</a> -1959 </li>
+<li><a href="https://baike.baidu.com/item/Pascal/241171" target="_blank" rel="noopener">Pascal</a>  -1970 ，第一个结构化程序语言。</li>
+</ul>
+<blockquote>
+<p>C语言之前的这些版本，程序员通常需要在品质不同的各种计算机语言之间进行选择。BASIC,COBOL,FORTRAN,没有遵循结构化设计原则，依赖与GOTO作为程序控制的主要手段，很容易出现大量混乱的跳转语句和条件分支语句，使程序很难理解。Pascal的语言虽然是结构化的，但是不是针对高效率而设计的。</p>
+</blockquote>
+<h3 id="1-2-C语言诞生"><a href="#1-2-C语言诞生" class="headerlink" title="1.2 C语言诞生"></a>1.2 C语言诞生</h3><blockquote>
+<ul>
+<li><p>20世纪60年代，<strong>贝尔实验室</strong>的研究员<strong>Ken Thompson（肯·汤普森）</strong>发明了B语言，并使用B编了个游戏  Space Travel，他想玩自己这个游戏，所以他背着老板找到了台空闲的机器  PDP-7，但是这台机器没有操作系统，于是Thompson着手为PDP-7开发操作系统，后来这个OS（Operating System）被命名为  UNIX，Thompson（肯·汤普森）发明了UNIX。</p>
+</li>
+<li><p>1971年，Ken Thompson的同事D.M.Ritchie（DM里奇），也很想玩Space Travel，所以加入了Ken Thompson，合作开发UNIX，他的主要工作是改进Thompson的B语言。</p>
+</li>
+<li><p>最终，在1972年这个新语言被称为C，取BCPL的第二个字母，也是B的下一个字母</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>C语言的演变历程</strong></p>
+<ol>
+<li><p>CPL（Combined Programming Language） - 1963，CPL是1963年剑桥大学发明的，C语言的祖先。</p>
+</li>
+<li><p>BCPL（Base Combined Programming Language） - 1967，剑桥的Matin Richards 对CPL做了简化，推出了BCPL</p>
+</li>
+<li><p>B（B Programming Language） - 1969，贝尔实验室的Ken Thompson（肯·汤普森） 对BCPL又做了改进，设计出了简单的且接近硬件的B语言，并用B语言写了第一个UNIX OS</p>
+</li>
+<li><p>C（C Programming Language） - 1972，贝尔实验室的另外一个人Dennis MacAlistair Ritchie（D.M.Ritchie - DM里奇）在B的基础上设计出了C语言。C 保持了B的优点（精炼、接近硬件），又克服了他的缺点（过于简单，数据无类型）。</p>
+</li>
+</ol>
+<h3 id="1-3-C-带类的C语言"><a href="#1-3-C-带类的C语言" class="headerlink" title="1.3 C++ (带类的C语言)"></a>1.3 C++ (带类的C语言)</h3><p>C++（C plus plus Programming Language） - 1983，还是贝尔实验室的人，Bjarne Stroustrup（本贾尼·斯特劳斯特卢普） 在C语言的基础上推出了C++，这个时候你可能会想C这么强大的语言已经出现了为什么还会出现C++呢？这是因为C语言处理复杂性的能力也是有一定的限度的，C++ 它扩充和完善了C语言，特别是在面向对象编程方面,一定程度上克服了C语言编写大型程序时的不足。</p>
+<h3 id="1-4-Java的诞生"><a href="#1-4-Java的诞生" class="headerlink" title="1.4 Java的诞生"></a>1.4 Java的诞生</h3><blockquote>
+<p>Java是由James Gosling、Patrick Naughton 、 Chris Warth 、Ed Frank 、和 Mike Sheridan 于1991年在sun公司构想出来的，开发第一个版本花费了18个月，这种语言最初称为Oak,在1995年被命名为Java。</p>
+</blockquote>
+<h4 id="1-4-1-推动Java发展的两大动力"><a href="#1-4-1-推动Java发展的两大动力" class="headerlink" title="1.4.1 推动Java发展的两大动力"></a>1.4.1 推动Java发展的两大动力</h4><p>一、嵌入到各种消费类电子设备的软件</p>
+<p>二、<a href="https://baike.baidu.com/item/www/109924?fromtitle=%E4%B8%87%E7%BB%B4%E7%BD%91&fromid=215515&fr=aladdin" target="_blank" rel="noopener">万维网</a></p>
+<p>小结：Java的设计、测试和不断改进是由真正从事编程工作的人员完成的。它是扎根于设计人员的需求和经验的一种语言，因此Java是程序员的语言。</p>
+<h4 id="1-4-2-Java-和其他计算机语言"><a href="#1-4-2-Java-和其他计算机语言" class="headerlink" title="1.4.2 Java 和其他计算机语言"></a>1.4.2 Java 和其他计算机语言</h4><p><strong>Java和C</strong></p>
+<ul>
+<li>Java 对Internet 编程</li>
+<li>C 对系统的编程</li>
+</ul>
+<p><strong>Java 和 C#</strong></p>
+<blockquote>
+<p>相同点：他们都是面向对象的语言,也就是说,它们都能实现面向对象的思想(封装,继承,多态)，两者共享相同的语法，都支持分布式编程，并且都利用相同的对象模型。</p>
+<p>不同点：<a href="https://www.cnblogs.com/maijin/p/7919385.html" target="_blank" rel="noopener">点这里…</a></p>
+</blockquote>
+<p><strong>Java 和 C++</strong></p>
+<ul>
+<li>都是面向对象的语言，都支持封装、继承和多态。</li>
+<li>Java不提供指针来直接访问内存，程序内存更加安全。</li>
+<li>Java的类是单继承的，C++支持多继承；虽然Java 的类不可以多继承，但是接口可以多继承。</li>
+<li>Java有自动内存管理机制，不需要程序员手动释放无用内存。</li>
+</ul>
+<h2 id="2-Java改变-Internet-的方式"><a href="#2-Java改变-Internet-的方式" class="headerlink" title="2. Java改变 Internet 的方式"></a>2. Java改变 Internet 的方式</h2><ul>
+<li>Java applet（目前已被标记废弃）</li>
+<li>安全性</li>
+<li>可移植性</li>
+<li>Java的魔力–字节码(bytecode)</li>
+<li>JVM(Java virtual Machine)虚拟机–设计初为字节码解释器（HotSpot技术，JIT编译器）</li>
+<li>Java Web Start处理多种类型的Java程序的部署机制</li>
+<li>Servlet–服务器端上执行的小程序（与Servlet相似的<a href="https://baike.baidu.com/item/CGI/607810?fr=aladdin&fromid=6717913&fromtitle=%EF%BC%A3%EF%BC%A7%EF%BC%A9" target="_blank" rel="noopener">CGI</a>）</li>
+</ul>
+<h2 id="3-Java的关键特性"><a href="#3-Java的关键特性" class="headerlink" title="3. Java的关键特性"></a>3. Java的关键特性</h2><blockquote>
+<ul>
+<li>简单性–最初是面向程序员的。</li>
+<li><strong>安全性</strong></li>
+<li><strong>可移植性</strong></li>
+<li>面向对象</li>
+<li>健壮性–编好的程序在不同的运行条件下以可预见的方式运行是Java的关键特性。</li>
+<li>多线程</li>
+<li>体系结构中立–得益于JVM。</li>
+<li>解释执行</li>
+<li>高性能</li>
+<li>分布式</li>
+<li>动态性</li>
+</ul>
+</blockquote>
+<h2 id="4-Java的演变历史"><a href="#4-Java的演变历史" class="headerlink" title="4. Java的演变历史"></a>4. Java的演变历史</h2><p><strong>Sun公司</strong></p>
+<ul>
+<li>Java 1.0</li>
+<li>Java 1.1</li>
+<li>Java 2 – Java新时代<ul>
+<li>增加了Swing</li>
+<li>集合框架</li>
+</ul>
+</li>
+<li>J2SE 1.3</li>
+<li>J2SE 1.4 – 与之前版本几乎达到100%的源代码兼容。</li>
+<li>J2SE 5 – 从根本上扩展了java语言的应用领域，功能和范围（JDk5）。<ul>
+<li>有以下新特性：<ol>
+<li>泛型</li>
+<li>注解(annotation)</li>
+<li>自动装箱和自动拆箱</li>
+<li>枚举</li>
+<li>增强的 for-each 风格和 for 循环</li>
+<li>可变参数(varargs)</li>
+<li>静态导入</li>
+<li>格式化的 I/O</li>
+<li>并发使用工具</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>Java SE 6 – 内部的开发版本号是1.6（JDk6）。</li>
+</ul>
+<p><strong>Oracle公司</strong></p>
+<ul>
+<li>Java SE 7 – Oracle收购Sun公司后，第一个重要发布版本。（JDk7）<ul>
+<li>有以下新特性：<ol>
+<li>String 现在能控制switch语句。</li>
+<li>二进制整形字面值</li>
+<li>数值字面值的下画线</li>
+<li>扩展的 try 语句称为带资源的 try (try-with-resources)语句，这种 try 支持自动资源管理。(例如：当stream不再需要时，现在能够自动关闭他们。)</li>
+<li>构造泛型</li>
+<li>对异常处理进行增强，单个 catch 字句能够捕获两个或更多个异常，并且对重新抛出的异常提供更好的类型检查。</li>
+<li>对某些方法(参数的长度可变) 类型关联的编译器警告进行了改进，尽管语法并没有改变，并且对警告具有更大的控制权。</li>
+<li>对 NIO 框架进行了增强，并且增加了 Fork/Join 框架。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Java SE 8 （JDk8）–新增了lambda表达式。</li>
+<li>Java Se 9  ( JDK9 )  <ul>
+<li>新增的特性：<ol>
+<li>模块</li>
+<li>JShell</li>
+<li>支持私有接口方法</li>
+<li>给javadoc工具添加了搜索功能。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>总结：</p>
+<ol>
+<li>大概了解了Java的演变历史和其功能的扩展，发现几乎每次版本的更新都对 API 库进行了更新，Java中JVM充满了神秘感，作为一个初学者发现其中有很多专业方面的词都不是很明白，其中查了一部分，但是还有很多要放在今后的学习中慢慢深入。</li>
+<li>这篇博客会在今后的学习不断的修改，当然如果有大佬指点带萌新感激不尽，在此留下qq1585636331,欢迎学习<strong>计算机语言</strong>的朋友加好友一起讨论学习，一起进步。</li>
+</ol>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE/01.Java%E7%9A%84%E5%8E%86%E5%8F%B2%E5%92%8C%E6%BC%94%E5%8F%98/">http://www.itbuild.cn/2020/12/19/JavaSE/01.Java%E7%9A%84%E5%8E%86%E5%8F%B2%E5%92%8C%E6%BC%94%E5%8F%98/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/02.Java%E8%AF%AD%E8%A8%80%E6%A6%82%E8%BF%B0,JDK%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E9%85%8D%E7%BD%AE/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE/02.Java语言概述,JDK安装和环境变量的配置</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/RabbitMQ/12.SpringBoot%E4%B8%AD%E9%9B%86%E6%88%90ActiveMQ/"><span>RabbitMQ/12.SpringBoot中集成ActiveMQ</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

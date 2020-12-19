@@ -1,0 +1,415 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE/03.Java的注释、变量和数据类型"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE/03.Java的注释、变量和数据类型【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-注释"><span class="toc-text">1. 注释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-单行注释"><span class="toc-text">1.1 单行注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-多行注释"><span class="toc-text">1.2 多行注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-文档注释（java特有）"><span class="toc-text">1.3 文档注释（java特有）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-关键字"><span class="toc-text">2. 关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-标识符"><span class="toc-text">3. 标识符</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-命名规则：-硬性要求"><span class="toc-text">3.1 命名规则： 硬性要求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-命名规范-软性建议"><span class="toc-text">3.2 命名规范 :  软性建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-常量"><span class="toc-text">4. 常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-变量"><span class="toc-text">5. 变量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-数据类型"><span class="toc-text">5.1 数据类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-变量的定义"><span class="toc-text">5.2 变量的定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-数据类型的转换"><span class="toc-text">5.3 数据类型的转换</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-3-1-自动转换"><span class="toc-text">5.3.1 自动转换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-3-2-强制转换"><span class="toc-text">5.3.2 强制转换</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#注意"><span class="toc-text">&#x3D;&#x3D;注意&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-ASCII编码表"><span class="toc-text">5.4 ASCII编码表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-常用DOS命令"><span class="toc-text">6. 常用DOS命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-windows操作系统常用的快捷键"><span class="toc-text">7. windows操作系统常用的快捷键</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color7"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color7"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE/03.Java的注释、变量和数据类型</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE/">JavaSE</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>休对故人思故国，且将新火试新茶。诗酒趁年华。</p>
+<p align="right">——苏轼《望江南》</p>
+<a id="more"></a>
+[TOC]
+
+<h2 id="1-注释"><a href="#1-注释" class="headerlink" title="1. 注释"></a>1. 注释</h2><blockquote>
+<p>用于注解说明解释程序的文字就是注释，java中的注释有：</p>
+<ul>
+<li>单行注释  //</li>
+<li>多行注释  /**/</li>
+<li>文档注释 (java特有) /***/</li>
+</ul>
+</blockquote>
+<h4 id="1-1-单行注释"><a href="#1-1-单行注释" class="headerlink" title="1.1 单行注释"></a>1.1 单行注释</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式:	<span class="comment">//注释文字</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-多行注释"><a href="#1-2-多行注释" class="headerlink" title="1.2 多行注释"></a>1.2 多行注释</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式:	<span class="comment">/*注释文字*/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对于单行和多行注释，被注释的文字，不会被JVM（java虚拟机）解释执行。多行注释里面不允许有多行注释嵌套。</p>
+</blockquote>
+<h4 id="1-3-文档注释（java特有）"><a href="#1-3-文档注释（java特有）" class="headerlink" title="1.3 文档注释（java特有）"></a>1.3 文档注释（java特有）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">格式： <span class="comment">/**</span></span><br><span class="line"><span class="comment">	   * <span class="doctag">@author</span>  指定java程序的作者</span></span><br><span class="line"><span class="comment">	 	* <span class="doctag">@version</span>  指定源文件的版本</span></span><br><span class="line"><span class="comment">	   *</span></span><br><span class="line"><span class="comment">	   */</span></span><br><span class="line">注释内容可以被JDK提供的工具 javadoc 所解析，生成一套以网页文件形式体现的该程序的说明文档。</span><br><span class="line"></span><br><span class="line">操作方式命令:</span><br><span class="line"></span><br><span class="line">javadoc -d myjava HelloJava.java</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-关键字"><a href="#2-关键字" class="headerlink" title="2. 关键字"></a>2. 关键字</h2><blockquote>
+<p>是指在程序中，Java已经定义好的单词，具有特殊含义。</p>
+</blockquote>
+<p>​        入门小案例HelloWorld中，出现的关键字有<code>public</code>,<code>class</code>,<code>static</code>等，这些单词已经被Java定义好，==<strong>全部都是小写字母</strong>==，notepad++，editplus中颜色特殊。</p>
+<table>
+<thead>
+<tr>
+<th>class</th>
+<th>extends</th>
+<th>implements</th>
+<th>interface</th>
+<th>import</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>package</td>
+<td>break</td>
+<td>case</td>
+<td>continue</td>
+<td>default</td>
+</tr>
+<tr>
+<td>do</td>
+<td>if</td>
+<td>else</td>
+<td>for</td>
+<td>return</td>
+</tr>
+<tr>
+<td>switch</td>
+<td>while</td>
+<td>false</td>
+<td>true</td>
+<td>null</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>byte</td>
+<td>char</td>
+<td>short</td>
+<td>int</td>
+</tr>
+<tr>
+<td>long</td>
+<td>float</td>
+<td>double</td>
+<td>try</td>
+<td>catch</td>
+</tr>
+<tr>
+<td>throw</td>
+<td>throws</td>
+<td>finally</td>
+<td>abstract</td>
+<td>fianl</td>
+</tr>
+<tr>
+<td>native</td>
+<td>private</td>
+<td>protected</td>
+<td>public</td>
+<td>static</td>
+</tr>
+<tr>
+<td>synchronized</td>
+<td>transient</td>
+<td>volatile</td>
+<td>instanceof</td>
+<td>new</td>
+</tr>
+<tr>
+<td>super</td>
+<td>void</td>
+<td>assert</td>
+<td>enum</td>
+<td><em>goto</em></td>
+</tr>
+</tbody></table>
+<h2 id="3-标识符"><a href="#3-标识符" class="headerlink" title="3. 标识符"></a>3. 标识符</h2><blockquote>
+<p>是指在程序中，我们自己定义内容。比如类的名字、方法的名字和变量的名字等等，都是标识符。</p>
+</blockquote>
+<h4 id="3-1-命名规则：-硬性要求"><a href="#3-1-命名规则：-硬性要求" class="headerlink" title="3.1 命名规则： 硬性要求"></a>3.1 命名规则： 硬性要求</h4><ul>
+<li>标识符可以包含<code>英文字母26个(区分大小写)</code>,<code>0-9数字</code>，<code>$美元符号</code>，<code>_下划线</code></li>
+<li><strong>标识符不能以数字开头</strong></li>
+<li>标识符不能是关键字</li>
+</ul>
+<h4 id="3-2-命名规范-软性建议"><a href="#3-2-命名规范-软性建议" class="headerlink" title="3.2 命名规范 :  软性建议"></a>3.2 命名规范 :  软性建议</h4><ul>
+<li><strong>类名和接口规范</strong>：首字母大写，后面每个单词首字母大写（大驼峰式）</li>
+<li><strong>方法名规范</strong>： 首字母小写，后面每个单词首字母大写（小驼峰式）</li>
+<li><strong>变量名规范</strong>：全部小写</li>
+</ul>
+<h2 id="4-常量"><a href="#4-常量" class="headerlink" title="4. 常量"></a>4. 常量</h2><blockquote>
+<p>是指在Java程序中固定不变的数据。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>类型</strong></th>
+<th><strong>含义</strong></th>
+<th><strong>数据举例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>整数常量</td>
+<td>所有的整数</td>
+<td>0，1，  567， -9</td>
+</tr>
+<tr>
+<td>小数常量</td>
+<td>所有的小数</td>
+<td>0.0，  -0.1， 2.55</td>
+</tr>
+<tr>
+<td>字符常量</td>
+<td>单引号引起来,只能写一个字符,必须有内容</td>
+<td>‘a’ ， ‘ ‘， ‘好’</td>
+</tr>
+<tr>
+<td>字符串常量</td>
+<td>双引号引起来,可以写多个字符,也可以不写</td>
+<td>“A” ，”Hello” ，”你好” ，””</td>
+</tr>
+<tr>
+<td>布尔常量</td>
+<td>只有两个值（流程控制中讲解）</td>
+<td>true ， false</td>
+</tr>
+<tr>
+<td>空常量</td>
+<td>只有一个值（引用数据类型中讲解）</td>
+<td>null</td>
+</tr>
+</tbody></table>
+<h2 id="5-变量"><a href="#5-变量" class="headerlink" title="5. 变量"></a>5. 变量</h2><blockquote>
+<p>常量是固定不变的数据，那么在程序中可以变化的量称为变量。<strong>变量是内存中储存数据的最基本单元。</strong></p>
+<ul>
+<li>Java中要求一个变量每次只能保存一个数据，必须要明确保存的数据类型</li>
+<li>在方法体当中的Java代码，是遵守自上而下的顺序依次执行的，逐行执行。在同一个<strong>“作用域”</strong>当中，变量名不能重名，但是变量可以重新赋值</li>
+</ul>
+<p>变量的作用域：</p>
+<ul>
+<li>出了大括号就不认识了</li>
+</ul>
+</blockquote>
+<h4 id="5-1-数据类型"><a href="#5-1-数据类型" class="headerlink" title="5.1 数据类型"></a>5.1 数据类型</h4><blockquote>
+<p>Java的数据类型分为两大类:</p>
+<ul>
+<li><strong>基本数据类型</strong>：<code>整数</code>，<code>浮点数</code>,<code>字符</code>，<code>布尔</code></li>
+<li><strong>引用数据类型</strong>：<code>类</code>，<code>数组</code>，<code>接口</code></li>
+</ul>
+<p>Java中的默认类型：整数类型是<code>int</code>，浮点类型是<code>double</code></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>数据类型</strong></th>
+<th><strong>关键字</strong></th>
+<th><strong>内存占用</strong></th>
+<th><strong>取值范围</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>字节型</td>
+<td>byte</td>
+<td>1个字节</td>
+<td>-128~127</td>
+</tr>
+<tr>
+<td>短整型</td>
+<td>short</td>
+<td>2个字节</td>
+<td>-32768~32767</td>
+</tr>
+<tr>
+<td>整型</td>
+<td>int（默认）</td>
+<td>4个字节</td>
+<td>-2的31次方~2的31次方-1</td>
+</tr>
+<tr>
+<td>长整型</td>
+<td>long</td>
+<td>8个字节</td>
+<td>-2的63次方~2的63次方-1</td>
+</tr>
+<tr>
+<td>单精度浮点数</td>
+<td>ﬂoat</td>
+<td>4个字节</td>
+<td>1.4013E-45~3.4028E+38</td>
+</tr>
+<tr>
+<td>双精度浮点数</td>
+<td>double（默认）</td>
+<td>8个字节</td>
+<td>4.9E-324~1.7977E+308</td>
+</tr>
+<tr>
+<td>字符型</td>
+<td>char</td>
+<td>2个字节</td>
+<td>0-65535</td>
+</tr>
+<tr>
+<td>布尔类型</td>
+<td>boolean</td>
+<td>1个字节</td>
+<td>true，false</td>
+</tr>
+</tbody></table>
+<h4 id="5-2-变量的定义"><a href="#5-2-变量的定义" class="headerlink" title="5.2 变量的定义"></a>5.2 变量的定义</h4><blockquote>
+<p>格式： 数据类型 变量名 = 数据值;</p>
+<p>​            byte a = 100;</p>
+<p>注意：</p>
+<ul>
+<li>long类型：建议数据后加L表示</li>
+<li>ﬂoat类型：建议数据后加F表示</li>
+</ul>
+</blockquote>
+<h4 id="5-3-数据类型的转换"><a href="#5-3-数据类型的转换" class="headerlink" title="5.3 数据类型的转换"></a>5.3 数据类型的转换</h4><blockquote>
+<p>Java程序中要求参与的计算的数据，必须要保证数据类型的一致性，如果数据类型不一致将发生类型的转换。</p>
+</blockquote>
+<h5 id="5-3-1-自动转换"><a href="#5-3-1-自动转换" class="headerlink" title="5.3.1 自动转换"></a>5.3.1 自动转换</h5><blockquote>
+<p><strong>自动转换</strong>：将取值范围小的类型自动提升为取值范围大的类型。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个int类型变量和一个byte类型变量进行加法运算， 结果会是什么数据类型？ </span></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>; </span><br><span class="line"><span class="keyword">byte</span> b = <span class="number">2</span>; </span><br><span class="line"><span class="comment">//运算结果，变量的类型将是int类型，这就是出现了数据类型的自动类型转换现象。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// byte x = b + i; // 报错</span></span><br><span class="line"><span class="comment">//int类型和byte类型运算，结果是int类型</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>转换规则</strong></p>
+<blockquote>
+<p>范围小的类型向范围大的类型提升，<code>byte、short、char</code> 运算时直接提升为<code>int</code> 。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span>、<span class="keyword">short</span>、<span class="keyword">char</span>--&gt;<span class="keyword">int</span>--&gt;<span class="keyword">long</span>--&gt;<span class="keyword">float</span>--&gt;<span class="keyword">double</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="5-3-2-强制转换"><a href="#5-3-2-强制转换" class="headerlink" title="5.3.2 强制转换"></a>5.3.2 强制转换</h5><blockquote>
+<ul>
+<li>将<code>取值范围大的类型</code>强制转换成<code>取值范围小的类型</code>，比较而言，自动转换是Java自动执行的，而强制转换需要我们自己手动执行。</li>
+<li>格式：数据类型  变量名 = （数据类型） 被转数据值；</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// double类型数据强制转成int类型，直接去掉小数点。</span></span><br><span class="line"><span class="keyword">int</span> i = (<span class="keyword">int</span>)<span class="number">1.5</span>;</span><br></pre></td></tr></table></figure>
+
+<h6 id="注意"><a href="#注意" class="headerlink" title="==注意=="></a>==注意==</h6><blockquote>
+<ul>
+<li>浮点转成整数，直接取消小数点，可能造成<strong>数据损失精度</strong>。</li>
+<li><code>int</code> 强制转成<code>short</code> 砍掉2个字节，可能造成数据丢失。</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义s为short范围内最大值</span></span><br><span class="line"><span class="keyword">short</span> s = <span class="number">32767</span>;</span><br><span class="line"><span class="comment">// 运算后，强制转换，砍掉2个字节后会出现不确定的结果</span></span><br><span class="line">s = (<span class="keyword">short</span>)(s + <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对于byte/short/char三种类型来说，如果右侧赋值的数值没有超过范围，那么<strong>javac编译器</strong>将会自动隐含地为我们补上一个(byte)(short)(char)。</p>
+<ol>
+<li>如果没有超过左侧的范围，编译器补上强转。</li>
+<li>如果右侧超过了左侧范围，那么直接编译器报错。</li>
+</ol>
+</blockquote>
+<h4 id="5-4-ASCII编码表"><a href="#5-4-ASCII编码表" class="headerlink" title="5.4 ASCII编码表"></a>5.4 ASCII编码表</h4><blockquote>
+<p>就是将人类的文字和一个十进制数进行对应起来组成一张表格。将所有的英文字母，数字，符号都和十进制进行了对应，因此产生了世界上第一张编码表ASCII（American Standard Code for Information Interchange 美国标准信息交换码）。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">字符</th>
+<th align="center">数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0</td>
+<td align="center">48</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">57</td>
+</tr>
+<tr>
+<td align="center">A</td>
+<td align="center">65</td>
+</tr>
+<tr>
+<td align="center">Z</td>
+<td align="center">90</td>
+</tr>
+<tr>
+<td align="center">a</td>
+<td align="center">97</td>
+</tr>
+<tr>
+<td align="center">z</td>
+<td align="center">122</td>
+</tr>
+</tbody></table>
+<h2 id="6-常用DOS命令"><a href="#6-常用DOS命令" class="headerlink" title="6. 常用DOS命令"></a>6. 常用DOS命令</h2><table>
+<thead>
+<tr>
+<th align="center"><strong>DOS命令</strong></th>
+<th align="center"><strong>效果</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>ipconfig</strong></td>
+<td align="center"><strong>查看IP</strong></td>
+</tr>
+<tr>
+<td align="center"><strong>ipconfig/all</strong></td>
+<td align="center">可以查看更详细的IP信息，这种查看方式可以看到网卡的<strong>物理地址</strong>。物理地址具有全球唯一性。<br/>是在生产网卡的时候，嵌入的编号。</td>
+</tr>
+<tr>
+<td align="center"><strong>cls</strong></td>
+<td align="center">清屏</td>
+</tr>
+<tr>
+<td align="center"><strong>exit</strong></td>
+<td align="center">退出DOS命令窗口</td>
+</tr>
+<tr>
+<td align="center"><strong>ping IP地址</strong></td>
+<td align="center">查看两台计算机之间是否可以正常通信</td>
+</tr>
+<tr>
+<td align="center"><strong>ctrl +  c</strong></td>
+<td align="center">强行终止DOS命令窗口中正在运行的程序</td>
+</tr>
+<tr>
+<td align="center"><strong>mkdir + xx</strong></td>
+<td align="center">表示在当前所在目录下新建一个目录(xx)</td>
+</tr>
+<tr>
+<td align="center"><strong>cd</strong></td>
+<td align="center">目录切换命令</td>
+</tr>
+<tr>
+<td align="center"><strong>dir</strong></td>
+<td align="center">列出当前目录下的文件以及文件夹</td>
+</tr>
+<tr>
+<td align="center"><strong>md</strong></td>
+<td align="center">创建目录</td>
+</tr>
+<tr>
+<td align="center"><strong>rd</strong></td>
+<td align="center">删除目录</td>
+</tr>
+<tr>
+<td align="center"><strong>cd ..</strong></td>
+<td align="center">退回到上一级目录</td>
+</tr>
+<tr>
+<td align="center"><strong>cd \</strong></td>
+<td align="center">退回到根目录</td>
+</tr>
+<tr>
+<td align="center"><strong>del</strong></td>
+<td align="center">删除文件</td>
+</tr>
+<tr>
+<td align="center"><strong>echo</strong></td>
+<td align="center">创建文件</td>
+</tr>
+</tbody></table>
+<h2 id="7-windows操作系统常用的快捷键"><a href="#7-windows操作系统常用的快捷键" class="headerlink" title="7. windows操作系统常用的快捷键"></a>7. windows操作系统常用的快捷键</h2><blockquote>
+<p>​         win + r    打开运行窗口</p>
+<p>​         win + d   显示桌面</p>
+<p>​         win + e   打开资源管理器</p>
+<p>​         win + L   锁屏</p>
+<p>​         alt + tab 应用之间的切换</p>
+<p>​         alt + d 选中地址栏。</p>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE/03.Java%E7%9A%84%E6%B3%A8%E9%87%8A%E3%80%81%E5%8F%98%E9%87%8F%E5%92%8C%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">http://www.itbuild.cn/2020/12/19/JavaSE/03.Java%E7%9A%84%E6%B3%A8%E9%87%8A%E3%80%81%E5%8F%98%E9%87%8F%E5%92%8C%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/04.%E8%BF%90%E7%AE%97%E7%AC%A6%E6%80%BB%E7%BB%93/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE/04.运算符总结</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/02.Java%E8%AF%AD%E8%A8%80%E6%A6%82%E8%BF%B0,JDK%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E9%85%8D%E7%BD%AE/"><span>JavaSE/02.Java语言概述,JDK安装和环境变量的配置</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

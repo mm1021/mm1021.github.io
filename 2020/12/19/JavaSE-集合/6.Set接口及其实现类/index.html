@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-集合/6.Set接口及其实现类"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-集合/6.Set接口及其实现类【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Set接口及其实现类"><span class="toc-text">Set接口及其实现类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Set接口介绍"><span class="toc-text">1. Set接口介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Set接口的主要实现类"><span class="toc-text">2. Set接口的主要实现类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-HashSet集合☆"><span class="toc-text">2.1 HashSet集合☆</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#哈希值和哈希表"><span class="toc-text">哈希值和哈希表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#HashSet中添加元素的过程"><span class="toc-text">HashSet中添加元素的过程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#重写-hashCode-方法的基本原则"><span class="toc-text">重写 hashCode() 方法的基本原则</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#重写-equals-方法的基本原则"><span class="toc-text">重写 equals() 方法的基本原则</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#HashSet存储自定义类型元素☆"><span class="toc-text">HashSet存储自定义类型元素☆</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LinkedHashSet集合☆"><span class="toc-text">LinkedHashSet集合☆</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-TreeSet集合"><span class="toc-text">2.2 TreeSet集合</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#排序—自然排序"><span class="toc-text">排序—自然排序</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#排序—定制排序"><span class="toc-text">排序—定制排序</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color7"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color7"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-集合/6.Set接口及其实现类</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-%E9%9B%86%E5%90%88/">JavaSE-集合</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>可怜人意，薄于云水，佳会更难重。</p>
+<p align="right">——晏几道《少年游》</p>
+<a id="more"></a>
+
+
+<h1 id="Set接口及其实现类"><a href="#Set接口及其实现类" class="headerlink" title="Set接口及其实现类"></a>Set接口及其实现类</h1><h2 id="1-Set接口介绍"><a href="#1-Set接口介绍" class="headerlink" title="1. Set接口介绍"></a>1. Set接口介绍</h2><blockquote>
+<ol>
+<li><code>java.util.Set</code> 接口和 <code>java.util.List</code> 接口一样，同样继承自 <code>Collection</code> 接口，它与<code>Collection</code> 接口中的方法基本一致，并没有对 <code>Collection</code> 接口进行功能上的扩充，只是比<code>Collection</code> 接口更加严格了。</li>
+<li>与 <code>List</code> 接口不同的是， <code>Set</code> 接口中元素无序，并且都会以某种规则保证存入的元素不出现重复。</li>
+<li>Set 判断两个对象是否相同不是使用 == 运算符，而是根据 equals() 方法。</li>
+<li>Set集合取出元素的方式可以采用：迭代器、增强for。</li>
+<li><code>Set</code> 集合有多个子类，这里我们介绍其中的 <code>java.util.HashSet</code> 、 <code>java.util.LinkedHashSet</code>、<code>java.util.TreeSet</code> 这三个集合。</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/image-20201113163538117.png" alt="image-20201113163538117"></p>
+<h2 id="2-Set接口的主要实现类"><a href="#2-Set接口的主要实现类" class="headerlink" title="2. Set接口的主要实现类"></a>2. Set接口的主要实现类</h2><h3 id="2-1-HashSet集合☆"><a href="#2-1-HashSet集合☆" class="headerlink" title="2.1 HashSet集合☆"></a>2.1 HashSet集合☆</h3><blockquote>
+<ol>
+<li><code>java.util.HashSet</code> 是 <code>Set</code> 接口的一个典型实现类，它所存储的<code>元素是不可重复</code>的，<code>集合元素可以为null</code>，<code>线程不安全</code>，并且元素都是<code>无序的</code>(即存取顺序不能保证不一致)。</li>
+<li><code>HashSet</code> 是根据对象的哈希值来确定元素在集合中的存储位置，因此具有良好的存储和查找性能。保证元素唯一性的方式依赖于：<code>hashCode</code> 与 <code>equals</code> 方法。即两个对象通过 hashCode() 方法比较相等，并且两个对象的 equals() 方法返回值也相等。</li>
+<li>对于存放在Set容器中的对象， <code>对应的类一定要重写equals() 和hashCode(Object obj) 方法</code>，以实现对象相等规则 。即： <code>“相等的对象必须具有相等的散列码”</code> 。</li>
+<li><code>java.util.HashSet</code> 底层的实现其实是一个 <code>java.util.HashMap</code> 支持。</li>
+</ol>
+</blockquote>
+<h5 id="哈希值和哈希表"><a href="#哈希值和哈希表" class="headerlink" title="哈希值和哈希表"></a>哈希值和哈希表</h5><blockquote>
+<ol>
+<li>哈希值简介：是JDK根据<code>对象的地址</code>或者<code>字符串</code>或者<code>数字</code>算出来的<code>int类型的数值</code>。</li>
+<li>如何获取哈希值：<code>Object类中的public int hashCode()；返回对象的哈希码值。</code></li>
+<li>哈希值的特点：<ul>
+<li>同一个对象多次调用hashCode()方法返回的哈希值是相同的。</li>
+<li>默认情况下，不同对象的哈希值是不同的。而重写hashCode()方法，可以实现让不同对象的哈希值相同。</li>
+</ul>
+</li>
+<li>什么是哈希表呢？哈希表是HashSet集合存储数据的结构</li>
+<li>在<code>JDK1.8</code>之前，哈希表底层采用<code>数组+链表</code>实现，即使用链表处理冲突，同一<code>hash</code>值的链表都存储在一个链表里。但是当位于一个桶中的元素较多，即<code>hash</code>值相等的元素较多时，通过<code>key</code>值依次查找的效率较低。<ul>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/14_JKD8%E4%BB%A5%E5%89%8D%E5%93%88%E5%B8%8C%E8%A1%A8.png" alt="14_JKD8以前哈希表"></li>
+</ul>
+</li>
+<li>而<code>JDK1.8</code>中，哈希表存储<code>采用数组+链表+红黑树</code>实现，当链表长度超过阈值（8）时，将链表转换为红黑树，这样大大减少了查找时间。<ul>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/15_JKD8%E4%BB%A5%E5%90%8E%E5%93%88%E5%B8%8C%E8%A1%A8.png" alt="15_JKD8以后哈希表"></li>
+</ul>
+</li>
+<li><code>底层也是数组，初始容量为16，当如果使用率超过0.75，（16*0.75=12）就会扩大容量为原来的2倍。</code>（16扩容为32，依次为64,128….等）。</li>
+<li>简单的来说，哈希表是由数组+链表+红黑树（<code>JDK1.8</code>增加了红黑树部分）实现的，如下图所示：</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/1563700294020.png" alt="1563700294020"></p>
+<h5 id="HashSet中添加元素的过程"><a href="#HashSet中添加元素的过程" class="headerlink" title="HashSet中添加元素的过程"></a>HashSet中添加元素的过程</h5><blockquote>
+<ol>
+<li>当向 HashSet 集合中存入一个元素时，HashSet 会调用该对象的 hashCode() 方法来得到该对象hashCode 值，然后根据 hashCode 值，通过某种散列函数决定该对象在 HashSet 底层数组中的存储位置。（<code>这个散列函数会与底层数组的长度相计算得到在数组中的下标，并且这种散列函数计算还尽可能保证能均匀存储元素，越是散列分布，该散列函数设计的越好</code>）</li>
+<li>如果两个元素的hashCode()值相等，会再继续调用equals方法，如果equals方法结果为true，添加失败；如果为false，那么会保存该元素，但是该数组的位置已经有元素了，那么会通过<code>链表的方式</code>继续链接。</li>
+</ol>
+</blockquote>
+<h5 id="重写-hashCode-方法的基本原则"><a href="#重写-hashCode-方法的基本原则" class="headerlink" title="重写 hashCode() 方法的基本原则"></a>重写 hashCode() 方法的基本原则</h5><blockquote>
+<ol>
+<li>在程序运行时，同一个对象多次调用 hashCode() 方法应该返回相同的值。</li>
+<li>当两个对象的 equals() 方法比较返回 true 时，这两个对象的 hashCode()方法的返回值也应相等。</li>
+<li>对象中用作 equals() 方法比较的 Field，都应该用来计算 hashCode 值。</li>
+</ol>
+</blockquote>
+<h5 id="重写-equals-方法的基本原则"><a href="#重写-equals-方法的基本原则" class="headerlink" title="重写 equals() 方法的基本原则"></a>重写 equals() 方法的基本原则</h5><blockquote>
+<p>以自定义的Student类为例，何时需要重写equals()？</p>
+<ol>
+<li><code>当一个类有自己特有的“逻辑相等”概念,</code>当改写equals()的时候，总是要改写hashCode()，根据一个类的equals方法（改写后），两个截然不同的实例有可能在逻辑上是相等的，但是，根据Object.hashCode()方法，它们仅仅是两个对象。</li>
+<li>因此，违反了<code>“相等的对象必须具有相等的散列码”</code>。</li>
+<li>结论：复写equals方法的时候一般都需要同时复写hashCode方法。<code>通常参与计算hashCode 的对象的属性也应该参与到equals()。</code></li>
+</ol>
+</blockquote>
+<h5 id="HashSet存储自定义类型元素☆"><a href="#HashSet存储自定义类型元素☆" class="headerlink" title="HashSet存储自定义类型元素☆"></a>HashSet存储自定义类型元素☆</h5><blockquote>
+<p>给<code>HashSet</code>中存放自定义类型元素时，需要重写对象中的<code>hashCode</code>和<code>equals</code>方法，建立自己的比较方式，才能保证HashSet集合中的对象唯一。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*创建自定义Student类</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == o)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span> || getClass() != o.getClass())</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        Student student = (Student) o;</span><br><span class="line">        <span class="keyword">return</span> age == student.age &amp;&amp;</span><br><span class="line">            Objects.equals(name, student.name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.hash(name, age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashSetDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//创建集合对象 该集合中存储 Student类型对象</span></span><br><span class="line">        HashSet&lt;Student&gt; stuSet = <span class="keyword">new</span> HashSet&lt;Student&gt;();</span><br><span class="line">        <span class="comment">//存储</span></span><br><span class="line">        Student stu = <span class="keyword">new</span> Student(<span class="string">"于谦"</span>, <span class="number">43</span>);</span><br><span class="line">        stuSet.add(stu);</span><br><span class="line">        stuSet.add(<span class="keyword">new</span> Student(<span class="string">"郭德纲"</span>, <span class="number">44</span>));</span><br><span class="line">        stuSet.add(<span class="keyword">new</span> Student(<span class="string">"于谦"</span>, <span class="number">43</span>));</span><br><span class="line">        stuSet.add(<span class="keyword">new</span> Student(<span class="string">"郭麒麟"</span>, <span class="number">23</span>));</span><br><span class="line">        stuSet.add(stu);</span><br><span class="line">        <span class="keyword">for</span> (Student stu2 : stuSet) &#123;</span><br><span class="line">            System.out.println(stu2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行结果：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Student [name&#x3D;郭德纲, age&#x3D;44]</span><br><span class="line"></span><br><span class="line">Student [name&#x3D;于谦, age&#x3D;43]</span><br><span class="line"></span><br><span class="line">Student [name&#x3D;郭麒麟, age&#x3D;23]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>Objects.hash(name, age);执行细节如下：</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object... values)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> Arrays.hashCode(values);</span><br><span class="line">   &#125;</span><br><span class="line">       </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">(Object a[])</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (a == <span class="keyword">null</span>)</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">int</span> result = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">for</span> (Object element : a)</span><br><span class="line">           result = <span class="number">31</span> * result + (element == <span class="keyword">null</span> ? <span class="number">0</span> : element.hashCode());</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> result;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="LinkedHashSet集合☆"><a href="#LinkedHashSet集合☆" class="headerlink" title="LinkedHashSet集合☆"></a>LinkedHashSet集合☆</h5><blockquote>
+<p>我们知道<code>HashSet</code>保证元素唯一，可是元素存放进去是没有顺序的，那么我们要保证有序，怎么办呢？在<code>HashSet</code>下面有一个子类<code>java.util.LinkedHashSet</code> ，它是链表和哈希表组合的一个数据存储结构。</p>
+<ol>
+<li><code>LinkedHashSet 是 HashSet 的子类。</code></li>
+<li>LinkedHashSet 根据元素的 hashCode 值来决定元素的存储位置，但它同时使用双向链表维护元素的次序，这使得元素看起来是<code>以插入顺序保存的</code>。</li>
+<li>LinkedHashSet插入性能略低于 HashSet，但在迭代访问 Set 里的全部元素时有很好的性能。</li>
+<li>LinkedHashSet 不允许集合元素重复。</li>
+</ol>
+</blockquote>
+<h3 id="2-2-TreeSet集合"><a href="#2-2-TreeSet集合" class="headerlink" title="2.2 TreeSet集合"></a>2.2 TreeSet集合</h3><blockquote>
+<ol>
+<li><code>TreeSet 是 SortedSet 接口的实现类</code>，TreeSet 可以确保集合元素处于排序状态。</li>
+<li>TreeSet底层使用 <a href="https://blog.csdn.net/cyp331203/article/details/42677833" target="_blank" rel="noopener">红黑树结构存储数据。</a></li>
+<li><a href="https://blog.csdn.net/weixin_45267102/article/details/109644829" target="_blank" rel="noopener">可以将元素按照规则进行排序</a>。<ul>
+<li>TreeSet()：根据其元素的<code>自然排序进行排序。</code></li>
+<li>TreeSet(Comparator comparator) ：根据指定的<code>比较器进行排序。</code></li>
+</ul>
+</li>
+<li>特点：<ul>
+<li>有序，查询速度比List快。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h5 id="排序—自然排序"><a href="#排序—自然排序" class="headerlink" title="排序—自然排序"></a>排序—自然排序</h5><blockquote>
+<ol>
+<li><p>自然排序：TreeSet 会调用集合元素的 compareTo(Object obj) 方法来比较元素之间的大小关系，然后将集合元素<code>按升序(默认情况)排列</code>。</p>
+</li>
+<li><p><code>如果试图把一个对象添加到 TreeSet 时，则该对象的类必须实现 Comparable接口。</code></p>
+</li>
+<li><p>实现 Comparable 的类必须实现 compareTo(Object obj) 方法，两个对象即通过compareTo(Object obj) 方法的返回值来比较大小。</p>
+</li>
+<li><p>Comparable 的典型实现：</p>
+<ul>
+<li><code>BigDecimal、BigInteger</code> 以及所有的数值型对应的包装类：按它们对应的数值大小进行比较。</li>
+<li><code>Character：</code>按字符的 unicode值来进行比较。</li>
+<li><code>Boolean：true</code> 对应的包装类实例大于 false 对应的包装类实例。</li>
+<li><code>String：</code>按字符串中字符的 unicode 值进行比较。</li>
+<li><code>Date、Time：</code>后边的时间、日期比前面的时间、日期大。</li>
+</ul>
+</li>
+<li><p>向 TreeSet 中添加元素时，只有第一个元素无须比较compareTo()方法，后面添加的所有元素都会调用compareTo()方法进行比较。</p>
+</li>
+<li><p>因为只有相同类的两个实例才会比较大小，所以向 TreeSet  中添加的应该是同一个类的对象。</p>
+</li>
+<li><p><code>对于 TreeSet 集合而言，它判断两个对象是否相等的唯一标准是：两个对象通过 compareTo(Object obj) 方法比较返回值。</code></p>
+</li>
+<li><p>当需要把一个对象放入 TreeSet 中，重写该对象对应的 equals() 方法时，应保证该方法与<code>compareTo(Object obj)</code> 方法有一致的结果：如果两个对象通过equals() 方法比较返回 true，则通过 <code>compareTo(Object obj)</code> 方法比较应返回 0。否则，让人难以理解。</p>
+</li>
+</ol>
+</blockquote>
+<h5 id="排序—定制排序"><a href="#排序—定制排序" class="headerlink" title="排序—定制排序"></a>排序—定制排序</h5><blockquote>
+<ol>
+<li>TreeSet的自然排序要求元素所属的类实现Comparable接口，如果元素所属的类没有实现Comparable接口，或不希望按照升序(默认情况)的方式排列元素或希望按照其它属性大小进行排序，则考虑使用定制排序。<ul>
+<li><code>定制排序，通过Comparator接口来实现。需要重写compare(T o1,T o2)方法。</code></li>
+</ul>
+</li>
+<li>利用<code>int compare(T o1,T o2)</code>方法，比较<code>o1</code>和<code>o2</code>的大小：<ul>
+<li><code>如果方法返回正整数，则表示o1大于o2；</code></li>
+<li><code>如果返回0，表示相等；</code></li>
+<li><code>返回负整数，表示o1小于o2。</code></li>
+</ul>
+</li>
+<li>要实现定制排序，需要将实现Comparator接口的实例作为形参传递给TreeSet的构造器。</li>
+<li><code>此时，仍然只能向TreeSet中添加类型相同的对象，否则发生ClassCastException异常。</code></li>
+<li>使用定制排序判断两个元素相等的标准是：通过Comparator比较<code>两个元素返回了0。</code></li>
+</ol>
+</blockquote>
+<h1 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h1></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/6.Set%E6%8E%A5%E5%8F%A3%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0%E7%B1%BB/">http://www.itbuild.cn/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/6.Set%E6%8E%A5%E5%8F%A3%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0%E7%B1%BB/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/7.Map%E6%8E%A5%E5%8F%A3%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0%E7%B1%BB/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-集合/7.Map接口及其实现类</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/5.Collections%E5%8C%85%E8%A3%85%E7%B1%BB%E5%92%8CComparator%E6%AF%94%E8%BE%83%E5%99%A8/"><span>JavaSE-集合/5.Collections包装类和Comparator比较器</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

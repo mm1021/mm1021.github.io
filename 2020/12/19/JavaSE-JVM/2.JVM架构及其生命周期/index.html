@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/2.JVM架构及其生命周期"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/2.JVM架构及其生命周期【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM架构及其生命周期"><span class="toc-text">JVM架构及其生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-JVM的整体架构"><span class="toc-text">1. JVM的整体架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Java代码执行流程"><span class="toc-text">2. Java代码执行流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-JVM的架构模型"><span class="toc-text">3. JVM的架构模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-总结"><span class="toc-text">3.1 总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-JVM生命周期"><span class="toc-text">4. JVM生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-虚拟机的启动"><span class="toc-text">4.1 虚拟机的启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-虚拟机的执行"><span class="toc-text">4.2 虚拟机的执行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-虚拟机的退出"><span class="toc-text">4.3 虚拟机的退出</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color1"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color6"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/2.JVM架构及其生命周期</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>汗血盐车无人顾，千里空收骏骨。</p>
+<p align="right">——辛弃疾《贺新郎》</p>
+<a id="more"></a>
+
+
+<h2 id="JVM架构及其生命周期"><a href="#JVM架构及其生命周期" class="headerlink" title="JVM架构及其生命周期"></a>JVM架构及其生命周期</h2><h3 id="1-JVM的整体架构"><a href="#1-JVM的整体架构" class="headerlink" title="1. JVM的整体架构"></a>1. JVM的整体架构</h3><blockquote>
+<ol>
+<li><code>HotSpot VM是目前市面上高性能虚拟机的代表作之一。</code></li>
+<li>它采用<code>解释器与即时编译器并存</code>的架构。</li>
+<li>在今天，Java程序的运行性能早己脱胎换骨，已经达到了可以和c/C++程序一较高下的地步。</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/mmm.png" alt="mmm"></p>
+<h3 id="2-Java代码执行流程"><a href="#2-Java代码执行流程" class="headerlink" title="2. Java代码执行流程"></a>2. Java代码执行流程</h3><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200909223153642.png" alt="image-20200909223153642"></p>
+<h3 id="3-JVM的架构模型"><a href="#3-JVM的架构模型" class="headerlink" title="3. JVM的架构模型"></a>3. JVM的架构模型</h3><blockquote>
+<p>Java编译器输入的指令流基本上是一种<code>基于栈的指令集架构</code>，另外一种指令集架构则是<code>基于寄存器的指令集架构</code>。<br>这两种架构之间的区别：</p>
+<ol>
+<li>基于栈式架构的特点<ul>
+<li>设计和实现更简单，适用于资源受限的系统;</li>
+<li>避开了寄存器的分配难题–使用零地址指令方式分配。</li>
+<li>指令流中的指令大部分是零地址指令，其执行过程依赖于操作栈。<code>指令集更小,编译器容易实现。</code></li>
+<li><code>不需要硬件支持，可移植性更好，更好实现跨平台</code></li>
+</ul>
+</li>
+<li>基于寄存器架构的特点<ul>
+<li>典型的应用是x86的二进制指令集：<code>比如传统的PC以及Android的Davlik虚拟机。</code></li>
+<li><code>指令集架构则完全依赖硬件，可移植性差;</code></li>
+<li><code>性能优秀和执行更高效;</code></li>
+<li>花费更少的指令去完成一项操作。</li>
+<li>在大部分情况下，基于寄存器架构的指令集往往都以一地址指令、二地址指令和三地址指令为主，而基于栈式架构的指令集却是以零地址指令为主。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200909224139560.png" alt="image-20200909224139560"></p>
+</blockquote>
+<h4 id="3-1-总结"><a href="#3-1-总结" class="headerlink" title="3.1 总结"></a>3.1 总结</h4><blockquote>
+<ol>
+<li><code>由于跨平台性的设计，Java的指令都是根据栈来设计的。</code>不同平台CPU架构不同，所以不能设计为基于寄存器的。</li>
+<li><code>优点是跨平台，指令集小，编译器容易实现，缺点是性能下降，实现同样的功能需要更多的指令。</code></li>
+<li>时至今日，尽管嵌入式平台已经不是Java程序的主流运行平台了（准确来说应该是HotSpot VM的宿主环境已经不局限于嵌入式平台了），那么为什么不将架构更换为基于寄存器的架构呢?</li>
+</ol>
+</blockquote>
+<h3 id="4-JVM生命周期"><a href="#4-JVM生命周期" class="headerlink" title="4. JVM生命周期"></a>4. JVM生命周期</h3><h4 id="4-1-虚拟机的启动"><a href="#4-1-虚拟机的启动" class="headerlink" title="4.1 虚拟机的启动"></a>4.1 虚拟机的启动</h4><blockquote>
+<p>Java虚拟机的启动是通过<code>引导类加载器(bootstrap class loader)创建一个初始类(initial class)来完成的</code>，这个类是由虚拟机的具体实现指定的。</p>
+</blockquote>
+<h4 id="4-2-虚拟机的执行"><a href="#4-2-虚拟机的执行" class="headerlink" title="4.2 虚拟机的执行"></a>4.2 虚拟机的执行</h4><blockquote>
+<ol>
+<li>一个运行中的Java虚拟机有着一个清晰的任务–执行Java程序。</li>
+<li>程序开始执行时他才运行，程序结束时他就停止。</li>
+<li><code>执行一个所谓的Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程。</code></li>
+</ol>
+</blockquote>
+<h4 id="4-3-虚拟机的退出"><a href="#4-3-虚拟机的退出" class="headerlink" title="4.3 虚拟机的退出"></a>4.3 虚拟机的退出</h4><blockquote>
+<p>有以下几种情况：</p>
+<ol>
+<li>程序正常执行结束</li>
+<li>程序在执行过程中遇到了异常或错误而异常终止</li>
+<li>由于操作系统出现错误而导致Java虚拟机进程终止</li>
+<li>某线程调用Runtime类或System类的exit方法，或Runtime类的halt方法，并且Java 安全管理器也允许这次exit或halt操作。</li>
+<li>除此之外，JNI ( Java Native Interface)规范描述了用<code>JNI</code>  Invocation API来加载或卸载Java虚拟机时，Java虚拟机的退出情况。</li>
+</ol>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/2.JVM%E6%9E%B6%E6%9E%84%E5%8F%8A%E5%85%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/2.JVM%E6%9E%B6%E6%9E%84%E5%8F%8A%E5%85%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/3.JVM%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/3.JVM发展历程</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/18.JVM%E4%B9%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/"><span>JavaSE-JVM/18.JVM之垃圾回收器</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/7.JVM虚拟机栈"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/7.JVM虚拟机栈【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM虚拟机栈"><span class="toc-text">JVM虚拟机栈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机栈概述"><span class="toc-text">1. 虚拟机栈概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Java虚拟机栈是什么？"><span class="toc-text">2. Java虚拟机栈是什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#变量Slot的理解"><span class="toc-text">变量Slot的理解</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#变量槽Slot的重复利用"><span class="toc-text">变量槽Slot的重复利用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#静态变量与局部变量的对比"><span class="toc-text">静态变量与局部变量的对比</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-操作数栈-Operand-Stack"><span class="toc-text">4.2 操作数栈 Operand Stack</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#代码举例"><span class="toc-text">代码举例</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#执行流程如下所示"><span class="toc-text">执行流程如下所示</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#栈顶缓存技术–了解"><span class="toc-text">栈顶缓存技术–了解</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-动态链接"><span class="toc-text">4.3 动态链接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-方法返回地址"><span class="toc-text">4.4 方法返回地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-一些附加信息"><span class="toc-text">4.5 一些附加信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-方法调用原理"><span class="toc-text">5. 方法调用原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-早-晚期绑定"><span class="toc-text">5.1 早&#x2F;晚期绑定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-虚-非虚方法"><span class="toc-text">5.2 虚&#x2F;非虚方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-动态-静态类型语言"><span class="toc-text">5.3 动态&#x2F;静态类型语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-方法重写的本质"><span class="toc-text">5.4 方法重写的本质</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方法的调用–虚方法表"><span class="toc-text">方法的调用–虚方法表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-栈的相关面试题"><span class="toc-text">6. 栈的相关面试题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-运行时数据区是否存在Error和GC？"><span class="toc-text">6.1 运行时数据区是否存在Error和GC？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color1"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color6"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/7.JVM虚拟机栈</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>三十功名尘与土，八千里路云和月。莫等闲，白了少年头，空悲切。</p>
+<p align="right">——岳飞《满江红》</p>
+<a id="more"></a>
+
+
+<h2 id="JVM虚拟机栈"><a href="#JVM虚拟机栈" class="headerlink" title="JVM虚拟机栈"></a>JVM虚拟机栈</h2><h3 id="1-虚拟机栈概述"><a href="#1-虚拟机栈概述" class="headerlink" title="1. 虚拟机栈概述"></a>1. 虚拟机栈概述</h3><blockquote>
+<ol>
+<li><code>由于跨平台性的设计，Java的指令都是根据栈来设计的。</code>不同平台CPU架构不同，所以不能设计为基于寄存器的。<ul>
+<li>优点是跨平台，指令集小，编译器容易实现；</li>
+<li>缺点是性能下降，实现同样的功能需要更多的指令。</li>
+</ul>
+</li>
+<li>有不少Java开发人员一提到Java内存结构，就会非常粗粒度地将JVM中的内存区理解为仅有Java堆（heap）和Java栈（stack）？为什么？</li>
+<li><code>☆栈是运行时的单位，而堆是存储的单位☆</code><ul>
+<li><code>栈解决程序的运行问题，即程序如何执行，或者说如何处理数据。</code>    </li>
+<li><code>堆解决的是数据存储的问题，即数据怎么放，放哪里</code></li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200705163928652.png" alt="image-20200705163928652"></li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="2-Java虚拟机栈是什么？"><a href="#2-Java虚拟机栈是什么？" class="headerlink" title="2. Java虚拟机栈是什么？"></a>2. Java虚拟机栈是什么？</h3><blockquote>
+<ol>
+<li><p>Java虚拟机栈（Java Virtual Machine Stack），早期也叫Java栈。<code>每个线程在创建时都会创建一个虚拟机栈，其内部保存一个个的栈帧（Stack Frame），对应着一次次的Java方法调用。</code></p>
+</li>
+<li><p>Java虚拟机栈是线程私有的，生命周期和线程一致，也就是线程结束了，该虚拟机栈也销毁了。</p>
+</li>
+<li><pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackTest</span> </span>{
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{
+        StackTest test = <span class="keyword">new</span> StackTest();
+        test.methodA();
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>{
+        <span class="keyword">int</span> i = <span class="number">10</span>;
+        <span class="keyword">int</span> j = <span class="number">20</span>;
+
+        methodB();
+    }
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span></span>{
+        <span class="keyword">int</span> k = <span class="number">30</span>;
+        <span class="keyword">int</span> m = <span class="number">40</span>;
+    }
+}
+&lt;!--￼<span class="number">0</span>--&gt;</code></pre>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200912200645805.png" alt="image-20200912200645805"></p>
+<h5 id="变量Slot的理解"><a href="#变量Slot的理解" class="headerlink" title="变量Slot的理解"></a>变量Slot的理解</h5><blockquote>
+<ol>
+<li><code>参数值的存放总是在局部变量数组的index0开始，到数组长度-1的索引结束。</code></li>
+<li><code>局部变量表，最基本的存储单元是Slot（变量槽）</code>局部变量表中存放编译期可知的各种<code>基本数据类型（8种），引用类型（reference），returnAddress类型的变量。</code></li>
+<li>在局部变量表里<ul>
+<li><code>32位以内的类型只占用一个slot（包括returnAddress类型）</code></li>
+<li><code>64位的类型（1ong和double）占用两个slot</code>。</li>
+<li><code>1byte = 8bit位</code>    <code>byte--short--int--long(1,2,4,8)</code></li>
+</ul>
+</li>
+<li><code>byte、short、char 在存储前被转换为int</code>，boolean也被转换为int，0表示false，非0表示true。</li>
+<li>JVM会为局部变量表中的每一个变量槽Slot都分配一个访问索引，通过这个索引即可成功访问到局部变量表中指定的局部变量值。</li>
+<li>当一个实例方法被调用的时候，它的方法参数和方法体内部定义的局部变量将会按照顺序被复制到局部变量表中的每一个变量槽slot上。</li>
+<li><code>如果需要访问局部变量表中一个64bit的局部变量值时，只需要使用前一个索引即可。（比如：访问1ong或doub1e类型变量）</code></li>
+<li>如果当前帧是由构造方法或者实例方法创建的，那么<code>该对象引用this将会存放在index为0的变量槽Slot处，</code>其余的参数按照参数表顺序继续排列。</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200705212454445.png" alt="image-20200705212454445"></p>
+<h5 id="变量槽Slot的重复利用"><a href="#变量槽Slot的重复利用" class="headerlink" title="变量槽Slot的重复利用"></a>变量槽Slot的重复利用</h5><blockquote>
+<p>栈帧中的局部变量表中的槽位是可以重用的，如果一个局部变量过了其作用域，那么在其作用域之后申明的新的局部变就很有可能会复用过期局部变量的槽位，从而达到节省资源的目的。</p>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200913152041479.png" alt="image-20200913152041479"></p>
+</blockquote>
+<h5 id="静态变量与局部变量的对比"><a href="#静态变量与局部变量的对比" class="headerlink" title="静态变量与局部变量的对比"></a>静态变量与局部变量的对比</h5><blockquote>
+<p>变量的分类：</p>
+<ul>
+<li>按数据类型分：<ul>
+<li>基本数据类型</li>
+<li>引用数据类型</li>
+</ul>
+</li>
+<li>按类中声明的位置分：<ul>
+<li>成员变量（类变量，实例变量）<ul>
+<li><code>类变量：linking的paper阶段，给类变量默认赋值，initial阶段给类变量显示赋值即静态代码块赋值。</code></li>
+<li>实例变量：随着对象创建，会在堆空间中分配实例变量空间，并进行默认赋值。</li>
+</ul>
+</li>
+<li><code>局部变量：在使用前必须进行显式赋值，不然编译不通过。</code></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><code>进一步了解...</code></p>
+<blockquote>
+<ol>
+<li><p>参数表分配完毕之后，再根据方法体内定义的变量的顺序和作用域分配。</p>
+</li>
+<li><p>我们知道类变量表有两次初始化的机会，第一次是在“准备阶段”，执行系统初始化，对类变量设置零值，另一次则是在“初始化”阶段，赋予程序员在代码中定义的初始值。</p>
+</li>
+<li><p><code>和类变量初始化不同的是，局部变量表不存在系统初始化的过程，这意味着一旦定义了局部变量则必须人为的初始化，否则无法使用。</code></p>
+</li>
+<li><p>在栈帧中，与性能调优关系最为密切的部分就是前面提到的局部变量表。在方法执行时，虚拟机使用局部变量表完成方法的传递。</p>
+</li>
+<li><p>局部变量表中的变量也是重要的垃圾回收根节点，只要被局部变量表中直接或间接引用的对象都不会被回收。。。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="4-2-操作数栈-Operand-Stack"><a href="#4-2-操作数栈-Operand-Stack" class="headerlink" title="4.2 操作数栈 Operand Stack"></a>4.2 操作数栈 Operand Stack</h4><blockquote>
+<ol>
+<li>每一个独立的栈帧除了包含局部变量表以外，还包含一个后进先出的 <strong>操作数栈</strong>。</li>
+<li>操作数栈，<code>在方法执行过程中，根据字节码指令，往栈中写入数据或提取数据，即入栈（push）和 出栈（pop）</code><ul>
+<li>某些字节码指令将值压入操作数栈，其余的字节码指令将操作数取出栈。使用它们后再把结果压入栈。</li>
+<li>比如：执行复制、交换、求和等操作。</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706090618332.png" alt="image-20200706090618332"></li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h5 id="代码举例"><a href="#代码举例" class="headerlink" title="代码举例"></a>代码举例</h5><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706090833697.png" alt="image-20200706090833697"></p>
+<blockquote>
+<ol>
+<li><p>操作数栈，主要用于保存计算过程的中间结果，同时作为计算过程中变量临时的存储空间。</p>
+</li>
+<li><p><code>操作数栈就是JVM执行引擎的一个工作区，当一个方法刚开始执行的时候，一个新的栈帧也会随之被创建出来，这个方法的操作数栈是空的（数组是空的，但是不能表示数组没有创建）。</code></p>
+</li>
+<li><p><code>☆每一个操作数栈都会拥有一个明确的栈深度用于存储数值，其所需的最大深度在编译期就定义好了，保存在方法的Code属性中，为maxstack的值。</code></p>
+</li>
+<li><p>栈中的任何一个元素都是可以任意的Java数据类型。</p>
+<ul>
+<li><p>32bit的类型占用一个栈单位深度；</p>
+</li>
+<li><p>64bit的类型占用两个栈单位深度；</p>
+</li>
+</ul>
+</li>
+<li><p>操作数栈并非采用访问索引的方式来进行数据访问的，而是只能通过标准的入栈和出栈操作来完成一次数据访问。</p>
+</li>
+<li><p>如果被调用的方法带有返回值的话，其返回值将会被压入当前栈帧的操作数栈中，并更新程序计数器中下一条需要执行的字节码指令。</p>
+</li>
+<li><p><code>操作数栈中元素的数据类型必须与字节码指令的序列严格匹配，这由编译器在编译器期间进行验证，同时在类加载过程中的类检验阶段的数据流分析阶段要再次验证。</code></p>
+</li>
+<li><p><code>另外，我们说Java虚拟机的解释引擎是基于栈的执行引擎，其中的栈指的就是操作数栈。</code></p>
+</li>
+</ol>
+</blockquote>
+<h5 id="执行流程如下所示"><a href="#执行流程如下所示" class="headerlink" title="执行流程如下所示"></a>执行流程如下所示</h5><blockquote>
+<ol>
+<li>首先执行第一条语句，PC寄存器指向的是0，也就是指令地址为 0，然后<code>使用bipush让操作数15入栈。</code></li>
+</ol>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706093131621.png" alt="image-20200706093131621"></p>
+<ol start="2">
+<li><code>执行完后，让PC + 1，指向下一行代码，下一行代码就是将操作数栈的元素存储到局部变量表1的位置，我们可以看到局部变量表的已经增加了一个元素</code></li>
+</ol>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706093251302.png" alt="image-20200706093251302"></p>
+<ol start="3">
+<li>为什么局部变量表不是从0开始的呢？<ul>
+<li><code>其实局部变量表也是从0开始的，但是因为0号位置存储的是this指针，所以说就直接省略了。</code></li>
+<li>然后PC+1，指向的是下一行。让操作数8也入栈，同时执行store操作，存入局部变量表中。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706093646406.png" alt="image-20200706093646406"></p>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706093751711.png" alt="image-20200706093751711"></p>
+<ol start="4">
+<li>从局部变量表中，依次将数据放在操作数栈中</li>
+</ol>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706093859191.png" alt="image-20200706093859191"></p>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706093921573.png" alt="image-20200706093921573"></p>
+<ol start="5">
+<li>然后将操作数栈中的两个元素取出执行相加操作，并存储在局部变量表3的位置。</li>
+</ol>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706094046782.png" alt="image-20200706094046782"></p>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706094109629.png" alt="image-20200706094109629"></p>
+<ol start="6">
+<li>最后PC寄存器的位置指向10，也就是return方法，则直接退出方法</li>
+</ol>
+</blockquote>
+<h5 id="栈顶缓存技术–了解"><a href="#栈顶缓存技术–了解" class="headerlink" title="栈顶缓存技术–了解"></a>栈顶缓存技术–了解</h5><blockquote>
+<ol>
+<li><code>Top Of Stack Cashing</code></li>
+<li>前面提过，基于栈式架构的虚拟机所使用的零地址指令更加紧凑，但完成一项操作的时候必然需要使用更多的入栈和出栈指令，这同时也就意味着将需要更多的指令分派（instruction dispatch）次数和内存读/写次数。</li>
+<li>由于操作数是存储在内存中的，因此频繁地执行内存读/写操作必然会影响执行速度。为了解决这个问题，HotSpot JVM的设计者们提出了<code>栈顶缓存（Tos，Top-of-Stack Cashing）技术</code>，将栈顶元素全部缓存在物理CPU的寄存器中，以此降低对内存的读/写次数，提升执行引擎的执行效率。</li>
+<li>寄存器：指令更少，执行速度快</li>
+</ol>
+</blockquote>
+<h4 id="4-3-动态链接"><a href="#4-3-动态链接" class="headerlink" title="4.3 动态链接"></a>4.3 动态链接</h4><blockquote>
+<p><code>动态链接：Dynamic Linking</code>（指向运行时常量池的方法引用）、方法返回地址、附加信息 – 有些地方被称为<code>帧数据区</code></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706100311886.png" alt="image-20200706100311886"></p>
+<blockquote>
+<ol>
+<li><p>每一个栈帧内部都包含一个指向<code>运行时常量池</code>中该栈帧所属方法的引用。</p>
+</li>
+<li><p>包含这个引用的目的就是为了支持当前方法的代码能够实现动态链接（Dynamic Linking）。比如：<code>invokedynamic 指令</code>。</p>
+</li>
+<li><p><code>在Java源文件被编译到字节码文件中时，所有的变量和方法引用都作为符号引用（symbolic Reference）保存在class文件的常量池里。</code></p>
+</li>
+<li><p>比如：描述一个方法调用了另外的其他方法时，就是通过常量池中指向方法的符号引用来表示的<code>，那么动态链接的作用就是为了将这些符号引用转换为调用方法的直接引用。</code></p>
+</li>
+<li><p>下图NB，</p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706101251847.png" alt="image-20200706101251847"></p>
+<blockquote>
+<p>为什么需要<code>运行时常量池</code>？</p>
+<ul>
+<li><p>因为在不同的方法，都可能调用常量或者方法，所以只需要存储一份即可，节省了空间</p>
+</li>
+<li><p>常量池的作用：就是为了提供一些符号和常量，便于指令的识别</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="4-4-方法返回地址"><a href="#4-4-方法返回地址" class="headerlink" title="4.4 方法返回地址"></a>4.4 方法返回地址</h4><blockquote>
+<ol>
+<li><p><code>存放调用该方法的pc寄存器的值</code>。一个方法的结束，有两种方式：</p>
+<ul>
+<li>正常执行完成。</li>
+<li>出现未处理的异常，非正常退出。</li>
+</ul>
+</li>
+<li><p>无论通过哪种方式退出，在方法退出后都返回到该方法被调用的位置。</p>
+<ul>
+<li><code>方法正常退出时，调用者的pc计数器的值作为返回地址，即调用该方法的指令的下一条指令的地址。</code></li>
+<li>而通过异常退出的，返回地址是要通过异常表来确定，栈帧中一般不会保存这部分信息。</li>
+</ul>
+</li>
+<li><p>当一个方法开始执行后，只有两种方式可以退出这个方法：</p>
+<ul>
+<li>执行引擎遇到任意一个方法返回的字节码指令（return），会有返回值传递给上层的方法调用者，简称正常完成出口；<ul>
+<li>一个方法在正常调用完成之后，究竟需要使用哪一个返回指令，还需要根据方法返回值的实际数据类型而定。</li>
+<li>在字节码指令中，<code>返回指令包含ireturn（当返回值是boolean，byte，char，short和int类型时使用），lreturn（Long类型），freturn（Float类型），dreturn（Double类型），areturn。</code>另外还有一个return指令声明为void的方法，实例初始化方法，类和接口的初始化方法使用。</li>
+</ul>
+</li>
+<li>在方法执行过程中遇到异常（Exception），并且这个异常没有在方法内进行处理，也就是只要在本方法的异常表中没有搜索到匹配的异常处理器，就会导致方法退出，简称异常完成出口。<ul>
+<li>方法执行过程中，抛出异常时的异常处理，存储在一个异常处理表，方便在发生异常的时候找到处理异常的代码</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706154554604.png" alt="image-20200706154554604"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol start="4">
+<li><code>本质上，方法的退出就是当前栈帧出栈的过程。此时，需要恢复上层方法的局部变量表、操作数栈、将返回值压入调用者栈帧的操作数栈、设置PC寄存器值等，让调用者方法继续执行下去</code>。</li>
+<li>正常完成出口和异常完成出口的区别在于：<code>通过异常完成出口退出的不会给他的上层调用者产生任何的返回值。</code></li>
+</ol>
+</blockquote>
+<h4 id="4-5-一些附加信息"><a href="#4-5-一些附加信息" class="headerlink" title="4.5 一些附加信息"></a>4.5 一些附加信息</h4><blockquote>
+<p>栈帧中还允许携带与Java虚拟机实现相关的一些附加信息。例如：<code>对程序调试提供支持的信息。</code></p>
+</blockquote>
+<h3 id="5-方法调用原理"><a href="#5-方法调用原理" class="headerlink" title="5. 方法调用原理"></a>5. 方法调用原理</h3><blockquote>
+<ol>
+<li><p>在JVM中，将<code>符号引用</code>转换为调用方法的<code>直接引用</code>与方法的绑定机制相关。</p>
+</li>
+<li><p>静态链接</p>
+<ul>
+<li>当一个字节码文件被装载进JVM内部时，如果被<code>调用的目标方法在编译期可知</code>，且运行期保持不变时，这种情况下将调用方法的符号引用转换为直接引用的过程称之为静态链接</li>
+</ul>
+</li>
+<li><p>动态链接</p>
+<ul>
+<li>如果被调用的方法<code>在编译期无法被确定下来</code>，也就是说，只能够在程序运行期将调用的方法的符号转换为直接引用，由于这种引用转换过程具备动态性，因此也被称之为动态链接。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h4 id="5-1-早-晚期绑定"><a href="#5-1-早-晚期绑定" class="headerlink" title="5.1 早/晚期绑定"></a>5.1 早/晚期绑定</h4><blockquote>
+<ol>
+<li><p>方法的绑定机制–对应的方法的绑定机制为：早期绑定（Early Binding）和晚期绑定（Late Binding）。<code>绑定是一个字段、方法或者类在符号引用被替换为直接引用的过程，这仅仅发生一次。</code></p>
+<ul>
+<li><p>早期绑定：早期绑定就是指被调用的目标方法如果在编译期可知，且运行期保持不变时，即可将这个方法与所属的类型进行绑定，这样一来，由于明确了被调用的目标方法究竟是哪一个，因此也就可以使用静态链接的方式将符号引用转换为直接引用。</p>
+</li>
+<li><p>晚期绑定：<code>如果被调用的方法在编译期无法被确定下来，只能够在程序运行期根据实际的类型绑定相关的方法，这种绑定方式也就被称之为晚期绑定。</code></p>
+</li>
+</ul>
+</li>
+<li><p>随着高级语言的横空出世，类似于Java一样的基于面向对象的编程语言如今越来越多，尽管这类编程语言在语法风格上存在一定的差别，但是它们彼此之间始终保持着一个共性，那就是都支持封装、继承和多态等面向对象特性，既然这一类的编程语言具备多态特性，那么自然也就具备早期绑定和晚期绑定两种绑定方式。</p>
+</li>
+<li><p>Java中任何一个普通的方法其实都具备<code>虚函数</code>的特征，它们相当于<code>C++语言中的虚函数（C++中则需要使用关键字virtual来显式定义）</code>。如果在Java程序中不希望某个方法拥有虚函数的特征时，则可以使用关键字final来标记这个方法。</p>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 说明早期绑定和晚期绑定的例子</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"动物进食"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Huntable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">hunt</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Dog类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> <span class="keyword">extends</span> <span class="title">Animal</span> <span class="keyword">implements</span> <span class="title">Huntable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"狗吃骨头"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hunt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"捕食耗子，多管闲事"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Cat类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span> <span class="keyword">extends</span> <span class="title">Animal</span> <span class="keyword">implements</span> <span class="title">Huntable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Cat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();<span class="comment">//表现为：早期绑定</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Cat</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>();<span class="comment">//表现为：早期绑定</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.eat();<span class="comment">//表现为：早期绑定</span></span><br><span class="line">        System.out.println(<span class="string">"猫吃鱼"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hunt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"捕食耗子，天经地义"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnimalTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showAnimal</span><span class="params">(Animal animal)</span> </span>&#123;</span><br><span class="line">        animal.eat();<span class="comment">//表现为：晚期绑定</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showHunt</span><span class="params">(Huntable h)</span> </span>&#123;</span><br><span class="line">        h.hunt();<span class="comment">//表现为：晚期绑定</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2-虚-非虚方法"><a href="#5-2-虚-非虚方法" class="headerlink" title="5.2 虚/非虚方法"></a>5.2 虚/非虚方法</h4><blockquote>
+<ol>
+<li><p>子类对象的多态的使用前提：</p>
+<ul>
+<li><code>类的继承关系</code></li>
+<li><code>方法的重写</code></li>
+</ul>
+</li>
+<li><p>非需方法</p>
+<ul>
+<li>如果方法在编译期就确定了具体的调用版本，这个版本在运行时是不可变的。这样的方法称为非虚方法。</li>
+<li><code>静态方法、私有方法、final方法、实例构造器、父类方法（super.method()）都是非虚方法。（不能被重写）</code></li>
+<li>其他方法称为虚方法。</li>
+</ul>
+</li>
+<li><p>虚拟机中提供了以下几条方法调用指令：</p>
+<ul>
+<li><code>invokestatic：调用静态方法，解析阶段确定唯一方法版本</code></li>
+<li><code>invokespecial：调用&lt;init&gt;方法、私有及父类方法，解析阶段确定唯一方法版本</code></li>
+<li><code>invokevirtual</code>：调用所有虚方法</li>
+<li><code>invokeinterface</code>：调用接口方法</li>
+<li><code>其中invokestatic指令和invokespecial指令调用的方法称为非虚方法，其余的（fina1修饰的除外）称为虚方法。</code></li>
+</ul>
+</li>
+<li><p>动态调用指令：</p>
+<ul>
+<li><code>invokedynamic</code>：动态解析出需要调用的方法，然后执行。</li>
+<li>前四条指令固化在虚拟机内部，方法的调用执行不可人为干预，而<code>invokedynamic</code>指令则支持由用户确定方法版本。</li>
+<li>JVM字节码指令集一直比较稳定，<code>一直到Java7中才增加了一个invokedynamic指令</code>，这是Java为了实现动态类型语言支持而做的一种改进。</li>
+<li>但是在Java7中并没有提供直接生成invokedynamic指令的方法，需要借助ASM这种底层字节码工具来产生invokedynamic指令。<code>直到Java8的Lambda表达式的出现，invokedynamic指令的生成，在Java中才有了直接的生成方式。</code></li>
+<li><code>Java7中增加的动态语言类型支持的本质是对Java虚拟机规范的修改，而不是对Java语言规则的修改，这一块相对来讲比较复杂，增加了虚拟机中的方法调用，最直接的受益者就是运行在Java平台的动态语言的编译器。</code></li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 解析调用中非虚方法、虚方法的测试</span></span><br><span class="line"><span class="comment"> * invokestatic指令和invokespecial指令调用的方法称为非虚方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Father</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"father的构造器"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showStatic</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"father "</span> + str);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">showFinal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"father show final"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showCommon</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"father 普通方法"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Son</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//invokespecial</span></span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Son</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//invokespecial</span></span><br><span class="line">        <span class="keyword">this</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不是重写的父类的静态方法，因为静态方法不能被重写！</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showStatic</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"son "</span> + str);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">showPrivate</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"son private"</span> + str);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//invokestatic</span></span><br><span class="line">        showStatic(<span class="string">"atguigu.com"</span>);</span><br><span class="line">        <span class="comment">//invokestatic</span></span><br><span class="line">        <span class="keyword">super</span>.showStatic(<span class="string">"good!"</span>);</span><br><span class="line">        <span class="comment">//invokespecial</span></span><br><span class="line">        showPrivate(<span class="string">"hello!"</span>);</span><br><span class="line">        <span class="comment">//invokespecial</span></span><br><span class="line">        <span class="keyword">super</span>.showCommon();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//invokevirtual</span></span><br><span class="line">        showFinal();<span class="comment">//因为此方法声明有final，不能被子类重写，所以也认为此方法是非虚方法。</span></span><br><span class="line">        <span class="comment">//虚方法如下：</span></span><br><span class="line">        <span class="comment">//invokevirtual</span></span><br><span class="line">        showCommon();</span><br><span class="line">        info();</span><br><span class="line"></span><br><span class="line">        MethodInterface in = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//invokeinterface</span></span><br><span class="line">        in.methodA();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">info</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">(Father f)</span> </span>&#123;</span><br><span class="line">        f.showCommon();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Son so = <span class="keyword">new</span> Son();</span><br><span class="line">        so.show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">MethodInterface</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-3-动态-静态类型语言"><a href="#5-3-动态-静态类型语言" class="headerlink" title="5.3 动态/静态类型语言"></a>5.3 动态/静态类型语言</h4><blockquote>
+<ol>
+<li><p>动态类型语言和静态类型语言两者的区<code>别就在于对类型的检查是在编译期还是在运行期，满足前者就是静态类型语言，反之是动态类型语言。</code></p>
+</li>
+<li><p>说的再直白一点就是，<code>静态类型语言是判断变量自身的类型信息；动态类型语言是判断变量值的类型信息，变量没有类型信息，变量值才有类型信息</code>，这是动态语言的一个重要特征。</p>
+<ul>
+<li><code>Java：String info = &quot;atguigu&quot;;     Java是静态类型语言的，会先编译就进行类型检查</code></li>
+<li><code>JS：var name = &quot;mm&quot;;    var name = 10;    （运行时才进行检查）</code></li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h4 id="5-4-方法重写的本质"><a href="#5-4-方法重写的本质" class="headerlink" title="5.4 方法重写的本质"></a>5.4 方法重写的本质</h4><blockquote>
+<ol>
+<li>找到操作数栈顶的第一个元素所执行的对象的实际类型，记作 C。</li>
+<li>如果在类型 C 中找到与常量中的描述符合简单名称都相符的方法，则进行访问权限校验，如果通过则返回这个方法的直接引用，查找过程结束；如果不通过，则返回<code>java.lang.IllegalAccessError 异常</code>。</li>
+<li>否则，按照继承关系从下往上依次对 C 的各个父类进行第2步的搜索和验证过程。</li>
+<li>如果始终没有找到合适的方法，则抛出<code>java.lang.AbstractMethodError异常</code>。</li>
+<li><code>IllegalAccessError介绍</code><ul>
+<li>程序试图访问或修改一个属性或调用一个方法，这个属性或方法，你没有权限访问。一般的，这个会引起编译器异常。这个错误如果发生在运行时，就说明一个类发生了不兼容的改变。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h5 id="方法的调用–虚方法表"><a href="#方法的调用–虚方法表" class="headerlink" title="方法的调用–虚方法表"></a>方法的调用–虚方法表</h5><blockquote>
+<ol>
+<li><p>在面向对象的编程中，会很频繁的使用到动态分派，如果在每次动态分派的过程中都要重新在类的方法元数据中搜索合适的目标的话就可能影响到执行效率。因此，为了提高性能，JVM采用在类的方法区建立一个虚方法表（非虚方法不会出现在表中）来实现。使用索引表来代替查找。</p>
+</li>
+<li><p><code>每个类中都有一个虚方法表，表中存放着各个方法的实际入口。</code></p>
+</li>
+<li><p>虚方法表是什么时候被创建的呢？</p>
+</li>
+<li><p><code>虚方法表会在类加载的链接阶段被创建并开始初始化，类的变量初始值准备完成之后，JVM会把该类的方法表也初始化完毕。</code></p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706144954070.png" alt="image-20200706144954070"></p>
+<p><code>如上图所示：如果类中重写了方法，那么调用的时候，就会直接在虚方法表中查找，否则将会直接连接到Object的方法中。</code></p>
+<h3 id="6-栈的相关面试题"><a href="#6-栈的相关面试题" class="headerlink" title="6. 栈的相关面试题"></a>6. 栈的相关面试题</h3><blockquote>
+<ol>
+<li><code>举例栈溢出的情况？（StackOverflowError）</code><ul>
+<li>通过 <code>-Xss</code>设置栈的大小</li>
+</ul>
+</li>
+<li>调整栈大小，就能保证不出现溢出么？<ul>
+<li>不能保证不溢出</li>
+</ul>
+</li>
+<li>分配的栈内存越大越好么？<ul>
+<li><code>不是，一定时间内降低了OOM概率，但是会挤占其它的线程空间，因为整个空间</code>是有限的。</li>
+</ul>
+</li>
+<li><code>垃圾回收是否涉及到虚拟机栈？</code><ul>
+<li>不会</li>
+</ul>
+</li>
+<li>方法中定义的局部变量是否线程安全？<ul>
+<li>分析如下：</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 方法中定义局部变量是否线程安全？具体情况具体分析</span></span><br><span class="line"><span class="comment"> * 何为线程安全？</span></span><br><span class="line"><span class="comment"> *    如果只有一个线程才可以操作此数据，则必是线程安全的</span></span><br><span class="line"><span class="comment"> *    如果有多个线程操作，则此数据是共享数据，如果不考虑共享机制，则为线程不安全</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringBuilderTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// s1 的声明方式是线程安全的</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method01</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 线程内部创建的，属于局部变量</span></span><br><span class="line">        StringBuilder s1 = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        s1.append(<span class="string">"a"</span>);</span><br><span class="line">        s1.append(<span class="string">"b"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这个也是线程不安全的，因为有返回值，有可能被其它的程序所调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> StringBuilder <span class="title">method04</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        stringBuilder.append(<span class="string">"a"</span>);</span><br><span class="line">        stringBuilder.append(<span class="string">"b"</span>);</span><br><span class="line">        <span class="keyword">return</span> stringBuilder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// stringBuilder 是线程不安全的，操作的是共享数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method02</span><span class="params">(StringBuilder stringBuilder)</span> </span>&#123;</span><br><span class="line">        stringBuilder.append(<span class="string">"a"</span>);</span><br><span class="line">        stringBuilder.append(<span class="string">"b"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 同时并发的执行，会出现线程不安全的问题</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method03</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            stringBuilder.append(<span class="string">"a"</span>);</span><br><span class="line">            stringBuilder.append(<span class="string">"b"</span>);</span><br><span class="line">        &#125;, <span class="string">"t1"</span>).start();</span><br><span class="line"></span><br><span class="line">        method02(stringBuilder);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// StringBuilder是线程安全的，但是String也可能线程不安全的</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">method05</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        StringBuilder stringBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        stringBuilder.append(<span class="string">"a"</span>);</span><br><span class="line">        stringBuilder.append(<span class="string">"b"</span>);</span><br><span class="line">        <span class="keyword">return</span> stringBuilder.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>总结一句话就是：如果对象是在内部产生，并在内部消亡，没有返回到外部，那么它就是线程安全的，反之则是线程不安全的。</code></p>
+</blockquote>
+<h4 id="6-1-运行时数据区是否存在Error和GC？"><a href="#6-1-运行时数据区是否存在Error和GC？" class="headerlink" title="6.1 运行时数据区是否存在Error和GC？"></a>6.1 运行时数据区是否存在Error和GC？</h4><table>
+<thead>
+<tr>
+<th>运行时数据区</th>
+<th>是否存在Error</th>
+<th>是否存在GC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>程序计数器</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>虚拟机栈</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>本地方法栈</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>方法区</td>
+<td>是（OOM）</td>
+<td>是</td>
+</tr>
+<tr>
+<td>堆</td>
+<td>是</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/7.JVM%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/7.JVM%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/8.JVM%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%8E%A5%E5%8F%A3/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/8.JVM本地方法栈和本地方法接口</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/6.JVM%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8/"><span>JavaSE-JVM/6.JVM程序计数器</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

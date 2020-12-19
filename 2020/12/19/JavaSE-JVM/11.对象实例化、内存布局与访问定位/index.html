@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/11.对象实例化、内存布局与访问定位"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/11.对象实例化、内存布局与访问定位【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象实例化、内存布局与访问定位"><span class="toc-text">对象实例化、内存布局与访问定位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-对象实例化"><span class="toc-text">1. 对象实例化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-创建对象的方式"><span class="toc-text">1.1 创建对象的方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-创建对象的步骤"><span class="toc-text">1.2 创建对象的步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#一、判断对象对应的类是否加载、链接、初始化"><span class="toc-text">一、判断对象对应的类是否加载、链接、初始化</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#二、为对象分配内存"><span class="toc-text">二、为对象分配内存</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#三、处理并发问题"><span class="toc-text">三、处理并发问题</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#四、初始化分配到的空间"><span class="toc-text">四、初始化分配到的空间</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#五、设置对象的对象头"><span class="toc-text">五、设置对象的对象头</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#六、执行init方法进行初始化"><span class="toc-text">六、执行init方法进行初始化</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-对象内存布局"><span class="toc-text">2. 对象内存布局</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-小结"><span class="toc-text">2.1 小结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-对象的访问定位"><span class="toc-text">3. 对象的访问定位</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-对象访问的两种方式"><span class="toc-text">3.1 对象访问的两种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#一、句柄访问"><span class="toc-text">一、句柄访问</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#二、直接指针（HotSpot采用）"><span class="toc-text">二、直接指针（HotSpot采用）</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color5"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color4"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/11.对象实例化、内存布局与访问定位</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>薄悻不来门半掩，斜阳。负你残春泪几行。</p>
+<p align="right">——冯延巳《南乡子》</p>
+<a id="more"></a>
+
+
+<h2 id="对象实例化、内存布局与访问定位"><a href="#对象实例化、内存布局与访问定位" class="headerlink" title="对象实例化、内存布局与访问定位"></a>对象实例化、内存布局与访问定位</h2><blockquote>
+<ul>
+<li>对象在JVM中是怎么存储的？</li>
+<li>对象头信息里面有哪些东西？</li>
+<li>Java对象头里有什么？</li>
+</ul>
+</blockquote>
+<h3 id="1-对象实例化"><a href="#1-对象实例化" class="headerlink" title="1. 对象实例化"></a>1. 对象实例化</h3><blockquote>
+<p>从<code>对象创建的方式</code> 和 <code>创建对象的步骤</code>开始说：</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200709095356247.png" alt="image-20200709095356247"></p>
+<h4 id="1-1-创建对象的方式"><a href="#1-1-创建对象的方式" class="headerlink" title="1.1 创建对象的方式"></a>1.1 创建对象的方式</h4><blockquote>
+<ol>
+<li>new：最常见的方式、<code>单例类中调用getInstance的静态类方法</code>，<code>XXXFactory的静态方法</code>。</li>
+<li><code>Class的newInstance方法</code>：在JDK9里面被标记为过时的方法，因为只能调用空参构造器。</li>
+<li><code>Constructor的newInstance(XXX)</code>：反射的方式，可以调用空参的，或者带参的构造器。</li>
+<li><a href="https://blog.csdn.net/weixin_45267102/article/details/106719217" target="_blank" rel="noopener">使用clone()：</a>不调用任何的构造器，要求当前的类需要实现<code>Cloneable接</code>口并重写其中的clone方法。</li>
+<li>使用序列化：序列化一般用于Socket的网络传输。</li>
+<li><code>第三方库 Objenesis</code>。</li>
+</ol>
+</blockquote>
+<h4 id="1-2-创建对象的步骤"><a href="#1-2-创建对象的步骤" class="headerlink" title="1.2 创建对象的步骤"></a>1.2 创建对象的步骤</h4><h6 id="一、判断对象对应的类是否加载、链接、初始化"><a href="#一、判断对象对应的类是否加载、链接、初始化" class="headerlink" title="一、判断对象对应的类是否加载、链接、初始化"></a>一、判断对象对应的类是否加载、链接、初始化</h6><blockquote>
+<ol>
+<li>虚拟机遇到一条new指令，<code>首先去检查这个指令的参数能否在Metaspace的常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已经被加载，解析和初始化。</code>（即判断类元信息是否存在）。</li>
+<li>如果没有，<code>那么在双亲委派模式下，使用当前类加载器以ClassLoader + 包名 + 类名为key进行查找对应的 .class文件，如果没有找到文件，则抛出ClassNotFoundException异常，如果找到，则进行类加载，并生成对应的Class对象。</code></li>
+</ol>
+</blockquote>
+<h6 id="二、为对象分配内存"><a href="#二、为对象分配内存" class="headerlink" title="二、为对象分配内存"></a>二、为对象分配内存</h6><blockquote>
+<p>首先计算对象占用空间的大小，接着在堆中划分一块内存给新对象。<code>如果实例成员变量是引用变量，仅分配引用变量空间即可，即4个字节大小。</code></p>
+<ol>
+<li><p>如果内存是规整的：</p>
+<ul>
+<li>虚拟机将采用的是<code>指针碰撞法（Bump The Point）</code>来为对象分配内存。</li>
+<li>意思是所有用过的内存在一边，空闲的内存放另外一边，中间放着一个指针作为分界点的指示器，分配内存就仅仅是把指针指向空闲那边挪动一段与对象大小相等的距离罢了。<code>如果垃圾收集器选择的是Serial ，ParNew这种基于压缩算法的，虚拟机采用这种分配方式。一般使用带Compact（整理）过程的收集器时，使用指针碰撞。</code></li>
+</ul>
+</li>
+<li><p>如果内存不规整，已使用的内存和未使用的内存相互交错：</p>
+<ul>
+<li>虚拟机将采用的是空闲列表来为对象分配内存。</li>
+<li>空闲列表分配：<ul>
+<li>意思是虚拟机维护了一个列表，记录上那些内存块是可用的，再分配的时候从列表中找到一块足够大的空间划分给对象实例，并更新列表上的内容。<code>这种分配方式成为了 “空闲列表（Free List）”</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>选择哪种分配方式由Java堆是否规整所决定，而Java堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能决定。</p>
+</blockquote>
+<h6 id="三、处理并发问题"><a href="#三、处理并发问题" class="headerlink" title="三、处理并发问题"></a>三、处理并发问题</h6><blockquote>
+<ol>
+<li>采用CAS配上失败重试保证更新的原子性</li>
+<li><code>每个线程预先分配一块TLAB</code> <ul>
+<li><code>通过设置 -XX:+UseTLAB参数来设置（区域加锁机制）</code></li>
+<li><code>在Eden区给每个线程分配一块区域</code></li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h6 id="四、初始化分配到的空间"><a href="#四、初始化分配到的空间" class="headerlink" title="四、初始化分配到的空间"></a>四、初始化分配到的空间</h6><blockquote>
+<p>给对象属性赋值的操作</p>
+<ol>
+<li><p>属性的默认初始化</p>
+</li>
+<li><p>显示初始化</p>
+</li>
+<li><p>代码块中的初始化</p>
+</li>
+<li><p>构造器初始化</p>
+</li>
+<li><p><code>所有属性设置默认值，保证对象实例字段在不赋值可以直接使用。</code></p>
+</li>
+</ol>
+</blockquote>
+<h6 id="五、设置对象的对象头"><a href="#五、设置对象的对象头" class="headerlink" title="五、设置对象的对象头"></a>五、设置对象的对象头</h6><blockquote>
+<p><code>将对象的所属类（即类的元数据信息）、对象的HashCode和对象的GC信息、锁信息等数据存储在对象的对象头中。</code>这个过程的具体设置方式取决于JVM实现。</p>
+</blockquote>
+<h6 id="六、执行init方法进行初始化"><a href="#六、执行init方法进行初始化" class="headerlink" title="六、执行init方法进行初始化"></a>六、执行init方法进行初始化</h6><blockquote>
+<ol>
+<li><p>在Java程序的视角看来，初始化才正式开始。初始化成员变量，执行实例化代码块，调用类的构造方法，并把堆内对象的首地址赋值给引用变量。</p>
+</li>
+<li><p>因此一般来说（由字节码中跟随<code>invokespecial</code>指令所决定），new指令之后会接着就是执行方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完成创建出来。</p>
+</li>
+</ol>
+</blockquote>
+<h6 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h6><blockquote>
+<ol>
+<li>加载类元信息</li>
+<li>为对象分配内存</li>
+<li>处理并发问题</li>
+<li>属性的默认初始化（零值初始化）</li>
+<li><code>设置对象头信息</code></li>
+<li>属性的显示初始化、代码块中初始化、构造器中初始化</li>
+</ol>
+</blockquote>
+<h3 id="2-对象内存布局"><a href="#2-对象内存布局" class="headerlink" title="2. 对象内存布局"></a>2. 对象内存布局</h3><blockquote>
+<ol>
+<li><code>类型指针</code>指向的其实是方法区中存放的类元信息</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200709151033237.png" alt="image-20200709151033237"></p>
+<h4 id="2-1-小结"><a href="#2-1-小结" class="headerlink" title="2.1 小结"></a>2.1 小结</h4><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200709152801713.png" alt="image-20200709152801713"></p>
+<h3 id="3-对象的访问定位"><a href="#3-对象的访问定位" class="headerlink" title="3. 对象的访问定位"></a>3. 对象的访问定位</h3><blockquote>
+<p>JVM是如何通过栈帧中的对象引用访问到其内部的对象实例呢？</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200709164149920.png" alt="image-20200709164149920"></p>
+<h4 id="3-1-对象访问的两种方式"><a href="#3-1-对象访问的两种方式" class="headerlink" title="3.1 对象访问的两种方式"></a>3.1 对象访问的两种方式</h4><h6 id="一、句柄访问"><a href="#一、句柄访问" class="headerlink" title="一、句柄访问"></a>一、句柄访问</h6><blockquote>
+<ol>
+<li>句柄访问就是说栈的局部变量表中，记录的对象的引用，然后在堆空间中开辟了一块空间，也就是句柄池。</li>
+<li>优点：<ol>
+<li><code>reference中存储稳定句柄地址，对象被移动（垃圾收集时移动对象很普遍）时只会改变句柄中实例数据指针即可，reference本身不需要被修改。</code></li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200709164342002.png" alt="image-20200709164342002"></p>
+<h6 id="二、直接指针（HotSpot采用）"><a href="#二、直接指针（HotSpot采用）" class="headerlink" title="二、直接指针（HotSpot采用）"></a>二、直接指针（HotSpot采用）</h6><blockquote>
+<p>直接指针是局部变量表中的引用，直接指向堆中的实例，在对象实例中有类型指针，指向的是方法区中的对象类型数据。</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200709164350466.png" alt="image-20200709164350466"></p>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/11.%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%8C%96%E3%80%81%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/11.%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%8C%96%E3%80%81%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/12.JVM%E4%B9%8B%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/12.JVM之直接内存</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/10.JVM%E4%B9%8B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%96%B9%E6%B3%95%E5%8C%BA/"><span>JavaSE-JVM/10.JVM之深入理解方法区</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

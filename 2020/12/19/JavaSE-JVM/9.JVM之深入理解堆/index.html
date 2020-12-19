@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/9.JVM之深入理解堆"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/9.JVM之深入理解堆【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM之深入理解堆"><span class="toc-text">JVM之深入理解堆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-堆的核心概念"><span class="toc-text">1. 堆的核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#逃逸分析代码举例"><span class="toc-text">逃逸分析代码举例</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#逃逸分析参数设置"><span class="toc-text">逃逸分析参数设置</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#逃逸分析的结论"><span class="toc-text">逃逸分析的结论</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-2-栈上分配"><span class="toc-text">11.2 栈上分配</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#栈上分配举例"><span class="toc-text">栈上分配举例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-3-同步省略"><span class="toc-text">11.3 同步省略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-4-分离对象和标量替换"><span class="toc-text">11.4 分离对象和标量替换</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#代码优化之标量替换"><span class="toc-text">代码优化之标量替换</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#11-5-逃逸分析的不足"><span class="toc-text">11.5 逃逸分析的不足</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-堆小结"><span class="toc-text">12. 堆小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color3"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color1"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/9.JVM之深入理解堆</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>今年花胜去年红。可惜明年花更好，知与谁同？</p>
+<p align="right">——欧阳修《浪淘沙》</p>
+<a id="more"></a>
+
+
+<h2 id="JVM之深入理解堆"><a href="#JVM之深入理解堆" class="headerlink" title="JVM之深入理解堆"></a>JVM之深入理解堆</h2><h3 id="1-堆的核心概念"><a href="#1-堆的核心概念" class="headerlink" title="1. 堆的核心概念"></a>1. 堆的核心概念</h3><blockquote>
+<p><code>堆针对一个JVM进程来说是唯一的，也就是一个进程只有一个JVM，但是进程包含多个线程，他们是共享同一堆空间的。</code></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200706195127740.png" alt="image-20200706195127740"></p>
+<blockquote>
+<ol>
+<li><p>一个JVM实例只存在一个堆内存，<code>堆也是Java内存管理的核心区域。</code></p>
+</li>
+<li><p><code>Java堆区在JVM启动的时候即被创建，其空间大小也就确定了。是JVM管理的最大一块内存空间。</code></p>
+<ul>
+<li><p>堆内存的大小是可以调节的。</p>
+</li>
+<li><pre><code class="java"><span class="comment">// 如果设置最小堆内存和最大堆内存，建议设置成相同值</span>
+-Xms10m：最小堆内存
+
+-Xmx10m：最大堆内存
+&lt;!--￼<span class="number">0</span>--&gt;</code></pre>
+</li>
+<li><p><code>针对下面的代码</code></p>
+</li>
+<li><pre><code class="java"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> StringBuffer <span class="title">createStringBuffer</span><span class="params">(String s1, String s2)</span> </span>{
+    StringBuffer sb = <span class="keyword">new</span> StringBuffer();
+    sb.append(s1);
+    sb.append(s2);
+    <span class="keyword">return</span> sb;
+}
+&lt;!--￼<span class="number">1</span>--&gt;</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h6 id="逃逸分析代码举例"><a href="#逃逸分析代码举例" class="headerlink" title="逃逸分析代码举例"></a>逃逸分析代码举例</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 逃逸分析</span></span><br><span class="line"><span class="comment"> * 如何快速的判断是否发生了逃逸分析，大家就看new的对象是否在方法外被调用。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EscapeAnalysis</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> EscapeAnalysis obj;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 方法返回EscapeAnalysis对象，发生逃逸</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> EscapeAnalysis <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> obj == <span class="keyword">null</span> ? <span class="keyword">new</span> EscapeAnalysis():obj;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 为成员属性赋值，发生逃逸</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setObj</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.obj = <span class="keyword">new</span> EscapeAnalysis();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对象的作用于仅在当前方法中有效，没有发生逃逸</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">useEscapeAnalysis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EscapeAnalysis e = <span class="keyword">new</span> EscapeAnalysis();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 引用成员变量的值，发生逃逸</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">useEscapeAnalysis2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        EscapeAnalysis e = getInstance();</span><br><span class="line">        <span class="comment">// getInstance().XXX  发生逃逸</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="逃逸分析参数设置"><a href="#逃逸分析参数设置" class="headerlink" title="逃逸分析参数设置"></a>逃逸分析参数设置</h6><blockquote>
+<p>在JDK 1.7 版本之后，HotSpot中默认就已经开启了逃逸分析。如果使用的是较早的版本，开发人员则可以通过：</p>
+<ul>
+<li>选项“<code>-XX:+DoEscapeAnalysis</code>“显式开启逃逸分析。</li>
+<li>通过选项“<code>-XX:+PrintEscapeAnalysis</code>“查看逃逸分析的筛选结果。</li>
+</ul>
+</blockquote>
+<h6 id="逃逸分析的结论"><a href="#逃逸分析的结论" class="headerlink" title="逃逸分析的结论"></a>逃逸分析的结论</h6><blockquote>
+<p><code>开发中能使用局部变量的，就不要使用在方法外定义。</code></p>
+<p>使用逃逸分析，编译器可以对代码做如下优化：</p>
+<ul>
+<li><code>栈上分配：</code>将堆分配转化为栈分配。如果一个对象在子程序中被分配，要使指向该对象的指针永远不会发生逃逸，对象可能是栈上分配的候选，而不是堆上分配。</li>
+<li><code>同步省略：</code>如果一个对象被发现只有一个线程被访问到，那么对于这个对象的操作可以不考虑同步。</li>
+<li><code>分离对象或标量替换：</code>有的对象可能不需要作为一个连续的内存结构存在也可以被访问到，那么对象的部分（或全部）可以不存储在内存，而是存储在CPU寄存器中。</li>
+</ul>
+</blockquote>
+<h4 id="11-2-栈上分配"><a href="#11-2-栈上分配" class="headerlink" title="11.2 栈上分配"></a>11.2 栈上分配</h4><blockquote>
+<ol>
+<li><code>JIT编译器在编译期间根据逃逸分析的结果，发现如果一个对象并没有逃逸出方法的话，就可能被优化成栈上分配。分配完成后，继续在调用栈内执行，最后线程结束，栈空间被回收，局部变量对象也被回收。这样就无须进行垃圾回收了。</code></li>
+<li>在逃逸分析中，已经说明了。分别是给成员变量赋值、方法返回值、实例引用传递。</li>
+</ol>
+</blockquote>
+<h6 id="栈上分配举例"><a href="#栈上分配举例" class="headerlink" title="栈上分配举例"></a>栈上分配举例</h6><blockquote>
+<ol>
+<li>我们通过举例来<code>说明 开启逃逸分析 和 未开启逃逸分析时候的情况。</code></li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 栈上分配测试</span></span><br><span class="line"><span class="comment"> * -Xmx1G -Xms1G -XX:-DoEscapeAnalysis -XX:+PrintGCDetails</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackAllocation</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) &#123;</span><br><span class="line">            alloc();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 查看执行时间</span></span><br><span class="line">        <span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"花费的时间为： "</span> + (end - start) + <span class="string">" ms"</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 为了方便查看堆内存中对象个数，线程sleep</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e1) &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">alloc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 未发生逃逸</span></span><br><span class="line">        User user = <span class="keyword">new</span> User();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="2">
+<li>设置JVM参数，表示<code>未开启逃逸分析</code>。</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Xmx1G -Xms1G -XX:-DoEscapeAnalysis -XX:+PrintGCDetails</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="3">
+<li>运行结果，同时还触发了GC操作</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">花费的时间为：116 ms</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="4">
+<li>然后查看内存的情况，发现有大量的User存储在堆中。</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200927154516893.png" alt="image-20200927154516893"></p>
+<blockquote>
+<ol start="5">
+<li>我们在开启逃逸分析。</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Xmx1G -Xms1G -XX:+DoEscapeAnalysis -XX:+PrintGCDetails</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="6">
+<li><code>然后查看运行时间，我们能够发现花费的时间快速减少，同时不会发生GC操作。</code></li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">花费的时间为：8 ms</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="7">
+<li>然后在看内存情况，我们发现只有很少的User对象，说明User发生了逃逸，因为他们存储在栈中，随着栈的销毁而消失。</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200927154651113.png" alt="image-20200927154651113"></p>
+<h4 id="11-3-同步省略"><a href="#11-3-同步省略" class="headerlink" title="11.3 同步省略"></a>11.3 同步省略</h4><blockquote>
+<ol>
+<li><code>线程同步的代价是相当高的，同步的后果是降低并发性和性能。</code></li>
+<li><code>在动态编译同步块的时候，JIT编译器可以借助逃逸分析来判断同步块所使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程。如果没有，那么JIT编译器在编译这个同步块的时候就会取消对这部分代码的同步。这样就能大大提高并发性和性能。这个取消同步的过程就叫同步省略，也叫锁消除。☆</code></li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 例如下面的代码</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Object hellis = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="keyword">synchronized</span>(hellis) &#123;</span><br><span class="line">        System.out.println(hellis);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代码中对hellis这个对象加锁，但是hellis对象的生命周期只在f()方法中，并不会被其他线程所访问到，所以在JIT编译阶段就会被优化掉，优化成：</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Object hellis = <span class="keyword">new</span> Object();</span><br><span class="line">	System.out.println(hellis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>我们将其转换成字节码</code></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200707205634266.png" alt="image-20200707205634266"></p>
+<h4 id="11-4-分离对象和标量替换"><a href="#11-4-分离对象和标量替换" class="headerlink" title="11.4 分离对象和标量替换"></a>11.4 分离对象和标量替换</h4><blockquote>
+<ol>
+<li><p><code>标量（scalar）是指一个无法再分解成更小的数据的数据。Java中的原始数据类型就是标量。</code></p>
+</li>
+<li><p>相对的，那些<code>还可以分解的数据叫做聚合量（Aggregate）</code>，Java中的对象就是聚合量，因为他可以<code>分解成其他聚合量和标量。</code></p>
+</li>
+<li><p>在JIT阶段，如果经过逃逸分析，发现一个对象不会被外界访问的话，那么经过JIT优化，就会把这个对象拆解成若干个其中包含的若干个成员变量来代替。这个过程就是标量替换。</p>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">    alloc();</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">alloc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Point point = <span class="keyword">new</span> Point(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">    System.out.println(<span class="string">"point.x"</span> + point.x + <span class="string">";point.y"</span> + point.y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>以上代码，经过标量替换后，就会变成</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">alloc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> y = <span class="number">2</span>;</span><br><span class="line">    System.out.println(<span class="string">"point.x = "</span> + x + <span class="string">"; point.y="</span> + y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li>可以看到，Point这个聚合量经过逃逸分析后，发现他并没有逃逸，就被替换成两个聚合量了。<code>那么标量替换有什么好处呢？就是可以大大减少堆内存的占用。因为一旦不需要创建对象了，那么就不再需要分配堆内存了。</code></li>
+<li>标量替换为栈上分配提供了很好的基础。</li>
+</ol>
+</blockquote>
+<h6 id="代码优化之标量替换"><a href="#代码优化之标量替换" class="headerlink" title="代码优化之标量替换"></a>代码优化之标量替换</h6><blockquote>
+<p>上述代码在主函数中进行了1亿次alloc。调用进行对象创建，由于User对象实例需要占据约16字节的空间，因此累计分配空间达到将近1.5GB。如果堆空间小于这个值，就必然会发生GC。使用如下参数运行上述代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-server -Xmx100m -Xms100m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:+EliminateAllocations</span><br></pre></td></tr></table></figure>
+
+<p>这里设置参数如下：</p>
+<ol>
+<li>参数<code>-server</code>：启动Server模式，因为在server模式下，才可以启用逃逸分析。</li>
+<li>参数<code>-XX:+DoEscapeAnalysis</code>：启用逃逸分析。</li>
+<li>参数<code>-Xmx10m</code>：指定了堆空间最大为10MB。</li>
+<li>参数<code>-XX:+PrintGC</code>：将打印Gc日志。</li>
+<li>参数<code>-xx:+EliminateAllocations</code>：开启了标量替换（默认打开），允许将对象打散分配在栈上，比如对象拥有id和name两个字段，那么这两个字段将会被视为两个独立的局部变量进行分配</li>
+</ol>
+</blockquote>
+<h4 id="11-5-逃逸分析的不足"><a href="#11-5-逃逸分析的不足" class="headerlink" title="11.5 逃逸分析的不足"></a>11.5 逃逸分析的不足</h4><blockquote>
+<ol>
+<li><p><code>关于逃逸分析的论文在1999年就已经发表了，但直到JDK1.6才有实现，</code>而且这项技术到如今也并不是十分成熟的。</p>
+</li>
+<li><p><code>其根本原因就是无法保证逃逸分析的性能消耗一定能高于他的消耗。虽然经过逃逸分析可以做标量替换、栈上分配、和锁消除。但是逃逸分析自身也是需要进行一系列复杂的分析的，这其实也是一个相对耗时的过程。</code></p>
+<ul>
+<li>一个极端的例子，就是经过逃逸分析之后，发现没有一个对象是不逃逸的。那这个逃逸分析的过程就白白浪费掉了。</li>
+</ul>
+</li>
+<li><p>虽然这项技术并不十分成熟，但是它也是即时编译器优化技术中一个十分重要的手段。注意到有一些观点，认为通过逃逸分析，JVM会在栈上分配那些不会逃逸的对象，这在理论上是可行的，但是取决于JvM设计者的选择。<code>据我所知，Oracle Hotspot JVM中并未这么做，这一点在逃逸分析相关的文档里已经说明，所以可以明确所有的对象实例都是创建在堆上。</code></p>
+</li>
+<li><p>目前很多书籍还是基于JDK7以前的版本，JDK已经发生了很大变化，<code>intern字符串的缓存和静态变量曾经都被分配在永久代上，而永久代已经被元数据区取代。</code>但是，<code>intern字符串缓存和静态变量并不是被转移到元数据区，而是直接在堆上分配</code>，所以这一点同样符合前面一点的结论：<code>对象实例都是分配在堆上。</code></p>
+</li>
+</ol>
+</blockquote>
+<h3 id="12-堆小结"><a href="#12-堆小结" class="headerlink" title="12. 堆小结"></a>12. 堆小结</h3><blockquote>
+<ol>
+<li><code>年轻代</code>是对象的诞生、成长、消亡的区域，一个对象在这里产生、应用，最后被垃圾回收器收集、结束生命。</li>
+<li><code>老年代</code>放置长生命周期的对象，通常都是从survivor区域筛选拷贝过来的Java对象。<ul>
+<li>当然，也有特殊情况，我们知道普通的对象会被分配在TLAB上；</li>
+<li>如果对象较大，JVM会试图直接分配在Eden其他位置上；如果对象太大，完全无法在新生代找到足够长的连续空闲空间，JVM就会直接分配到老年代。</li>
+<li>当GC只发生在年轻代中，回收年轻代对象的行为被称为Minor GC。</li>
+</ul>
+</li>
+<li><code>当GC发生在老年代时则被称为Major GC或者Full GC。一般的，Minor GC的发生频率要比Major GC高很多，即老年代中垃圾回收发生的频率将大大低于年轻代。</code>        </li>
+</ol>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/9.JVM%E4%B9%8B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%A0%86/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/9.JVM%E4%B9%8B%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%A0%86/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E5%A4%9A%E7%BA%BF%E7%A8%8B/1.JavaSE-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-多线程/1.JavaSE-多线程基础知识</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/8.JVM%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%8E%A5%E5%8F%A3/"><span>JavaSE-JVM/8.JVM本地方法栈和本地方法接口</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

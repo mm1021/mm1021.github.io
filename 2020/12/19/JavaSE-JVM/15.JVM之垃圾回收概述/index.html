@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/15.JVM之垃圾回收概述"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/15.JVM之垃圾回收概述【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是垃圾？"><span class="toc-text">1. 什么是垃圾？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-什么是垃圾？"><span class="toc-text">1.1 什么是垃圾？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-磁盘碎片整理"><span class="toc-text">1.2 磁盘碎片整理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-大厂面试题"><span class="toc-text">1.3 大厂面试题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-为什么需要GC"><span class="toc-text">2. 为什么需要GC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-早期垃圾回收"><span class="toc-text">3. 早期垃圾回收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Java垃圾回收机制"><span class="toc-text">4. Java垃圾回收机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-优点"><span class="toc-text">4.1 优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-担忧"><span class="toc-text">4.2 担忧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-GC主要关注的区域"><span class="toc-text">4.3 GC主要关注的区域</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color5"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color5"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/15.JVM之垃圾回收概述</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>庭院深深深几许，杨柳堆烟，帘幕无重数。</p>
+<p align="right">——欧阳修《蝶恋花》</p>
+<a id="more"></a>
+## 垃圾回收概述
+
+<blockquote>
+<p>这次我们主要关注的是黄色部分，内存的分配与回收。</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200712084539884.png" alt="image-20200712084539884"></p>
+<h3 id="1-什么是垃圾？"><a href="#1-什么是垃圾？" class="headerlink" title="1. 什么是垃圾？"></a>1. 什么是垃圾？</h3><blockquote>
+<ol>
+<li><p>在提到什么是垃圾之前，我们先看下面一张图：</p>
+</li>
+<li><p>从下图我们可以很明确的知道，Java 和 C++语言的区别，就在于垃圾收集技术和内存动态分配上，C语言没有垃圾收集技术，需要我们手动的收集。</p>
+</li>
+<li><p>垃圾收集，不是Java语言的伴生产物。<code>早在1960年，第一门开始使用内存动态分配和垃圾收集技术的Lisp语言诞生。</code></p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200712085456113.png" alt="image-20200712085456113"></p>
+<blockquote>
+<p>关于垃圾收集有三个经典问题：</p>
+<ol>
+<li><code>哪些内存需要回收？</code></li>
+<li><code>什么时候回收？</code></li>
+<li><code>如何回收？</code></li>
+</ol>
+<p><code>垃圾收集机制是Java的招牌能力，极大地提高了开发效率。</code>如今，垃圾收集几乎成为现代语言的标配，即使经过如此长时间的发展，Java的垃圾收集机制仍然在不断的演进中，不同大小的设备、不同特征的应用场景，对垃圾收集提出了新的挑战，这当然也是<code>面试的热点</code>。</p>
+</blockquote>
+<h4 id="1-1-什么是垃圾？"><a href="#1-1-什么是垃圾？" class="headerlink" title="1.1 什么是垃圾？"></a>1.1 什么是垃圾？</h4><blockquote>
+<ol>
+<li>==垃圾是指在运行程序中没有任何指针指向的对象，这个对象就是需要被回收的垃圾。==</li>
+<li>如果不及时对内存中的垃圾进行清理，那么，这些垃圾对象所占的内存空间会一直保留到应用程序的结束，被保留的空间无法被其它对象使用，<code>甚至可能导致内存溢出。</code></li>
+</ol>
+</blockquote>
+<h4 id="1-2-磁盘碎片整理"><a href="#1-2-磁盘碎片整理" class="headerlink" title="1.2 磁盘碎片整理"></a>1.2 磁盘碎片整理</h4><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200712090848669.png" alt="image-20200712090848669"></p>
+<h4 id="1-3-大厂面试题"><a href="#1-3-大厂面试题" class="headerlink" title="1.3 大厂面试题"></a>1.3 大厂面试题</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 蚂蚁金服</span></span><br><span class="line"></span><br><span class="line">你知道哪几种垃圾回收器，各自的优缺点，重点讲一下cms和G1？</span><br><span class="line">JVM GC算法有哪些，目前的JDK版本采用什么回收算法？</span><br><span class="line">G1回收器讲下回收过程GC是什么？为什么要有GC？</span><br><span class="line">GC的两种判定方法？CMS收集器与G1收集器的特点</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 百度</span></span><br><span class="line">    </span><br><span class="line">说一下GC算法，分代回收说下</span><br><span class="line">垃圾收集策略和算法</span><br><span class="line"></span><br><span class="line"><span class="comment">// 天猫</span></span><br><span class="line"></span><br><span class="line">JVM GC原理，JVM怎么回收内存</span><br><span class="line">CMS特点，垃圾回收算法有哪些？各自的优缺点，他们共同的缺点是什么？</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 滴滴</span></span><br><span class="line"></span><br><span class="line">Java的垃圾回收器都有哪些，说下G1的应用场景，平时你是如何搭配使用垃圾回收器的</span><br><span class="line"></span><br><span class="line"><span class="comment">// 京东</span></span><br><span class="line"></span><br><span class="line">你知道哪几种垃圾收集器，各自的优缺点，重点讲下cms和G1，</span><br><span class="line">包括原理，流程，优缺点。垃圾回收算法的实现原理</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="comment">// 阿里</span></span><br><span class="line">    </span><br><span class="line">讲一讲垃圾回收算法。</span><br><span class="line">什么情况下触发垃圾回收？</span><br><span class="line">如何选择合适的垃圾收集算法？</span><br><span class="line">JVM有哪三种垃圾回收器？</span><br><span class="line"></span><br><span class="line"><span class="comment">// 字节跳动</span></span><br><span class="line"></span><br><span class="line">常见的垃圾回收器算法有哪些，各有什么优劣？</span><br><span class="line">System.gc（）和Runtime.gc（）会做什么事情？</span><br><span class="line">Java GC机制？GC Roots有哪些？</span><br><span class="line">Java对象的回收方式，回收算法。</span><br><span class="line">CMS和G1了解么，CMS解决什么问题，说一下回收的过程。</span><br><span class="line">CMS回收停顿了几次，为什么要停顿两次?</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-为什么需要GC"><a href="#2-为什么需要GC" class="headerlink" title="2. 为什么需要GC"></a>2. 为什么需要GC</h3><blockquote>
+<ol>
+<li><p>对于高级语言来说，一个基本认知是如果不进行垃圾回收，内存迟早都会被消耗完，因为不断地分配内存空间而不进行回收，就好像不停地生产生活垃圾而从来不打扫一样。</p>
+</li>
+<li><p><code>除了释放没用的对象，垃圾回收也可以清除内存里的记录碎片。碎片整理将所占用的堆内存移到堆的一端，以便JVM将整理出的内存分配给新的对象。</code></p>
+</li>
+<li><p>随着应用程序所应付的业务越来越庞大、复杂，用户越来越多，没有GC就不能保证应用程序的正常进行。<code>而经常造成STW的GC又跟不上实际的需求，所以才会不断地尝试对GC进行优化。</code></p>
+</li>
+</ol>
+</blockquote>
+<h3 id="3-早期垃圾回收"><a href="#3-早期垃圾回收" class="headerlink" title="3. 早期垃圾回收"></a>3. 早期垃圾回收</h3><blockquote>
+<p><code>在早期的C/C++时代，垃圾回收基本上是手工进行的。开发人员可以使用new关键字进行内存申请，并使用delete关键字进行内存释放。</code>比如以下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MibBridge *pBridge= <span class="keyword">new</span> cmBaseGroupBridge（）；</span><br><span class="line">    </span><br><span class="line"><span class="comment">//如果注册失败，使用Delete释放该对象所占内存区域</span></span><br><span class="line"><span class="keyword">if</span>（pBridge-&gt;Register（kDestroy）！=NO ERROR）</span><br><span class="line">	<span class="keyword">delete</span> pBridge；</span><br></pre></td></tr></table></figure>
+
+<p>这种方式可以灵活控制内存释放的时间，但是<code>会给开发人员带来频繁申请和释放内存的管理负担。</code>倘若有一处内存区间由于程序员编码的问题忘记被回收，那么就会产生内存泄漏，垃圾对象永远无法被清除，随着系统运行时间的不断增长，垃圾对象所耗内存可能持续上升，直到出现内存溢出并造成应用程序崩溃。 </p>
+<p>有了垃圾回收机制后，上述代码极有可能变成这样</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MibBridge *pBridge=<span class="keyword">new</span> cmBaseGroupBridge(); </span><br><span class="line">pBridge-&gt;Register(kDestroy);</span><br></pre></td></tr></table></figure>
+
+<p><code>现在，除了Java以外，C#、Python、Ruby等语言都使用了自动垃圾回收的思想，也是未来发展趋势，可以说这种自动化的内存分配和来及回收方式已经成为了现代开发语言必备的标准。</code></p>
+</blockquote>
+<h3 id="4-Java垃圾回收机制"><a href="#4-Java垃圾回收机制" class="headerlink" title="4. Java垃圾回收机制"></a>4. Java垃圾回收机制</h3><h4 id="4-1-优点"><a href="#4-1-优点" class="headerlink" title="4.1 优点"></a>4.1 优点</h4><blockquote>
+<ol>
+<li>自动内存管理，无需开发人员手动参与内存的分配与回收，<code>这样降低内存泄漏和内存溢出的风险。</code><ul>
+<li>没有垃圾回收器，java也会和cpp一样，各种悬垂指针，野指针，泄露问题让你头疼不已。</li>
+</ul>
+</li>
+<li>自动内存管理机制，将程序员从繁重的内存管理中释放出来，<code>可以更专心地专注于业务开发。</code></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/toc.html" target="_blank" rel="noopener">Oracle官网关于垃圾回收的介绍…</a></li>
+</ol>
+</blockquote>
+<h4 id="4-2-担忧"><a href="#4-2-担忧" class="headerlink" title="4.2 担忧"></a>4.2 担忧</h4><blockquote>
+<p>对于Java开发人员而言，自动内存管理就像是一个黑匣子，如果过度依赖于“自动”，那么这将会是一场灾难，最严重的就会弱化Java开发人员在程序出现内存溢出时定位问题和解决问题的能力。</p>
+<p>此时，了解JVM的自动内存分配和内存回收原理就显得非常重要，<code>只有在真正了解JVM是如何管理内存后，我们才能够在遇见OutOfMemoryError时，快速地根据错误异常日志定位问题和解决问题。</code></p>
+<p><code>当需要排查各种内存溢出、内存泄漏问题时，当垃圾收集成为系统达到更高并发量的瓶颈时，我们就必须对这些“自动化”的技术实施必要的监控和调节。</code></p>
+</blockquote>
+<h4 id="4-3-GC主要关注的区域"><a href="#4-3-GC主要关注的区域" class="headerlink" title="4.3 GC主要关注的区域"></a>4.3 GC主要关注的区域</h4><p>==GC主要关注于方法区和堆中的垃圾收集==</p>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200712092427246.png" alt="image-20200712092427246"></p>
+<blockquote>
+<p><code>垃圾收集器可以对年轻代回收，也可以对老年代回收，甚至是全堆和方法区的回收。</code></p>
+<ul>
+<li>其中，==Java堆==是垃圾收集器的工作重点。</li>
+</ul>
+<p>从次数上讲：</p>
+<ul>
+<li><code>频繁收集Young区。</code></li>
+<li><code>较少收集Old区。</code></li>
+<li><code>基本不收集Perm区（元空间）。</code></li>
+</ul>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/15.JVM%E4%B9%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A6%82%E8%BF%B0/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/15.JVM%E4%B9%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A6%82%E8%BF%B0/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/16.JVM%E4%B9%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9B%B8%E5%85%B3%E7%AE%97%E6%B3%95/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/16.JVM之垃圾回收相关算法</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/14.JVM%E4%B9%8BStringTable/"><span>JavaSE-JVM/14.JVM之StringTable</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

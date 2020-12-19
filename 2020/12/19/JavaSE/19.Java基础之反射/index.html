@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE/19.Java基础之反射"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE/19.Java基础之反射【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-获取Class对象的三种方式"><span class="toc-text">1. 获取Class对象的三种方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Class对象功能详解"><span class="toc-text">2. Class对象功能详解</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#2-3-获取成员方法们"><span class="toc-text">2.3 获取成员方法们</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Field和Method对象中的方法"><span class="toc-text">3. Field和Method对象中的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Filed对象中的方法"><span class="toc-text">Filed对象中的方法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Method对象中的方法☆"><span class="toc-text">Method对象中的方法☆</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Class类中常见的方法"><span class="toc-text">4. Class类中常见的方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color9"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color10"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE/19.Java基础之反射</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE/">JavaSE</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>七八个星天外，两三点雨山前。</p>
+<p align="right">——辛弃疾《西江月》</p>
+<a id="more"></a>
+## Java基础之深入理解反射
+
+<blockquote>
+<p><a href="https://baike.baidu.com/item/JAVA反射机制/6015990?fr=aladdin" target="_blank" rel="noopener">JAVA反射</a>机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；</p>
+<p>对于任意一个对象，都能够调用它的任意方法和属性；</p>
+<p>这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。</p>
+<p>下面我们定义一个<code>MainReflect类</code>来学习反射，其学习前的<code>MainReflect代码如下</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2020/6/28 17:27</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 10.21</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> DuanChaojie</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainReflect</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String id = <span class="string">"1015"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String name = <span class="string">"dd"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> day)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  Integer.parseInt(id) + day;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">love</span><span class="params">()</span></span>&#123;</span><br><span class="line">        id = <span class="string">"1021"</span>;</span><br><span class="line">        name = <span class="string">"mm"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="1-获取Class对象的三种方式"><a href="#1-获取Class对象的三种方式" class="headerlink" title="1. 获取Class对象的三种方式"></a>1. 获取Class对象的三种方式</h4><blockquote>
+<ol>
+<li><p><code>Class.forName(&quot;全类名&quot;)</code>：将字节码文件加载进内存，返回Class对象。</p>
+<ul>
+<li><p><code>多用于配置文件，将类名定义在配置文件中，读取文件，加载类等</code></p>
+</li>
+<li><pre><code class="java">Class&lt;?&gt; aClass1 = Class.forName(<span class="string">"cn.justweb.myway.reflect.MainReflect"</span>);
+System.out.println(<span class="string">"通过Class.forName()获取的Class类 = "</span> + aClass1);
+<span class="comment">//控制台输出结果为:</span>
+通过Class.forName()获取的Class类 = <span class="class"><span class="keyword">class</span> <span class="title">cn</span>.<span class="title">justweb</span>.<span class="title">myway</span>.<span class="title">reflect</span>.<span class="title">MainReflect</span></span>
+<span class="class"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">2. &#96;类名.class：&#96;通过类名的属性class获取。</span><br><span class="line">	</span><br><span class="line">	* 多用于参数的传递。</span><br><span class="line">	</span><br><span class="line">	* ~~~~java</span><br><span class="line">	  Class&lt;MainReflect&gt; aClass2 &#x3D; MainReflect.class;</span><br><span class="line">	  System.out.println(&quot;通过类名.class获取的Class类 &#x3D; &quot; + aClass2);</span><br><span class="line">	  &#x2F;&#x2F;控制台输出结果为:</span><br><span class="line">	  通过类名.class获取的Class类 &#x3D; class cn.justweb.myway.reflect.MainReflect</span><br></pre></td></tr></table></figure></span></code></pre>
+</li>
+</ul>
+</li>
+<li><p><code>对象名.getClass()：</code>getClass()方法在Object类中定义着。</p>
+<ul>
+<li><p>多用于对象的获取字节码的方式。</p>
+</li>
+<li><pre><code class="java">MainReflect mainReflect = <span class="keyword">new</span> MainReflect();
+Class&lt;? extends MainReflect&gt; aClass3 = mainReflect.getClass();
+System.out.println(<span class="string">"通过对象名.getClass()获取的Class类 = "</span> + aClass3);
+<span class="comment">//控制台输出结果为:</span>
+通过对象名.getClass()获取的Class类 = <span class="class"><span class="keyword">class</span> <span class="title">cn</span>.<span class="title">justweb</span>.<span class="title">myway</span>.<span class="title">reflect</span>.<span class="title">MainReflect</span></span>
+<span class="class"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">4. 上述三种方式获取的Class类是不是同一个类呢？</span><br><span class="line"></span><br><span class="line">   - ~~~~java</span><br><span class="line">     System.out.println(aClass1 &#x3D;&#x3D; aClass2);</span><br><span class="line">     System.out.println(aClass1 &#x3D;&#x3D; aClass3);</span><br><span class="line">     System.out.println(aClass2 &#x3D;&#x3D; aClass3);</span><br><span class="line">     &#x2F;&#x2F;控制台输出结果为:</span><br><span class="line">     true</span><br><span class="line">     true</span><br><span class="line">     true</span><br></pre></td></tr></table></figure></span>
+<span class="class"></span></code></pre>
+</li>
+</ul>
+<ul>
+<li><code>同一个字节码文件(*.class)</code>在一次程序运行过程中，只会被加载一次，不论通过哪一种方式获取的Class对象都是同一个。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h4 id="2-Class对象功能详解"><a href="#2-Class对象功能详解" class="headerlink" title="2. Class对象功能详解"></a>2. Class对象功能详解</h4><blockquote>
+<ul>
+<li><p><code>String getName()</code>  获取全类名    </p>
+</li>
+<li><pre><code class="java">String name = aClass1.getName();
+System.out.println(<span class="string">"getName()方法得到全类名为 ："</span> + name);
+
+<span class="comment">// 这段代码执行结果如下：</span>
+getName()方法得到全类名为 ：cn.justweb.myway.reflect.MainReflect
+&lt;!--￼<span class="number">3</span>--&gt;</code></pre>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><code>我在代码中添加了一个属性，两个构造器，再次执行上面的方法</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String year = <span class="string">"2014"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">MainReflect</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MainReflect</span><span class="params">(String year)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.year = year;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行结果如下：</span></span><br><span class="line">constructor = <span class="keyword">public</span> cn.justweb.myway.reflect.MainReflect(java.lang.String)</span><br></pre></td></tr></table></figure>
+
+<p><code>而结果中并没有无参数的构造器，因为我把无参数的构造器私有化了（只是为了测试，当然私有化构造器应用的地方也很多，比如单列模式），所以结合着上面的结果，以及上面四个获取成员变量的方法，得知getgetConstructors()获取的是public修饰的所有构造器，而getDeclaredConstructors()获得的是所有的构造器--验证代码如下：</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Constructor&lt;?&gt;[] declaredConstructors = aClass1.getDeclaredConstructors();</span><br><span class="line"><span class="keyword">for</span> (Constructor&lt;?&gt; declaredConstructor : declaredConstructors) &#123;</span><br><span class="line">    System.out.println(<span class="string">"declaredConstructor = "</span> + declaredConstructor);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这段代码执行结果如下：</span></span><br><span class="line">declaredConstructor = <span class="keyword">private</span> cn.justweb.myway.reflect.MainReflect()</span><br><span class="line">declaredConstructor = <span class="keyword">public</span> cn.justweb.myway.reflect.MainReflect(java.lang.String)</span><br></pre></td></tr></table></figure>
+
+<p>有一点需要说明得是private修饰的私有构造器或者方法，我们虽然能够通过反射获得，但是需要暴力破解之后才能够调用。</p>
+<h6 id="2-3-获取成员方法们"><a href="#2-3-获取成员方法们" class="headerlink" title="2.3 获取成员方法们"></a>2.3 获取成员方法们</h6><blockquote>
+<p><code>Method[] getMethods() 返回包含一个数组 方法对象反射由此表示的类或接口的所有公共方法 类对象，包括那些由类或接口和那些从超类和超接口继承的声明。</code> </p>
+<p><code>Method getMethod(String name, 类&lt;?&gt;... parameterTypes)  返回一个 方法对象，它反映此表示的类或接口的指定公共成员方法 类对象。</code></p>
+<p><code>Method[] getDeclaredMethods()  返回包含一个数组 方法对象反射的类或接口的所有声明的方法，通过此表示 类对象，包括公共，保护，默认（包）访问和私有方法，但不包括继承的方法。</code> </p>
+<p><code>Method getDeclaredMethod(String name, 类&lt;?&gt;... parameterTypes)返回一个 方法对象，它反映此表示的类或接口的指定声明的方法 类对象</code></p>
+</blockquote>
+<h4 id="3-Field和Method对象中的方法"><a href="#3-Field和Method对象中的方法" class="headerlink" title="3. Field和Method对象中的方法"></a>3. Field和Method对象中的方法</h4><h6 id="Filed对象中的方法"><a href="#Filed对象中的方法" class="headerlink" title="Filed对象中的方法"></a>Filed对象中的方法</h6><blockquote>
+<p><code>Object get(Object obj)</code>  返回该所表示的字段的值 <code>Field</code> ，指定的对象上。</p>
+<p><code>void set(Object obj,  Object value)</code>  将指定对象参数上的此 <code>Field对象</code>表示的字段设置为指定的新值。</p>
+</blockquote>
+<h6 id="Method对象中的方法☆"><a href="#Method对象中的方法☆" class="headerlink" title="Method对象中的方法☆"></a>Method对象中的方法☆</h6><blockquote>
+<p><code>String getName()</code> 返回由此方法对象表示的方法的名称，作为 String 。 </p>
+<p><code>Object invoke(Object obj, Object... args)</code>  在具有指定参数的<code>方法对象</code>上调用<code>此方法对象</code>表示的底层方法。</p>
+<ul>
+<li>如果底层方法是静态的，则指定的<code>obj</code>参数将被忽略。 它可能为null。 </li>
+<li>如果底层方法所需的形式参数的数量为0，则提供的<code>args</code>数组的长度为0或为空。</li>
+</ul>
+</blockquote>
+<h4 id="4-Class类中常见的方法"><a href="#4-Class类中常见的方法" class="headerlink" title="4. Class类中常见的方法"></a>4. Class类中常见的方法</h4><blockquote>
+<ol>
+<li><p><code>String getName()</code>  获取全类名    </p>
+</li>
+<li><p><code>ClassLoader getClassLoader()</code>  返回类的类加载器。</p>
+</li>
+<li><p><code>类&lt;?&gt;[] getInterfaces()</code>  确定由该对象表示的类或接口实现的接口。</p>
+</li>
+<li><p><code>Package getPackage()</code>  获取此类的包。 </p>
+<ul>
+<li><pre><code class="java">Package aPackage = aClass1.getPackage();
+System.out.println(<span class="string">"aPackage = "</span> + aPackage);
+<span class="comment">// 执行上面代码后的结果：</span>
+aPackage = <span class="keyword">package</span> cn.justweb.myway.reflect</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE/19.Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%8F%8D%E5%B0%84/">http://www.itbuild.cn/2020/12/19/JavaSE/19.Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%8F%8D%E5%B0%84/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/20.Java%E5%9F%BA%E7%A1%80%E4%B9%8BStringBuffer%E5%92%8CStringBuilder/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE/20.Java基础之StringBuffer和StringBuilder</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/18.Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%B3%A8%E8%A7%A3Annotation/"><span>JavaSE/18.Java基础之注解Annotation</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

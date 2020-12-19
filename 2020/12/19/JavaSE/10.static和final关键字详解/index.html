@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE/10.static和final关键字详解"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE/10.static和final关键字详解【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-final关键字"><span class="toc-text">2. final关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-常见的四种用法"><span class="toc-text">2.1 常见的四种用法</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#2-1-1-final修饰局部变量"><span class="toc-text">2.1.1 final修饰局部变量</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-1-2-final修饰成员变量"><span class="toc-text">2.1.2 final修饰成员变量</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-1-3-final修饰方法"><span class="toc-text">2.1.3 final修饰方法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-1-4-final修饰类"><span class="toc-text">2.1.4 final修饰类</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color8"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color6"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE/10.static和final关键字详解</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE/">JavaSE</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>休对故人思故国，且将新火试新茶。诗酒趁年华。</p>
+<p align="right">——苏轼《望江南》</p>
+<a id="more"></a>
+## 1. static关键字
+
+<blockquote>
+<ol>
+<li>static关键字<ol>
+<li>关于<code>static</code>关键字的使用，它可以用来修饰的成员变量和成员方法，被修饰的成员<strong>属于类</strong>的，而不是单单是属于某个对象。也就是说，既然属于类，就可以不靠创建对象来调用了。</li>
+<li>如果使用static修饰成员方法，那么这个方法就变成了静态方法</li>
+</ol>
+</li>
+<li>静态属性和静态方法（类加载器加载字节码文件的时候  全局委托机制）优先于非静态的属性和方法。<ol>
+<li>非静态的属性和方法—–知道有哪些静态的属性和方法，所以他能够访问静态的属性和方法</li>
+<li>但是因为静态属性和方法加载的时候，这时候还没有对象，没有对象就没有成员变量和成员方法。<br>所以静态的方法中无法调用非静态的属性和方法。</li>
+<li>静态方法中，不能使用this关键字。</li>
+</ol>
+</li>
+<li>static修饰的属性和方法是属于类的属性和方法，所以在调用的时候，推荐是用 <strong><code>类名.属性名   类名.方法名();</code></strong></li>
+<li>静态代码块 &gt; 非静态代码块 &gt; 构造器。Static{}  {}  public 类名(){}<ol>
+<li>静态代码块只执行一次,非静态代码块，每次进入到当前类的时候都会执行一次。</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE/1563210995163.png" alt="1563210995163"></li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h2 id="2-final关键字"><a href="#2-final关键字" class="headerlink" title="2. final关键字"></a>2. final关键字</h2><blockquote>
+<p>代表的是最终的，不可改变的</p>
+</blockquote>
+<h4 id="2-1-常见的四种用法"><a href="#2-1-常见的四种用法" class="headerlink" title="2.1 常见的四种用法"></a>2.1 常见的四种用法</h4><ul>
+<li>final 关键字可以用来修饰一个   <strong><em>\</em>类* *</strong>  被修饰的类，不能被继承。</li>
+<li>final 关键字可以用来修饰一个   <strong><em>\</em>方法**</strong>  被修饰的方法，不能被重写。</li>
+<li>final 关键字可以用来修饰一个   <strong><em>\</em>成员变量**</strong>  被修饰的变量，不能被重新赋值。</li>
+<li>final 关键字可以用来修饰一个   <strong><em>\</em>局部变量**</strong>  被修饰的变量，不能被重新赋值。</li>
+</ul>
+<h6 id="2-1-1-final修饰局部变量"><a href="#2-1-1-final修饰局部变量" class="headerlink" title="2.1.1 final修饰局部变量"></a>2.1.1 final修饰局部变量</h6><blockquote>
+<ol>
+<li>一旦使用final来修饰局部变量，那么这个变量不能进行修改。一次赋值，终生不变。</li>
+<li>引用数据类型，修改对象的属性是不会报错，如果重新new 对象的时候，新开辟了一块内存地址。将新的地址赋值给student引用报错。final修饰的引用数据类型，不能改变引用的地址能改变其属性值。</li>
+</ol>
+</blockquote>
+<h6 id="2-1-2-final修饰成员变量"><a href="#2-1-2-final修饰成员变量" class="headerlink" title="2.1.2 final修饰成员变量"></a>2.1.2 final修饰成员变量</h6><blockquote>
+<ol>
+<li>局部变量使用final修饰的时候，不赋值不报错(但在调用之前需要赋值)。  局部变量没有默认值。</li>
+<li>成员变量使用final修饰的时候，不赋值报错。  成员变量有默认值,所以必须手动赋值。（假设：如果不给final修饰的变量赋值，那么这个变量使用默认值。）</li>
+<li>使用final修饰成员变量。只要是在创建对象之前给属性赋值就可以了。</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2020/5/15 10:00</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 10.21</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> DuanChaojie</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line">    <span class="comment">//private static final String name;//报错</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String adr = <span class="string">"周口"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// System.out.println("test.name = " + test.name);</span></span><br><span class="line">        System.out.println(<span class="string">"test.adr = "</span> + test.adr);</span><br><span class="line">        testFinal();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testFinal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> String name = <span class="string">"admin"</span>;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> age;</span><br><span class="line">        <span class="comment">// 赋值后不报错</span></span><br><span class="line">        age = <span class="number">18</span>;</span><br><span class="line">        <span class="comment">// final String adr; 报错</span></span><br><span class="line">        <span class="comment">// System.out.println("adr = " + adr);</span></span><br><span class="line">        System.out.println(<span class="string">"age = "</span> + age);</span><br><span class="line">        System.out.println(<span class="string">"name = "</span> + name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="2-1-3-final修饰方法"><a href="#2-1-3-final修饰方法" class="headerlink" title="2.1.3 final修饰方法"></a>2.1.3 final修饰方法</h6><blockquote>
+<ol>
+<li>当关键字final修饰一个方法的时候，这个方法就是最终方法，也就是说当前的方法不能重写。</li>
+</ol>
+</blockquote>
+<h6 id="2-1-4-final修饰类"><a href="#2-1-4-final修饰类" class="headerlink" title="2.1.4 final修饰类"></a>2.1.4 final修饰类</h6><blockquote>
+<ol>
+<li>如果使用了final关键字修饰一个类那么这个使用final修饰的类不能有任何的子类但是可以拥有父类</li>
+<li>final 不能和abstract同时修饰一个类,因为final修饰的类不能被继承（所以所有的方法都不能被重写）但是abstract修饰的类是抽象类，抽象类里面的抽象方法必须被继承重写。所以final和abstract产生了冲突，这两个关键字不能一起使用。</li>
+</ol>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE/10.static%E5%92%8Cfinal%E5%85%B3%E9%94%AE%E5%AD%97%E8%AF%A6%E8%A7%A3/">http://www.itbuild.cn/2020/12/19/JavaSE/10.static%E5%92%8Cfinal%E5%85%B3%E9%94%AE%E5%AD%97%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/11.%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%89%B9%E6%80%A7%E4%B9%8B%E7%BB%A7%E6%89%BF/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE/11.面向对象特性之继承</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/09.Java%E5%B8%B8%E7%94%A8%E5%9F%BA%E7%A1%80%E7%B1%BB/"><span>JavaSE/09.Java常用基础类</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-集合/1.Collection集合概述"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-集合/1.Collection集合概述【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-集合概述"><span class="toc-text">1. 集合概述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-集合框架"><span class="toc-text">2. 集合框架</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Collection-常用方法"><span class="toc-text">3. Collection 常用方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color9"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color2"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-集合/1.Collection集合概述</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-%E9%9B%86%E5%90%88/">JavaSE-集合</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>驿寄梅花，鱼传尺素。砌成此恨无重数。</p>
+<p align="right">——秦观《踏莎行》</p>
+<a id="more"></a>
+## Collection 集合
+
+<h4 id="1-集合概述"><a href="#1-集合概述" class="headerlink" title="1. 集合概述"></a>1. 集合概述</h4><blockquote>
+<p>集合是java中提供的一种容器，可以用来存储多个多种数据。</p>
+<p>集合和数组既然都是容器，它们有啥区别呢？</p>
+<ol>
+<li><code>数组的长度是固定的。集合的长度是可变的。</code></li>
+<li>数组中存储的是同一类型的元素，可以存储基本数据类型值，集合存储的都是对象。而且对象的类型可以不一致。<code>在开发中一般当对象多的时候，使用集合进行存储。</code></li>
+</ol>
+</blockquote>
+<h4 id="2-集合框架"><a href="#2-集合框架" class="headerlink" title="2. 集合框架"></a>2. 集合框架</h4><blockquote>
+<p>集合按照其存储结构可以分为两大类，分别是</p>
+<ul>
+<li>单列集合 <code>java.util.Collection</code> </li>
+<li>双列集合 <code>java.util.Map</code> </li>
+</ul>
+<p><code>Collection</code>  ：单列集合类的根接口，用于存储一系列符合某种规则的元素，它有两个重要的子接口，分别是<code>java.util.List</code> 和 <code>java.util.Set</code> 。其中：</p>
+<ol>
+<li><code>List</code> 的特点是<strong>元素有序、元素可重复</strong>。<ul>
+<li><code>List</code>接口的主要实现类有<code>java.util.ArrayList</code> 和<code>java.util.LinkedList</code> </li>
+</ul>
+</li>
+<li><code>Set</code> 的特点是<strong>元素无序，而且不可重复</strong>。<ul>
+<li><code>Set</code> 接口的主要实现类有<code>java.util.HashSet</code>和 <code>java.util.TreeSet</code> 。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/1563690476704.png" alt="1563690476704"></p>
+<blockquote>
+<p>集合本身是一个工具，它存放在<code>java.util</code>包中。在 <code>Collection</code>接口定义着<code>单列集合框架中最最共性的内容。</code></p>
+</blockquote>
+<h4 id="3-Collection-常用方法"><a href="#3-Collection-常用方法" class="headerlink" title="3. Collection 常用方法"></a>3. Collection 常用方法</h4><blockquote>
+<p>Collection是所有单列集合的父接口，因此在Collection中定义了单列集合(List和Set)通用的一些方法，这些方法可</p>
+<p>用于操作所有的单列集合。方法如下：</p>
+<ul>
+<li><p><code>public boolean add(E e)</code> ： 把给定的对象添加到当前集合中 。</p>
+</li>
+<li><p><code>public void clear()</code> :清空集合中所有的元素。</p>
+</li>
+<li><p><code>public boolean remove(E e)</code> : 把给定的对象在当前集合中删除。</p>
+</li>
+<li><p><code>public boolean contains(E e)</code> : 判断当前集合中是否包含给定的对象。</p>
+</li>
+<li><p><code>public boolean isEmpty()</code> : 判断当前集合是否为空。</p>
+</li>
+<li><p><code>public int size()</code> : 返回集合中元素的个数。</p>
+</li>
+<li><p><code>public Object[] toArray()</code> : 把集合中的元素，存储到数组中。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCollection</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 创建集合对象</span></span><br><span class="line">        <span class="comment">// 使用多态形式</span></span><br><span class="line">        Collection&lt;String&gt; coll = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 使用方法</span></span><br><span class="line">        <span class="comment">// 添加功能 boolean add(String s)</span></span><br><span class="line">        coll.add(<span class="string">"小李广"</span>);</span><br><span class="line">        coll.add(<span class="string">"扫地僧"</span>);</span><br><span class="line">        coll.add(<span class="string">"石破天"</span>);</span><br><span class="line">        System.out.println(coll);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// boolean contains(E e) 判断o是否在集合中存在</span></span><br><span class="line">        System.out.println(<span class="string">"判断 扫地僧 是否在集合中 "</span>+coll.contains(<span class="string">"扫地僧"</span>));</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//boolean remove(E e) 删除在集合中的o元素</span></span><br><span class="line">        System.out.println(<span class="string">"删除石破天："</span>+coll.remove(<span class="string">"石破天"</span>));</span><br><span class="line">        System.out.println(<span class="string">"操作之后集合中元素:"</span>+coll);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// size() 集合中有几个元素</span></span><br><span class="line">        System.out.println(<span class="string">"集合中有"</span>+coll.size()+<span class="string">"个元素"</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Object[] toArray()转换成一个Object数组</span></span><br><span class="line">        Object[] objects = coll.toArray();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 遍历数组</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; objects.length; i++) &#123;</span><br><span class="line">            System.out.println(objects[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// void clear() 清空集合</span></span><br><span class="line">        coll.clear();</span><br><span class="line">        System.out.println(<span class="string">"集合中内容为："</span>+coll);</span><br><span class="line">            </span><br><span class="line">        <span class="comment">// boolean isEmpty() 判断是否为空</span></span><br><span class="line">        System.out.println(coll.isEmpty());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/1.Collection%E9%9B%86%E5%90%88%E6%A6%82%E8%BF%B0/">http://www.itbuild.cn/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/1.Collection%E9%9B%86%E5%90%88%E6%A6%82%E8%BF%B0/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/2.Java%E9%9B%86%E5%90%88%E5%9F%BA%E7%A1%80%E4%B9%8BIterator%E8%BF%AD%E4%BB%A3%E5%99%A8/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-集合/2.Java集合基础之Iterator迭代器</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E5%A4%9A%E7%BA%BF%E7%A8%8B/2.JavaSE-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%AF%A6%E8%A7%A3/"><span>JavaSE-多线程/2.JavaSE-线程池详解</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

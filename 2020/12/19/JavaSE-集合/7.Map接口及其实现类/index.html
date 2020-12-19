@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-集合/7.Map接口及其实现类"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-集合/7.Map接口及其实现类【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Map接口及其实现类"><span class="toc-text">Map接口及其实现类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Map接口介绍"><span class="toc-text">1. Map接口介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Map接口中常用方法"><span class="toc-text">2. Map接口中常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#元素的添加-、-删除、修改操作"><span class="toc-text">元素的添加 、 删除、修改操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#元素查询的操作"><span class="toc-text">元素查询的操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#遍历Map的三种方式☆"><span class="toc-text">遍历Map的三种方式☆</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Map接口的实现类"><span class="toc-text">3. Map接口的实现类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-HashMap集合"><span class="toc-text">3.1 HashMap集合</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#HashMap源码中的重要常量☆"><span class="toc-text">HashMap源码中的重要常量☆</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#HashMap的储存结构☆☆"><span class="toc-text">HashMap的储存结构☆☆</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#JDK7"><span class="toc-text">JDK7</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#JDK8"><span class="toc-text">JDK8</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#小结"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#HashMap存储自定义类型键值"><span class="toc-text">HashMap存储自定义类型键值</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Student-java"><span class="toc-text">Student.java</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#测试类HashMapTest"><span class="toc-text">测试类HashMapTest</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LinkedHashMap集合☆"><span class="toc-text">LinkedHashMap集合☆</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#LinkedHashMap的静态内部类Entry"><span class="toc-text">LinkedHashMap的静态内部类Entry</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-TreeMap集合"><span class="toc-text">3.2 TreeMap集合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-HashTable集合"><span class="toc-text">3.3 HashTable集合</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Properties类"><span class="toc-text">Properties类</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color1"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color5"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-集合/7.Map接口及其实现类</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-%E9%9B%86%E5%90%88/">JavaSE-集合</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>黯相望。断鸿声里，立尽斜阳。</p>
+<p align="right">——柳永《玉蝴蝶》</p>
+<a id="more"></a>
+
+
+<h1 id="Map接口及其实现类"><a href="#Map接口及其实现类" class="headerlink" title="Map接口及其实现类"></a>Map接口及其实现类</h1><h2 id="1-Map接口介绍"><a href="#1-Map接口介绍" class="headerlink" title="1. Map接口介绍"></a>1. Map接口介绍</h2><blockquote>
+<ol>
+<li>现实生活中，我们常会看到这样的一种集合：<code>IP</code>地址与主机名，身份证号与个人，系统用户名与系统用户对象等，这种<code>一一对应</code>的关系，就叫做映射。<code>Java</code>提供了专门的集合类用来存放这种对象关系的对象，即 <code>java.util.Map</code> 接口。</li>
+<li>Map与Collection并列存在。用于保存具有<code>映射关系的数据:key-value。</code></li>
+<li>Map 中的 key 和 value 都可以是任何引用类型的数据</li>
+<li><code>Map 中的 key 用Set来存放， 不允许重复，即同一个 Map 对象所对应的类，须重写hashCode()和equals()方法</code><ul>
+<li><code>常用String类作为Map的“键”。</code></li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/image-20201113172115578.png" alt="image-20201113172115578"></li>
+</ul>
+</li>
+<li>key 和 value 之间存在单向一对一关系，即通过指定的 key 总能找到唯一的、确定的 value。</li>
+<li>Map接口中的集合都有两个泛型变量,在使用时，要为两个泛型变量赋予数据类型。两个泛型变量的数据类型可以相同，也可以不同。</li>
+<li>Map接口的常用实现类：<code>HashMap</code>、<code>TreeMap</code>、<code>LinkedHashMap</code>和<code>Properties</code>。<code>其中HashMap是 Map 接口使用频率最高的实现类</code></li>
+</ol>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20201113230328581.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTI2NzEwMg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="2-Map接口中常用方法"><a href="#2-Map接口中常用方法" class="headerlink" title="2. Map接口中常用方法"></a>2. Map接口中常用方法</h2><h4 id="元素的添加-、-删除、修改操作"><a href="#元素的添加-、-删除、修改操作" class="headerlink" title="元素的添加 、 删除、修改操作"></a>元素的添加 、 删除、修改操作</h4><blockquote>
+<p><code>Object put(Object key,Object value)：</code>将指定key-value<code>添加到(或修改)</code>当前map对象中。</p>
+<p><code>void putAll(Map m):</code>将m中的所有key-value对存放到当前map中。</p>
+<p><code>Object remove(Object key)：</code>移除指定key的key-value对，并返回value。</p>
+<p><code>void clear()：</code>清空当前map中的所有数据。</p>
+</blockquote>
+<h4 id="元素查询的操作"><a href="#元素查询的操作" class="headerlink" title="元素查询的操作"></a>元素查询的操作</h4><blockquote>
+<p><code>Object get(Object key)：</code>获取指定key对应的value。</p>
+<p><code>boolean containsKey(Object key)：</code>是否包含指定的key。</p>
+<p><code>boolean containsValue(Object value)：</code>是否包含指定的value。</p>
+<p><code>int size()：</code>返回map中key-value对的个数。</p>
+<p><code>boolean isEmpty()：</code>判断当前map是否为空。</p>
+<p><code>boolean equals(Object obj)：</code>判断当前mp和参数对象obj是否相等。</p>
+</blockquote>
+<h4 id="遍历Map的三种方式☆"><a href="#遍历Map的三种方式☆" class="headerlink" title="遍历Map的三种方式☆"></a>遍历Map的三种方式☆</h4><blockquote>
+<p><code>public Set&lt;K&gt; keySet()</code> : 获取Map集合中所有的键，存储到Set集合中。</p>
+<ul>
+<li><p>获取<code>Map</code>中所有的键，由于键是唯一的，所以返回一个<code>Set</code>集合存储所有的键。方法提示: <code>keyset()</code></p>
+</li>
+<li><p>遍历键的<code>Set</code>集合，得到每一个键。</p>
+</li>
+<li><p>根据键，获取键所对应的值。方法提示: <code>get(K key)</code></p>
+</li>
+</ul>
+<p><code>Collection values()：</code>返回所有value构成的Collection集合</p>
+<p><code>public Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet()</code> : 获取到Map集合中所有的键值对对象的集合(Set集合)。</p>
+<ul>
+<li><p>我们已经知道， <code>Map</code> 中存放的是两种对象，一种称为key(键)，一种称为<code>value</code>(值)，它们在在 <code>Map</code> 中是一一对应关系，这一对对象又称做 <code>Map</code> 中的一个 <code>Entry</code>(项) 。 <code>Entry</code> 将键值对的对应关系封装成了对象。即键值对对象，这样我们在遍历 <code>Map</code> 集合时，就可以从每一个键值对（ <code>Entry</code> ）对象中获取对应的键与对应的值。既然<code>Entry</code>表示了一对键和值，那么也同样提供了获取对应键和对应值得方法：</p>
+</li>
+<li><p>Map集合不能直接使用迭代器或者foreach进行遍历。但是转成Set之后就可以使用了。</p>
+<ul>
+<li><p>public K getKey() ：获取Entry对象中的键。</p>
+</li>
+<li><p>public V getValue() ：获取Entry对象中的值。</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2020/11/13 17:29</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 10.21</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> DuanChaojie</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMap</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 集合初始化时，指定集合初始值大小</span></span><br><span class="line">        <span class="comment">// 说明:HashMap使用如下构造方法进行初始化，如果暂时无法确定集合大小，那么指定默认值（16）即可</span></span><br><span class="line">        Map map = <span class="keyword">new</span> HashMap();</span><br><span class="line">        <span class="comment">//map.put(..,..)省略</span></span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">"map的所有key:"</span>);</span><br><span class="line">        <span class="comment">// HashSet</span></span><br><span class="line">        Set keys = map.keySet();</span><br><span class="line">        <span class="keyword">for</span> (Object key : keys) &#123;</span><br><span class="line">            System.out.println(key + <span class="string">"-&gt;"</span> + map.get(key));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">"map的所有的value："</span>);</span><br><span class="line">        Collection values = map.values();</span><br><span class="line">        Iterator iter = values.iterator();</span><br><span class="line">        <span class="keyword">while</span> (iter.hasNext()) &#123;</span><br><span class="line">            System.out.println(iter.next());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">"map所有的映射关系："</span>);</span><br><span class="line">        <span class="comment">// 映射关系的类型是Map.Entry类型，它是Map接口的内部接口</span></span><br><span class="line">        Set mappings = map.entrySet();</span><br><span class="line">        <span class="keyword">for</span> (Object mapping : mappings) &#123;</span><br><span class="line">            Map.Entry entry = (Map.Entry) mapping;</span><br><span class="line">            System.out.println(<span class="string">"key是："</span> + entry.getKey() + <span class="string">"，value是："</span> + entry.getValue());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Map接口的实现类"><a href="#3-Map接口的实现类" class="headerlink" title="3. Map接口的实现类"></a>3. Map接口的实现类</h2><h3 id="3-1-HashMap集合"><a href="#3-1-HashMap集合" class="headerlink" title="3.1 HashMap集合"></a>3.1 HashMap集合</h3><blockquote>
+<ol>
+<li><code>HashMap是 Map 接口 使用频率最高的实现类。</code></li>
+<li>允许使用null键和null值，与HashSet一样，不保证映射的顺序。</li>
+<li><code>所有的key构成的集合是Set:无序的、不可重复的。所以，key所在的类要重写：equals()和hashCode()。</code></li>
+<li>所有的value构成的集合是Collection:无序的、可以重复的。<code>所以，value所在的类要重写：equals()。</code></li>
+<li>==一个key-value构成一个entry==</li>
+<li>所有的entry构成的集合是Set:无序的、不可重复的</li>
+<li>HashMap  <code>判断两个 key  相等的标准是</code>：两个 key 通过 equals() 方法返回 true，hashCode 值也相等。<ul>
+<li>因为key不允许有重复。</li>
+</ul>
+</li>
+<li>HashMap  <code>判断两个 value 相等的标准是</code>：两个 value 通过 equals() 方法返回 true。</li>
+</ol>
+</blockquote>
+<h5 id="HashMap源码中的重要常量☆"><a href="#HashMap源码中的重要常量☆" class="headerlink" title="HashMap源码中的重要常量☆"></a>HashMap源码中的重要常量☆</h5><blockquote>
+<ol>
+<li><p><code>DEFAULT_INITIAL_CAPACITY :</code> HashMap的默认容量，16</p>
+</li>
+<li><p><code>MAXIMUM_CAPACITY ：</code> HashMap的最大支持容量，2^30</p>
+</li>
+<li><p><code>DEFAULT_LOAD_FACTOR ：</code>HashMap的默认加载因子0.75</p>
+</li>
+<li><p><code>TREEIFY_THRESHOLD ：</code>Bucket中链表长度大于该默认值8，转化为红黑树</p>
+</li>
+<li><p><code>UNTREEIFY_THRESHOLD ：</code>Bucket中红黑树存储的Node小于该默认值6，转化为链表。</p>
+</li>
+<li><p><code>MIN_TREEIFY_CAPACITY ：</code>==桶中的Node被树化时最小的hash表容量==。（当桶中Node的数量大到需要变红黑树时，若hash表容量小于MIN_TREEIFY_CAPACITY时，此时应执行resize扩容操作这个MIN_TREEIFY_CAPACITY的值<code>（默认为64）</code>至少是TREEIFY_THRESHOLD的4倍。）</p>
+</li>
+<li><p><code>table ：</code>存储元素的数组，总是2的n次幂</p>
+</li>
+<li><p><code>entrySet：</code> 存储具体元素的集</p>
+</li>
+<li><p><code>size ：</code>HashMap中存储的键值对的数量</p>
+</li>
+<li><p><code>modCount ：</code>HashMap扩容和结构改变的次数。</p>
+</li>
+<li><p><code>threshold ：</code>扩容的临界值（吞吐临界值）12=容量*填充因子</p>
+</li>
+<li><p><code>loadFactor：</code> 填充比（负载因子）。</p>
+<ol>
+<li><p>负载因子值的大小，对HashMap有什么影响？</p>
+<ul>
+<li><p>负载因子的大小决定了HashMap的数据密度。</p>
+</li>
+<li><p>负载因子越大密度越大，发生碰撞的几率越高，数组中的链表越容易长,造成查询或插入时的比较次数增多，性能会下降。</p>
+</li>
+<li><p>负载因子越小，就越容易触发扩容，数据密度也越小，意味着发生碰撞的几率越小，数组中的链表也就越短，查询和插入时比较的次数也越小，性能会更高。但是会浪费一定的内容空间。而且经常扩容也会影响性能，建议初始化预设大一点的空间。</p>
+</li>
+<li><p>按照其他语言的参考及研究经验，会考虑将负载因子设置为0.7~0.75，此时平均检索长度接近于常数。</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h5 id="HashMap的储存结构☆☆"><a href="#HashMap的储存结构☆☆" class="headerlink" title="HashMap的储存结构☆☆"></a>HashMap的储存结构☆☆</h5><blockquote>
+<ol>
+<li>JDK 7及以前版本：HashMap是数组+链表结构(即为链地址法)。</li>
+<li>JDK 8版本发布以后：HashMap是数组+链表+红黑树实现。</li>
+</ol>
+</blockquote>
+<h6 id="JDK7"><a href="#JDK7" class="headerlink" title="JDK7"></a>JDK7</h6><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/image-20201113211938573.png" alt="image-20201113211938573"></p>
+<blockquote>
+<ol>
+<li><p>HashMap的内部存储结构其实是 数组和链表的结合。当实例化一个HashMap时，系统会创建一个长度为Capacity的Entry数组，这个长度在哈希表中被称为容量(Capacity)，在这个数组中可以存放元素的位置我们称之为“桶”(bucket)，每个bucket都有自己的索引，系统可以根据索引快速的查找bucket中的元素。</p>
+</li>
+<li><p>每个bucket中存储一个元素，即一个Entry对象，但每一个Entry对象可以带一个引用变量，用于指向下一个元素，因此，在一个桶中，就有可能生成一个Entry链。而且新添加的元素作为链表的head。</p>
+</li>
+<li><p>HashMap静态内部类Entry</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> K key;</span><br><span class="line">       V value;</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">       Entry&lt;K,V&gt; next;</span><br><span class="line">    	<span class="comment">// ....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>==添加元素的过程：==</p>
+<ol>
+<li>向HashMap中添加entry1(key，value)，需要首先计算entry1中key的哈希值(根据key所在类的hashCode()计算得到)，此哈希值经过处理以后，得到在底层Entry[]数组中要<code>存储的位置i</code>。</li>
+<li>如果位置i上没有元素，则entry1直接添加成功。如果位置i上已经存在entry2(或还有链表存在的entry3，entry4)，则需要通过循环的方法，依次比较entry1中key和其他的entry。如果彼此hash值不同，则直接添加成功。</li>
+<li>如果hash值不同，继续比较二者是否equals。如果返回值为true，则使用entry1的value<br>去替换equals为true的entry的value。</li>
+<li>如果遍历一遍以后，发现所有的equals返回都为false,则entry1仍可添加成功。entry1指向原有的entry元素。</li>
+</ol>
+</li>
+<li><p>==HashMap 的扩容：==</p>
+<ol>
+<li>当HashMap中的元素越来越多的时候，hash冲突的几率也就越来越高，因为数组的长度是固定的。所以为了提高查询的效率，就要对HashMap的数组进行扩容，<code>而在HashMap数组扩容之后，最消耗性能的点就出现了：原数组中的数据必须重新计算其在新数组中的位置，并放进去，这就是resize。</code></li>
+<li>那么HashMap 什么时候进行扩容呢 ？<ol>
+<li>当HashMap中的元素个数超过数组大小(数组总大小length,不是数组中个数size)loadFactor 时 ， 就 会 进 行 数 组 扩 容 ， loadFactor 的 默 认 值(DEFAULT_LOAD_FACTOR)为0.75，这是一个折中的取值。</li>
+<li>也就是说，默认情况下，数组大小(DEFAULT_INITIAL_CAPACITY)为16，那么当HashMap中元素个数超过<code>16*0.75=12</code>（这个值就是代码中的threshold值，也叫做临界值）的时候，就把数组的大小扩展为 2*16=32，即扩大一倍，然后重新计算每个元素在数组中的位置，而这是一个非常消耗性能的操作，<code>所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。</code></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h6 id="JDK8"><a href="#JDK8" class="headerlink" title="JDK8"></a>JDK8</h6><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E9%9B%86%E5%90%88/image-20201113212003964.png" alt="image-20201113212003964"></p>
+<blockquote>
+<ol>
+<li><p>HashMap的内部存储结构其实是 <code>数组+ 链表+ 树</code> 的结合。当实例化一个HashMap时，会初始化initialCapacity和loadFactor，在put第一对映射关系时，系统会创建一个长度为initialCapacity的<code>Node数组</code>，这个长度在哈希表中被称为容量(Capacity)，在这个数组中可以存放元素的位置我们称之为<br>“桶”(bucket)，每个bucket都有自己的索引，系统可以根据索引快速的查找bucket中的元素。</p>
+</li>
+<li><p><code>每个bucket中存储一个元素，即一个Node对象，</code>但每一个Node对象可以带一个引用变量next，用于指向下一个元素，<code>因此，在一个桶中，就有可能生成一个Node链。也可能是一个一个TreeNode对象，</code>每一个TreeNode对象可以有两个叶子结点left和right，因此，在一个桶中，就有可能生成一个TreeNode树。<code>而新添加的元素作为链表的last，或树的叶子结点。</code></p>
+</li>
+<li><p>HashMap的静态内部类Node</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">    <span class="keyword">final</span> K key;</span><br><span class="line">    V value;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br><span class="line">   </span><br><span class="line">    Node(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        <span class="keyword">this</span>.hash = hash;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> K <span class="title">getKey</span><span class="params">()</span>        </span>&#123; <span class="keyword">return</span> key; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">getValue</span><span class="params">()</span>      </span>&#123; <span class="keyword">return</span> value; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> key + <span class="string">"="</span> + value; &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.hashCode(key) ^ Objects.hashCode(value);</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">setValue</span><span class="params">(V newValue)</span> </span>&#123;</span><br><span class="line">        V oldValue = value;</span><br><span class="line">        value = newValue;</span><br><span class="line">        <span class="keyword">return</span> oldValue;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">this</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o <span class="keyword">instanceof</span> Map.Entry) &#123;</span><br><span class="line">            Map.Entry&lt;?,?&gt; e = (Map.Entry&lt;?,?&gt;)o;</span><br><span class="line">            <span class="keyword">if</span> (Objects.equals(key, e.getKey()) &amp;&amp;</span><br><span class="line">                Objects.equals(value, e.getValue()))</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>那么HashMap 什么时候进行扩容和树形化呢 ？</p>
+<ol>
+<li>当HashMap中的元素个数超过数组大小(数组总大小length,不是数组中个数size)loadFactor 时 ， 就会 进 行 数 组 扩 容 ， loadFactor 的 默 认 值(DEFAULT_LOAD_FACTOR)为0.75，这是一个折中的取值。也就是说，默认情况下，数组大小(DEFAULT_INITIAL_CAPACITY)为16，那么当HashMap中元素个数超过<code>16*0.75=12</code>（这个值就是代码中的threshold值，也叫做临界值）的时候，就把数组的大小扩展为 2*16=32，即扩大一倍，然后重新计算每个元素在数组中的位置，而这是一个非常消耗性能的操作，所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。</li>
+<li><code>当HashMap中的其中一个链的对象个数如果达到了8个，此时如果capacity没有达到64，那么HashMap会先扩容解决，如果已经达到了64，那么这个链会变成树，结点类型由Node变成TreeNode类型。当然，如果当映射关系被移除后，下次resize方法时判断树的结点个数低于6个，也会把树再转为链表。</code><ul>
+<li>如果不理解这段，可以看一下HashMap源码中的重要常量<code>MIN_TREEIFY_CAPACITY</code>。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>关于映射关系的key 是否可以修改 ？</p>
+<ul>
+<li><p>答案是：不要修改！</p>
+</li>
+<li><p><code>映射关系存储到HashMap中会存储key的hash值，这样就不用在每次查找时重新计算每一个Entry或Node（TreeNode）的hash值了，因此如果已经put到Map中的映射关系，再修改key的属性，而这个属性又参与hashcode值的计算，那么会导致匹配不上。</code></p>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h6 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h6><blockquote>
+<p><code>JDK1.8相较于之前的变化：</code></p>
+<ol>
+<li>HashMap map = new HashMap();//默认情况下，先不创建长度为16的数组。</li>
+<li><code>当首次调用map.put()时，再创建长度为16的数组。</code></li>
+<li><code>数组为Node类型，在jdk7中称为Entry类型。</code></li>
+<li><code>形成链表结构时，新添加的key-value对在链表的尾部（七上八下）。</code></li>
+<li><code>当数组指定索引位置的链表长度&gt;8时，且map中的数组的长度&gt; 64时，此索引位置上的所有key-value对使用红黑树进行存储。</code></li>
+</ol>
+</blockquote>
+<h5 id="HashMap存储自定义类型键值"><a href="#HashMap存储自定义类型键值" class="headerlink" title="HashMap存储自定义类型键值"></a>HashMap存储自定义类型键值</h5><blockquote>
+<ol>
+<li>每位学生（姓名，年龄）都有自己的家庭住址。那么，既然有对应关系，则将学生对象和家庭住址存储到<code>map</code>集合中。学生作为键, 家庭住址作为值。</li>
+<li>注意，学生姓名相同并且年龄相同视为同一名学生。</li>
+</ol>
+</blockquote>
+<h6 id="Student-java"><a href="#Student-java" class="headerlink" title="Student.java"></a>Student.java</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == o)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span> || getClass() != o.getClass())</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        Student student = (Student) o;</span><br><span class="line">        <span class="keyword">return</span> age == student.age &amp;&amp; Objects.equals(name, student.name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Objects.hash(name, age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="测试类HashMapTest"><a href="#测试类HashMapTest" class="headerlink" title="测试类HashMapTest"></a>测试类HashMapTest</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashMapTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1,创建Hashmap集合对象。</span></span><br><span class="line">        Map&lt;Student,String&gt;map = <span class="keyword">new</span> HashMap&lt;Student,String&gt;();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//2,添加元素。</span></span><br><span class="line">        map.put(newStudent(<span class="string">"lisi"</span>,<span class="number">28</span>), <span class="string">"上海"</span>);</span><br><span class="line">        map.put(newStudent(<span class="string">"wangwu"</span>,<span class="number">22</span>), <span class="string">"北京"</span>);</span><br><span class="line">        map.put(newStudent(<span class="string">"zhaoliu"</span>,<span class="number">24</span>), <span class="string">"成都"</span>);</span><br><span class="line">        map.put(newStudent(<span class="string">"zhouqi"</span>,<span class="number">25</span>),<span class="string">"广州"</span>);</span><br><span class="line">        map.put(newStudent(<span class="string">"wangwu"</span>,<span class="number">22</span>), <span class="string">"南京"</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//3,取出元素。键找值方式</span></span><br><span class="line">        Set&lt;Student&gt;keySet = map.keySet();</span><br><span class="line">        <span class="keyword">for</span>(Student key: keySet)&#123;</span><br><span class="line">            Stringvalue = map.get(key);</span><br><span class="line">            System.out.println(key.toString()+<span class="string">"....."</span>+value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li><p>当给<code>HashMap</code>中存放自定义对象时，如果自定义对象作为<code>key</code>存在，这时要保证对象唯一，必须复写对象的<code>hashCode</code>和<code>equals</code>方法(如果忘记，请回顾<code>HashSet</code>存放自定义对象)。</p>
+</li>
+<li><p>如果要保证<code>map</code>中存放的<code>key</code>和取出的顺序一致，可以使用 <code>java.util.LinkedHashMap</code> 集合来存放。</p>
+</li>
+</ol>
+</blockquote>
+<h5 id="LinkedHashMap集合☆"><a href="#LinkedHashMap集合☆" class="headerlink" title="LinkedHashMap集合☆"></a>LinkedHashMap集合☆</h5><blockquote>
+<ol>
+<li>我们知道HashMap保证成对元素唯一，并且查询速度很快，可是成对元素存放进去是没有顺序的，那么我们要保证有序，还要速度快怎么办呢？</li>
+<li>LinkedHashMap 是 HashMap 的子类，它是链表和哈希表组合的一个数据存储结构。</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedHashMapDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LinkedHashMap&lt;String, String&gt; map = <span class="keyword">new</span> LinkedHashMap&lt;String, String&gt;();</span><br><span class="line">        map.put(<span class="string">"邓超"</span>, <span class="string">"孙俪"</span>);</span><br><span class="line">        map.put(<span class="string">"李晨"</span>, <span class="string">"范冰冰"</span>);</span><br><span class="line">        map.put(<span class="string">"刘德华"</span>, <span class="string">"朱丽倩"</span>);</span><br><span class="line">        Set&lt;Entry&lt;String, String&gt;&gt; entrySet = map.entrySet();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (Entry&lt;String, String&gt; entry : entrySet) &#123;</span><br><span class="line">            System.out.println(entry.getKey() + <span class="string">" "</span> + entry.getValue());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>结果：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">邓超 孙俪</span><br><span class="line">李晨 范冰冰</span><br><span class="line">刘德华 朱丽倩</span><br></pre></td></tr></table></figure>
+
+<h6 id="LinkedHashMap的静态内部类Entry"><a href="#LinkedHashMap的静态内部类Entry" class="headerlink" title="LinkedHashMap的静态内部类Entry"></a>LinkedHashMap的静态内部类Entry</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">HashMap</span>.<span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    Entry&lt;K,V&gt; before, after;</span><br><span class="line">    Entry(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        <span class="keyword">super</span>(hash, key, value, next);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-TreeMap集合"><a href="#3-2-TreeMap集合" class="headerlink" title="3.2 TreeMap集合"></a>3.2 TreeMap集合</h3><blockquote>
+<ol>
+<li>TreeMap存储 Key-Value 对时，需要根据 key-value 对进行排序。TreeMap 可以保证所有的 Key-Value 对处于有序状态。</li>
+<li>TreeSet底层使用 <a href="https://blog.csdn.net/weixin_45267102/article/details/108424364" target="_blank" rel="noopener">红黑树</a> 结构存储数据。</li>
+<li><a href="https://blog.csdn.net/weixin_45267102/article/details/109678514" target="_blank" rel="noopener">TreeMap 的 Key 的排序：</a><ul>
+<li><code>自然排序：</code>TreeMap 的所有的 Key 必须实现 Comparable 接口，而且所有的 Key 应该是同一个类的对象，否则将会抛出 ClasssCastException。</li>
+<li><code>定制排序：</code>创建 TreeMap 时，传入一个 Comparator 对象，该对象负责对TreeMap 中的所有 key 进行排序。此时不需要 Map 的 Key 实现Comparable 接口</li>
+</ul>
+</li>
+<li><code>TreeMap判断两个key 相等的标准：两个key通过compareTo()方法或者compare()方法返回0。</code></li>
+</ol>
+</blockquote>
+<h3 id="3-3-HashTable集合"><a href="#3-3-HashTable集合" class="headerlink" title="3.3 HashTable集合"></a>3.3 HashTable集合</h3><blockquote>
+<ol>
+<li>HashTable是个古老的 Map 实现类，JDK1.0就提供了。<code>不同于HashMap，Hashtable是线程安全的。</code></li>
+<li>Hashtable实现原理和HashMap相同，功能相同。底层都使用哈希表结构，查询速度快，很多情况下可以互用。</li>
+<li><code>与HashMap不同，Hashtable 不允许使用 null 作为 key 和 value</code></li>
+<li>与HashMap一样，Hashtable 也不能保证其中 Key-Value 对的顺序</li>
+<li>Hashtable判断两个key相等、两个value相等的标准，与HashMap一致。</li>
+</ol>
+</blockquote>
+<h5 id="Properties类"><a href="#Properties类" class="headerlink" title="Properties类"></a>Properties类</h5><blockquote>
+<ol>
+<li><p>Properties 类是 Hashtable 的子类，该对象用于处理属性文件由于属性文件里的 key、value 都是字符串类型，所以 Properties 里的 key和 value 都是字符串类型</p>
+</li>
+<li><p>存取数据时，建议使用<code>setProperty(String key,String value)方法</code>和<code>getProperty(String key)方法。</code></p>
+</li>
+<li><pre><code class="java">Properties pros = <span class="keyword">new</span> Properties();
+pros.load(<span class="keyword">new</span> FileInputStream(<span class="string">"jdbc.properties"</span>));
+String user = pros.getProperty(<span class="string">"user"</span>);
+System.out.println(user);</code></pre>
+</li>
+</ol>
+</blockquote>
+<h1 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h1></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/7.Map%E6%8E%A5%E5%8F%A3%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0%E7%B1%BB/">http://www.itbuild.cn/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/7.Map%E6%8E%A5%E5%8F%A3%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0%E7%B1%BB/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/8.JDK8%E6%96%B0%E7%89%B9%E6%80%A7--Stream%20API/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-集合/8.JDK8新特性--Stream API</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E9%9B%86%E5%90%88/6.Set%E6%8E%A5%E5%8F%A3%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0%E7%B1%BB/"><span>JavaSE-集合/6.Set接口及其实现类</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

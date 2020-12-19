@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/3.JVM发展历程"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/3.JVM发展历程【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM发展历程"><span class="toc-text">JVM发展历程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sun-Classic-VM"><span class="toc-text">Sun Classic VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Exact-VM"><span class="toc-text">Exact VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HotSpot-VM-☆☆"><span class="toc-text">HotSpot VM ☆☆</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HotSpot-历史"><span class="toc-text">HotSpot 历史</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HostSpot-简介☆"><span class="toc-text">HostSpot 简介☆</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JRockit-VM"><span class="toc-text">JRockit VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#J9-VM"><span class="toc-text">J9 VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KVM-和-CDC-CLDC-Hotspot"><span class="toc-text">KVM 和 CDC&#x2F;CLDC Hotspot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Azul-VM"><span class="toc-text">Azul VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Liquid-VM"><span class="toc-text">Liquid VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Harmony"><span class="toc-text">Apache Harmony</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Microsoft-JVM"><span class="toc-text">Microsoft JVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Taobao-JVM"><span class="toc-text">Taobao JVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dalvik-VM"><span class="toc-text">Dalvik VM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Graal-VM"><span class="toc-text">Graal VM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color4"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color9"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/3.JVM发展历程</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>黯相望。断鸿声里，立尽斜阳。</p>
+<p align="right">——柳永《玉蝴蝶》</p>
+<a id="more"></a>
+
+
+<h2 id="JVM发展历程"><a href="#JVM发展历程" class="headerlink" title="JVM发展历程"></a>JVM发展历程</h2><h3 id="Sun-Classic-VM"><a href="#Sun-Classic-VM" class="headerlink" title="Sun Classic VM"></a>Sun Classic VM</h3><blockquote>
+<ol>
+<li>早在1996年Java 1.0 版本的时候，Sun公司发布了一款名为sun Classic VM的Java虚拟机，它同时也是世界上第一款商用Java虚拟机，JDK1.4时完全被淘汰。</li>
+<li>这款虚拟机内部只提供解释器。</li>
+<li>如果使用<code>JIT编译器</code>，就需要进行外挂。但是一旦使用了JIT编译器，JIT就会接管虚拟机的执行系统。解释器就不再工作。解释器和编译器不能配合工作。</li>
+<li>现在hotspot内置了此虚拟机。</li>
+</ol>
+</blockquote>
+<h3 id="Exact-VM"><a href="#Exact-VM" class="headerlink" title="Exact VM"></a>Exact VM</h3><blockquote>
+<ol>
+<li>为了解决上一个虚拟机问题，jdk1.2时，sun提供了此虚拟机。<code>Exact Memory Management：准确式内存管理</code></li>
+<li><code>也可以叫Non-Conservative/Accurate Memory Management</code></li>
+<li>虚拟机可以知道内存中某个位置的数据具体是什么类型。</li>
+<li>具备现代高性能虚拟机的雏形<ul>
+<li>热点探测</li>
+<li><code>编译器与解释器混合工作模式</code></li>
+</ul>
+</li>
+<li>只在Solaris平台短暂使用，其他平台上还是classic vm<ul>
+<li>英雄气短，终被Hotspot虚拟机替换</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="HotSpot-VM-☆☆"><a href="#HotSpot-VM-☆☆" class="headerlink" title="HotSpot VM ☆☆"></a>HotSpot VM ☆☆</h3><h4 id="HotSpot-历史"><a href="#HotSpot-历史" class="headerlink" title="HotSpot 历史"></a>HotSpot 历史</h4><blockquote>
+<ol>
+<li>最初由一家名为<code>“Longview Technologies&quot;</code>的小公司设计。</li>
+<li>1997年，此公司被sun收购; </li>
+<li>2009年，sun公司被甲骨文收购。</li>
+<li>JDK1.3时，HotSpot VM成为默认虚拟机。</li>
+</ol>
+</blockquote>
+<h4 id="HostSpot-简介☆"><a href="#HostSpot-简介☆" class="headerlink" title="HostSpot 简介☆"></a>HostSpot 简介☆</h4><blockquote>
+<ol>
+<li><p>目前Hotspot占有绝对的市场地位，称霸武林。</p>
+</li>
+<li><p>不管是现在仍在广泛使用的 JDK6，还是使用比例较多的 JDK8 中，默认的虚拟机都是HotSpot</p>
+</li>
+<li><p>Sun/Oracle JDK 和openJDK的默认虚拟机。</p>
+</li>
+<li><p>因此本课程中默认介绍的虚拟机都是HotSpot，相关机制也主要是指Hotspot的GC机制。(比如其他两个商用虚拟机都没有方法区的概念）</p>
+</li>
+<li><p><code>从服务器、桌面到移动端、嵌入式都有应用。</code></p>
+</li>
+<li><p><code>名称中的HotSpot指的就是它的热点代码探测技术。</code></p>
+<ul>
+<li><p>通过计数器找到最具编译价值代码，触发即时编译或栈上替换</p>
+</li>
+<li><p>通过编译器与解释器协同工作，在最优化的程序响应时间与最佳执行性能中取得平衡</p>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="JRockit-VM"><a href="#JRockit-VM" class="headerlink" title="JRockit VM"></a>JRockit VM</h3><blockquote>
+<ol>
+<li>BEA 的 JRockit专注于服务器端应用。</li>
+<li>它可以不太关注程序启动速度，因此<code>JRockit</code>内部不包含解析器实现，<code>全部代码都靠即时编译器编译后执行。</code></li>
+<li><code>大量的行业基准测试显示，JRockit JVM是世界上最快的JVM。</code><ul>
+<li>使用JRockit产品，客户已经体验到了显著的性能提高（一些超过了70%）和硬件成木的减少（达50%）。</li>
+</ul>
+</li>
+<li><code>优势:全面的Java运行时解决方案组合。</code></li>
+<li>JRockit面向延迟敏感型应用的解决方案JRockit Real Time提供以毫秒或微秒级的JVM响应时间，适合财务、军事指挥、电信网络的需要Missioncontrol服务套件，它是一组以极低的开销来监控、管理和分析生产环境中的应用程序的工具。</li>
+<li><code>2008年，BEA被oracle收购。</code></li>
+<li><code>oracle表达了整合两大优秀虚拟机的工作，大致在JDK8中完成。整合的方式是在HotSpot的基础上，移植JRockit的优秀特性。</code></li>
+</ol>
+</blockquote>
+<h3 id="J9-VM"><a href="#J9-VM" class="headerlink" title="J9 VM"></a>J9 VM</h3><blockquote>
+<ol>
+<li>全称:IBM Technology for Java Virtual Machine，<code>简称IT4J</code>，<code>内部代号:J9</code>。</li>
+<li>市场定位与HotSpot接近，服务器端、桌面应用、嵌入式等多用途VM、</li>
+<li><code>广泛用于IBM的各种Java产品。</code></li>
+<li>目前，有影响力的三大商用服务器之一，<code>也号称是世界上最快的Java虚拟机。（在自己公司的产品）</code></li>
+<li><code>2017年左右，IBM发布了开源J9 VM</code>，命名为openJ9，交给Eclipse基金会管理，也称为Ecilpse openJ9</li>
+</ol>
+</blockquote>
+<h3 id="KVM-和-CDC-CLDC-Hotspot"><a href="#KVM-和-CDC-CLDC-Hotspot" class="headerlink" title="KVM 和 CDC/CLDC Hotspot"></a>KVM 和 CDC/CLDC Hotspot</h3><blockquote>
+<ol>
+<li><p><code>Oracle在Java ME产品线上的两款虚拟机为：CDC/CLDC HotSpot Implementation VM</code></p>
+</li>
+<li><p>KVM（Kilobyte）是CLDC-HI早期产品目前移动领域地位尴尬，智能手机被Android 和 IOS二分天下。KVM简单、轻量、高度可移植，面向更低端的设备上还维持自己的一片市场</p>
+<ul>
+<li><p>智能控制器、传感器。</p>
+</li>
+<li><p>老人手机、经济欠发达地区的功能手机。</p>
+</li>
+</ul>
+</li>
+<li><p>所有的虚拟机的原则:一次编译，到处运行。</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="Azul-VM"><a href="#Azul-VM" class="headerlink" title="Azul VM"></a>Azul VM</h3><blockquote>
+<ol>
+<li><code>前面三大“高性能Java虚拟机”使用在通用硬件平台上。</code></li>
+<li>这里Azul VM和 BEA Liquid VM是与特定硬件平台绑定、软硬件配合的专有虚拟机。<ul>
+<li><code>高性能Java虚拟机中的战斗机。</code></li>
+</ul>
+</li>
+<li>Azul VM是Azul Systems公司在HotSpot基础上进行大量改进，运行于Azul systems公司的专有硬件Vega系统上的Java虚拟机。</li>
+<li><code>每个Azul VM实例都可以管理至少数十个CPU和数百GB内存的硬件资源，并提供在巨大内存范围内实现可控的cc时间的垃圾收集器、专有硬件优化的线程调度等优秀特性。</code></li>
+<li>2010年，Azul systems公司开始从硬件转向软件，发布了自己的<a href="https://blog.csdn.net/21aspnet/article/details/88667880" target="_blank" rel="noopener">Zing JVM</a>，可以在通用x86平台上提供接近于Vega系统的特性。</li>
+</ol>
+</blockquote>
+<h3 id="Liquid-VM"><a href="#Liquid-VM" class="headerlink" title="Liquid VM"></a>Liquid VM</h3><blockquote>
+<ol>
+<li>高性能 Java 虚拟机中的战斗机。</li>
+<li>BEA公司开发的，直接运行在自家Hypervisor系统上</li>
+<li>Liquid VM即是现在的<code>JRockit VE (Virtual Edition)</code>,Liquid VM不需要操作系统的支持，或者说它自己本身实现了一个专用操作系统的必要功能，如线程调度、文件系统、网络支持等。</li>
+<li>随着JRockit虚拟机终止开发，Liquid VM项目也停止了。</li>
+</ol>
+</blockquote>
+<h3 id="Apache-Harmony"><a href="#Apache-Harmony" class="headerlink" title="Apache Harmony"></a>Apache Harmony</h3><blockquote>
+<ol>
+<li>Apache也曾经推出过与JDK 1.5和JDK 1.6兼容的Java运行平台Apache Harmony。</li>
+<li><code>它是IBM和Intel联合开发的开源JVM，受到同样开源的openJDK的压制，sun坚决不让Harmony获得JCP认证，最终于2011年退役，IBM转而参与openJDK</code></li>
+<li>虽然目前并没有Apache Harmony被大规模商用的案例，但是它的Java类库代码吸纳进了Android SDK。</li>
+</ol>
+</blockquote>
+<h3 id="Microsoft-JVM"><a href="#Microsoft-JVM" class="headerlink" title="Microsoft JVM"></a>Microsoft JVM</h3><blockquote>
+<ol>
+<li>微软为了在IE3浏览器中支持Java Applets，开发了Microsoft JVM。</li>
+<li>只能在window平台下运行。但确是当时windows下性能最好的Java VM。</li>
+<li>1997年，sun以侵犯商标、不正当竞争罪名指控微软成功，赔了sun很多钱。微软在Windows XP SP3中抹掉了其VM。现在windows上安装的jdk都是HotSpot。</li>
+</ol>
+</blockquote>
+<h3 id="Taobao-JVM"><a href="#Taobao-JVM" class="headerlink" title="Taobao JVM"></a>Taobao JVM</h3><blockquote>
+<ol>
+<li><p><code>由AliJVM团队发布。</code>阿里，国内使用Java最强大的公司，覆盖云计算、金融、物流、电商等众多领域，需要解决高并发、高可用、分布式的复合问题。有大量的开源产品。</p>
+</li>
+<li><p>基于openJDK开发了自己的定制版木Alibaba JDK，简称AJDK。是整个阿里Java体系的基石。</p>
+</li>
+<li><p><code>基于openJDK HotSpot VM发布的国内第一个优化、深度定制且开源的高性能服务器版Java虚拟机。</code></p>
+<ul>
+<li><p>创新的GCIH (GC invisible heap）技术实现了off-heap ，<code>即将生命周期较长的Java对象从heap中移到heap之外，并且GC不能管理GCIH内部的Java对象，以此达到降低GC的回收频率和提升Gc的回收效率的目的。</code></p>
+</li>
+<li><p><code>GCIH中的对象还能够在多个Java虚拟机进程中实现共享</code></p>
+</li>
+<li><p>使用crc32指令实现JVM intrinsic降低JN工的调用开销</p>
+</li>
+<li><p>PMU hardware的Java profiling tool 和诊断协助功能</p>
+</li>
+<li><p>针对大数据场景的ZenGC</p>
+</li>
+</ul>
+</li>
+<li><p>taobao vm应用在阿里产品上性能高，硬件严重依赖intel的cpu，损失了兼容性，但提高了性能</p>
+<ul>
+<li>目前已经在淘宝、天猫上线，把Oracle官方JVM版木全部替换了。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="Dalvik-VM"><a href="#Dalvik-VM" class="headerlink" title="Dalvik VM"></a>Dalvik VM</h3><blockquote>
+<ol>
+<li>谷歌开发的，应用于Android系统，并在Android2.2中提供了JIT，发展迅猛。</li>
+<li><code>Dalvik VM只能称作虚拟机，而不能称作“Java虚拟机”</code>，它没有遵循Java虚拟机规范。</li>
+<li>不能直接执行Java的class文件。</li>
+<li><code>基于寄存器架构，不是jvm的栈架构。</code></li>
+<li><code>执行的是编译以后的dex (Dalvik Executable）文件。</code>执行效率比较高。</li>
+<li>它执行的dex(Dalvik Executable）文件可以通过class文件转化而来，使用Java语法编写应用程序，可以直接使用大部分的Java API等。</li>
+<li><code>Android 5.o使用支持提前编译(Ahead of Time Compilation，AOT)的 ART VM替换Dalvik VM。</code></li>
+</ol>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200910213405652.png" alt="image-20200910213405652"></p>
+</blockquote>
+<h3 id="Graal-VM"><a href="#Graal-VM" class="headerlink" title="Graal VM"></a>Graal VM</h3><blockquote>
+<ol>
+<li>2018年4月，oracle Labs公开了Graal VM，号称 <code>&quot;Run Programs Faster Anywhere&quot;</code>，勃勃野心。与1995年java的 <code>”write once，run anywhere&quot;</code> 遥相呼应。</li>
+<li>Graal VM在HotSpot VM基础上增强而成的跨语言全栈虚拟机，可以作为“任何语言”的运行平台使用。语言包括: Java、scala、Groovy、Kotlin、C、C++、Javascript、Ruby、Python、R等。</li>
+<li>支持不同语言中混用对方的接口和对象，支持这些语言使用已经编写好的本地库文件工作原理是将这些语言的源代码或源代码编译后的中间格式，通过解释器转换为能被Graal VM接受的中间表示。Graal VM提供Truffle工具集快速构建面向一种新语言的解释器。在运行时还能进行即时编译优化，获得比原生编译器更优秀的执行效率。</li>
+<li><code>如果说HotSpot有一天真的被取代，Graal VM希望最大</code>。但是Java的软件生态没有丝毫变化。</li>
+</ol>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/3.JVM%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/3.JVM%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/4.JVM-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/4.JVM-类加载子系统</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/2.JVM%E6%9E%B6%E6%9E%84%E5%8F%8A%E5%85%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"><span>JavaSE-JVM/2.JVM架构及其生命周期</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

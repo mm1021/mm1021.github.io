@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE/09.Java常用基础类"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE/09.Java常用基础类【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java中常用基础类"><span class="toc-text">Java中常用基础类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-API"><span class="toc-text">1. API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Scanner类"><span class="toc-text">2. Scanner类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Random类"><span class="toc-text">3. Random类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-String类"><span class="toc-text">4. String类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-创建字符串对象的方式"><span class="toc-text">4.1 创建字符串对象的方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-字符串常量"><span class="toc-text">4.2 字符串常量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-字符串类常用方法"><span class="toc-text">4.3 字符串类常用方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Arrays类"><span class="toc-text">5. Arrays类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Math类"><span class="toc-text">6. Math类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-ArrayList类"><span class="toc-text">7. ArrayList类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-引入——数组的特点"><span class="toc-text">7.1 引入——数组的特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-ArrayList基础"><span class="toc-text">7.1 ArrayList基础</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Date类"><span class="toc-text">8. Date类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-DateFormat-类"><span class="toc-text">9. DateFormat 类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#9-1-请使用日期时间相关的API，计算出一个人已经出生了多少天。"><span class="toc-text">9.1 请使用日期时间相关的API，计算出一个人已经出生了多少天。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Calendar-类"><span class="toc-text">10. Calendar 类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-System类"><span class="toc-text">11. System类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color1"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color1"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE/09.Java常用基础类</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE/">JavaSE</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>今年花胜去年红。可惜明年花更好，知与谁同？</p>
+<p align="right">——欧阳修《浪淘沙》</p>
+<a id="more"></a>
+[TOC]
+
+<h1 id="Java中常用基础类"><a href="#Java中常用基础类" class="headerlink" title="Java中常用基础类"></a>Java中常用基础类</h1><h2 id="1-API"><a href="#1-API" class="headerlink" title="1. API"></a>1. API</h2><blockquote>
+<p><strong>API</strong>(Application Programming Interface)，<strong>应用程序编程接口</strong>。Java API是一本程序员的 字典 ，是JDK中提供给我们使用的类的说明文档。这些类将底层的代码实现封装了起来，我们不需要关心这些类是如何实现的，只需要学习这些类如何使用即可。所以我们可以通过查询API的方式，来学习Java提供的类，并得知如何使用它们。</p>
+<ul>
+<li>Java中的API，就是JDK提供的各种功能的Java类。</li>
+<li>JDK帮助文 JAVA_API_CN.chm</li>
+<li>官网地址：<a href="http://www.oracle.com/technetwork/java/api-141528.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/api-141528.html</a></li>
+</ul>
+</blockquote>
+<h2 id="2-Scanner类"><a href="#2-Scanner类" class="headerlink" title="2. Scanner类"></a>2. Scanner类</h2><blockquote>
+<ol>
+<li><p>Scanner类一个可以解析基本类型和字符串的简单文本扫描器,扫描控制台的输入,带入到程序中。(输入的内容，不管你输入的是什么，扫描器拿到的全部都是字符串，然后进行的强制的类型转换.)</p>
+</li>
+<li><p>我们在使用Idea开发的时候，常用的junit的测试但是IntelliJ IDEA控制台junit不能用Scanner输入。如果想要使用它，需要进行一下配置：<a href="https://blog.csdn.net/u010999809/article/details/88733014" target="_blank" rel="noopener">解决IntelliJ IDEA控制台junit不能用Scanner输入</a></p>
+</li>
+<li><p><strong>System.in获取键盘输入的数据流 系统输入指的是通过键盘录入数据。</strong></p>
+</li>
+<li><p>Scanner类常用的方法：</p>
+<ol>
+<li><strong><code>scanner.nextInt();</code></strong> 获取一个整型的数据</li>
+<li><strong><code>scanner.next();</code></strong> 获取的是字符串–next()方法读取到空白符就结束；</li>
+<li><strong><code>scanner.nextLine();</code></strong> nextLine一次读取一行–nextLine()读取到回车结束也就是“\r”</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建一个扫描器。System.in获取键盘输入的数据流</span></span><br><span class="line">    Scanner scanner = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> num = scanner.nextInt();<span class="comment">//获取一个整型的数据</span></span><br><span class="line">    System.out.println(<span class="string">"num = "</span> + num);</span><br><span class="line">    </span><br><span class="line">    String str = scanner.next();<span class="comment">//.next获取的是字符串。</span></span><br><span class="line">    System.out.println(<span class="string">"str = "</span> + str);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**   </span></span><br><span class="line"><span class="comment">    next()方法读取到空白符就结束；nextLine()读取到回车结束也就是“\r”</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    </span><br><span class="line">    String str1 = scanner.nextLine();<span class="comment">//nextLine一次读取一行。</span></span><br><span class="line">    System.out.println(<span class="string">"str1 = "</span> + str1);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Random类"><a href="#3-Random类" class="headerlink" title="3. Random类"></a>3. Random类</h2><blockquote>
+<p>Random类常用方法:</p>
+<ol>
+<li><strong><code>random.nextInt();</code></strong> 在int值范围生成随机数</li>
+<li><strong><code>random.nextInt(521);</code></strong>  [0,521)</li>
+<li><strong><code>random.nextInt(10) + 20;</code></strong>[20,30)</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Random r = new Random();</span></span><br><span class="line"><span class="comment"> * 获取一个int类型的随机数，（作用范围是int的范围） int num = r.nextInt();</span></span><br><span class="line"><span class="comment"> * 如果获取一个int类型的随机数（作为范围0-3之间。[0,3)） int num = r.nextInt(3);</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//创建一个Random对象，注意Math有一个random()方法</span></span><br><span class="line">    Random random = <span class="keyword">new</span> Random();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> num1 = random.nextInt();<span class="comment">//在int值范围生成随机数</span></span><br><span class="line">    System.out.println(<span class="string">"num1 = "</span> + num1);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> num2 = random.nextInt(<span class="number">521</span>);<span class="comment">//[0,521)</span></span><br><span class="line">    System.out.println(<span class="string">"num2 = "</span> + num2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> num = random.nextInt(<span class="number">10</span>);<span class="comment">//[0,10)</span></span><br><span class="line">        System.out.println(<span class="string">"num = "</span> + num);</span><br><span class="line">     &#125;</span><br><span class="line">    </span><br><span class="line">   </span><br><span class="line">    <span class="comment">//3-8 [3,8)  -3   [0,5) random.nextInt(5) + 3;</span></span><br><span class="line">    <span class="keyword">int</span> num3 = random.nextInt(<span class="number">5</span>) + <span class="number">3</span>;</span><br><span class="line">    System.out.println(<span class="string">"num3 = "</span> + num3);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//20-30     [20,30)</span></span><br><span class="line">    <span class="keyword">int</span> num4 = random.nextInt(<span class="number">10</span>) + <span class="number">20</span>;</span><br><span class="line">    System.out.println(<span class="string">"num4 = "</span> + num4);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>二分法猜数字：1-100以内的一个数字。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    Random random = <span class="keyword">new</span> Random();</span><br><span class="line">    <span class="keyword">int</span> num1 = random.nextInt(<span class="number">100</span>) + <span class="number">1</span>;<span class="comment">//[1,100)</span></span><br><span class="line">    Scanner scanner = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        System.out.println(<span class="string">"请输入你第"</span> + (i++) + <span class="string">"次猜测的值："</span>);</span><br><span class="line">        <span class="keyword">int</span> num2 = scanner.nextInt();</span><br><span class="line">        <span class="keyword">if</span> (num1 == num2) &#123;</span><br><span class="line">            System.out.println(<span class="string">"恭喜你猜了"</span> + i + <span class="string">"猜对了，随机值为："</span> + num1);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (num1 &gt; num2) &#123;</span><br><span class="line">            System.out.println(<span class="string">"猜小了"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"猜大了"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-String类"><a href="#4-String类" class="headerlink" title="4. String类"></a>4. String类</h2><blockquote>
+<p>String 类代表字符串，Java 程序中的所有字符串字面值（如 “abc” ）都作为此类的实例实现。程序中所有用双引号引起来的字符串，都是String的对象。（就算没有写new ,也是String类的对象）</p>
+<p><strong>特点：</strong></p>
+<ol>
+<li><p>字符串的内容永不可变。</p>
+</li>
+<li><p>因为字符串的内容不可以改变。所以字符串是可以共享使用的。</p>
+</li>
+<li><p>字符串从效果上来说的话有点类似于char[],<strong>但是底层的实现用的是byte[];</strong></p>
+</li>
+</ol>
+</blockquote>
+<h4 id="4-1-创建字符串对象的方式"><a href="#4-1-创建字符串对象的方式" class="headerlink" title="4.1 创建字符串对象的方式"></a>4.1 创建字符串对象的方式</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一种创建字符串等方式：创建一个空白字符串 </span></span><br><span class="line">String  str  =  <span class="keyword">new</span>  String();</span><br><span class="line"></span><br><span class="line"><span class="comment">//第二种创建字符串的方式：创建一个byte[]的字符串</span></span><br><span class="line"><span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[]&#123;<span class="number">97</span>, <span class="number">98</span>, <span class="number">99</span>, <span class="number">100</span>&#125;;</span><br><span class="line"> String str1 = <span class="keyword">new</span> String(bytes);</span><br><span class="line"></span><br><span class="line"><span class="comment">//第三种创建字符串的方式： 根据字符数组的内容，创建一个对应的字符串。</span></span><br><span class="line"><span class="keyword">char</span>[] chars = <span class="keyword">new</span> <span class="keyword">char</span>[] &#123;<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>&#125;;</span><br><span class="line"> String str2 = <span class="keyword">new</span> String(chars);</span><br><span class="line"></span><br><span class="line"><span class="comment">//第四种创建字符串的方式：字面量的方式创建,右边直接使用双引号的形式</span></span><br><span class="line">String  str = <span class="string">"hello"</span>；</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-2-字符串常量"><a href="#4-2-字符串常量" class="headerlink" title="4.2 字符串常量"></a>4.2 字符串常量</h4><blockquote>
+<p>字符串常量池：程序中直接写上上引号的字符串，就存储在字符串常量池中。</p>
+<ul>
+<li><p>如果是基本数据类型：== 比较的数值</p>
+</li>
+<li><p>如果是引用数据类型：== 比较的是内存地址。</p>
+</li>
+<li><p>String 专门给我们提供了一个方法用于字符串的比较：</p>
+<ul>
+<li>使用equals方法来完成字符串的比较。字符串使用equals比较的时候，比较是字符串里面的每一个字符。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="4-3-字符串类常用方法"><a href="#4-3-字符串类常用方法" class="headerlink" title="4.3 字符串类常用方法"></a>4.3 字符串类常用方法</h4><blockquote>
+<ul>
+<li><p><strong>.length();</strong>                                        //获得字符串的长度</p>
+</li>
+<li><p><strong>str1.concat(String str2);</strong>              //字符串的拼接一般不用，因为和“+”效果一样</p>
+</li>
+<li><p><strong>.charAt (int index);</strong>                       //获取某个索引处的字符</p>
+</li>
+<li><p><strong>.indexOf(String str);</strong>                    //查找str在字符串中的首次出现的位置。如果没有查找到对应的字符串，那么返回的索引号为<strong>-1</strong></p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">String str = <span class="string">"mmaiddd"</span>;</span><br><span class="line"><span class="comment">//.length()获取字符串的长度</span></span><br><span class="line">System.out.println(<span class="string">"str.length = "</span> + str.length());<span class="comment">//7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//concat();字符串的拼接</span></span><br><span class="line">String str1 = <span class="string">"520"</span>;</span><br><span class="line"><span class="comment">//String concat = str.concat(str1);//</span></span><br><span class="line">String concat = str + str1;<span class="comment">//推荐使用字符串拼接用  +</span></span><br><span class="line">System.out.println(<span class="string">"concat = "</span> + concat);</span><br><span class="line"></span><br><span class="line"><span class="comment">//charAt(); 获取指定索引号位置的字符；</span></span><br><span class="line"><span class="keyword">char</span> c = <span class="string">"mmaiddd"</span>.charAt(<span class="number">1</span>);</span><br><span class="line">System.out.println(<span class="string">"c = "</span> + c);<span class="comment">//m</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//indexOf();查找某字符串在本字符串中第一次出现的位置的索引</span></span><br><span class="line"><span class="comment">//如果没有查找到对应的字符串，那么返回的索引号为-1</span></span><br><span class="line"><span class="keyword">int</span> mmIndex = <span class="string">"mmanddd,mmanddd,ddandmm,ddandmm"</span>.indexOf(<span class="string">"mm"</span>);</span><br><span class="line">System.out.println(<span class="string">"mmIndex = "</span> + mmIndex);<span class="comment">//0</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><p><strong>.substring(int index);</strong>                  // 截取字符串，从字符串索引为index的位置开始截取，一直截取到最后, 原始的字符串没有发生任何变化。</p>
+</li>
+<li><p><strong>substring(int begin, int end);</strong>    //字符串截取, 包前不包后[ begin , end )</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"Hello justweb"</span>;</span><br><span class="line"><span class="comment">//截取字符串，从字符串索引为6的位置开始截取，一直截取到最后。</span></span><br><span class="line">String subString = str.substring(<span class="number">6</span>);</span><br><span class="line">System.out.println(<span class="string">"subString = "</span> + subString);<span class="comment">//justweb</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//原始的字符串没有发生任何变化。</span></span><br><span class="line">System.out.println(<span class="string">"str = "</span> + str);<span class="comment">//Hello justweb</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">String str2 = <span class="string">"Hello world"</span>;</span><br><span class="line"><span class="comment">//包前不包后[3,4)</span></span><br><span class="line">String substring1 = str2.substring(<span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">System.out.println(<span class="string">"substring1 = "</span> + substring1);<span class="comment">//l</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><strong>.toCharArray();</strong>                            //将当前的字符串拆分成字符数组并返回。</li>
+<li><strong>.getBytes();</strong>                                   //将字符串转成字节数组。</li>
+<li><strong>.replace (oldString,newString);</strong> //替换字符串</li>
+<li><strong>public String[] split(String regex)</strong> //将此字符串按照给定的regex（规则）拆分为字符串数组</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      String str1 = <span class="string">"hello justweb"</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 将字符串转成字节数组</span></span><br><span class="line">      <span class="keyword">char</span>[] chars = str1.toCharArray();</span><br><span class="line">      <span class="comment">// Arrays.toString(chars) = [h, e, l, l, o,  , j, u, s, t, w, e, b]</span></span><br><span class="line">      System.out.println(<span class="string">"Arrays.toString(chars) = "</span> + Arrays.toString(chars));</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 将字符串转成字节数组</span></span><br><span class="line">      <span class="keyword">byte</span>[] bytes = str1.getBytes();</span><br><span class="line">      <span class="comment">// Arrays.toString(bytes) = [104, 101, 108, 108, 111, 32, 106, 117, 115, 116, 119, 101, 98]</span></span><br><span class="line">      System.out.println(<span class="string">"Arrays.toString(bytes) = "</span> + Arrays.toString(bytes));</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 替换文本replace</span></span><br><span class="line">      String str2 = <span class="string">"你好，帮我问候一下你的家人。"</span>;</span><br><span class="line">      String str3 = str2.replace(<span class="string">"家人"</span>, <span class="string">"**"</span>);</span><br><span class="line">      <span class="comment">// str3 = 你好，帮我问候一下你的**。</span></span><br><span class="line">      System.out.println(<span class="string">"str3 = "</span> + str3);</span><br><span class="line">      </span><br><span class="line">      String s = <span class="string">"aa|bb|cc"</span>; </span><br><span class="line">      <span class="comment">// ["aa","bb","cc"]</span></span><br><span class="line">String[]  strArray  = s.split(<span class="string">"|"</span>);  </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Arrays类"><a href="#5-Arrays类" class="headerlink" title="5. Arrays类"></a>5. Arrays类</h2><blockquote>
+<ol>
+<li><p>工具类</p>
+</li>
+<li><p><code>java.util.Arrays</code>此类包含用来操作数组的各种方法，比如排序和搜索等。其所有方法均为静态方法，调用起来非常简单。</p>
+</li>
+<li><p>操作数组的方法：</p>
+<ol>
+<li><strong><code>boolean equals(int[] a,int[] b);</code></strong> 判断两个数组是否相等</li>
+<li><strong><code>void fill(int[] a,int val);</code></strong>      填充到数组中</li>
+<li><strong><code>void sort(int[] a);</code></strong>              （快速排序）对数组进行排序。</li>
+<li><strong><code>int binarySearch(int[] a,int key);</code></strong>  对排序后的数组进行二分法检索指定的值</li>
+<li><strong><code>String toString(int[] a);</code></strong>        输出数组信息。</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span>[] arr1 = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span>[] arr2 = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 判断两个数组是否相等</span></span><br><span class="line">    <span class="keyword">boolean</span> flag = Arrays.equals(arr1, arr2);</span><br><span class="line">    <span class="comment">// true</span></span><br><span class="line">    System.out.println(<span class="string">"flag = "</span> + flag);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span>[] arr3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//填充到数组中</span></span><br><span class="line">    Arrays.fill(arr3, <span class="number">6</span>);</span><br><span class="line">    <span class="comment">//6 6 6 6 6</span></span><br><span class="line">    System.out.println(Arrays.toString(arr3));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//自己也可以封装,[1 , 3)</span></span><br><span class="line">    Arrays.fill(arr3, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>);<span class="comment">//6 8 8 6 6</span></span><br><span class="line">    System.out.println(Arrays.toString(arr3))</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">int</span>[] arr4 = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//底层是经过调优的快速排序法</span></span><br><span class="line">    Arrays.sort(arr4);</span><br><span class="line">    System.out.println(Arrays.toString(arr4));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用二分查找，数据基本有序。</span></span><br><span class="line">    <span class="keyword">int</span>[] arr5 = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> i = Arrays.binarySearch(arr5, <span class="number">8</span>);</span><br><span class="line">    System.out.println(<span class="string">"i = "</span> + i);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li><p>Arrays.sort();</p>
+<ol>
+<li><p>对基本数据类型数组的排序</p>
+<ol>
+<li><p>数字排序：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] intArray = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">56</span>,-<span class="number">5</span>,<span class="number">33</span>&#125;;</span><br><span class="line">Arrays.sort(intArray);</span><br><span class="line">System.out.println(Arrays.toString(intArray));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>反向排序</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Arrays类之只是提供了默认的升序排列，没有提供相应的降序排列方法</span></span><br><span class="line">Arrays.sort(strArray, Collections.reverseOrder());</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li>对对象数组的排序：要实现对对象数组的排序，要先实现Comparable或者Comparator接口。下面先简单了解以下这两个接口以及它们的差别，后面会再接触到。<ol>
+<li>Comparable 是排序接口,若一个类实现了Comparable接口，就意味着“该类支持排序”。 </li>
+<li>即然实现Comparable接口的类支持排序，假设现在存在“实现Comparable接口的类的对象的List列表(或数组)”，则该List列表(或数组)可以通过 Collections.sort（或 Arrays.sort）进行排序。</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h2 id="6-Math类"><a href="#6-Math类" class="headerlink" title="6. Math类"></a>6. Math类</h2><blockquote>
+<ol>
+<li>工具类</li>
+<li><code>java.lang.Math</code> 类包含用于执行基本数学运算的方法，如初等指数、对数、平方根和三角函数。类似这样的工具类，其所有方法均为静态方法，并且不会创建对象，调用起来非常简单。</li>
+<li>基本运算的方法:<ol>
+<li><strong><code>Math.abs(‐5);</code></strong>  取绝对值</li>
+<li><strong><code>Math.ceil(a);</code></strong> 向上取整  </li>
+<li><strong><code>Math.floor(a);</code></strong>向下取整</li>
+<li><strong><code>Math.round(a);</code></strong>四舍五入</li>
+<li><strong><code>Math.PI</code></strong>  π</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h2 id="7-ArrayList类"><a href="#7-ArrayList类" class="headerlink" title="7. ArrayList类"></a>7. ArrayList类</h2><blockquote>
+<ol>
+<li><code>java.util.ArrayList</code> 是大小可变的数组的实现，存储在内的数据称为元素。此类提供一些方法来操作内部存储的元素。<code>ArrayList</code> 中可不断添加元素，其大小也自动增长.</li>
+</ol>
+</blockquote>
+<h4 id="7-1-引入——数组的特点"><a href="#7-1-引入——数组的特点" class="headerlink" title="7.1 引入——数组的特点"></a>7.1 引入——数组的特点</h4><blockquote>
+<ol>
+<li>数组的长度是固定的，无法适应数据变化的需求</li>
+<li>为了解决这个问题，Java提供了另一个容器 java.util.ArrayList 集合类,让我们可以更便捷的存储和操作对<br>象数据。 </li>
+<li>引入ArrayList，模拟其底层实现：</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoArrayList</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 数组初始长度</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> initNum = <span class="number">8</span>;</span><br><span class="line">    <span class="comment">// 扩展为原来长度的1.5倍。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> initExtend;</span><br><span class="line">    <span class="comment">// 初始化数组</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] arr2 = <span class="keyword">new</span> <span class="keyword">int</span>[initNum];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 数组下标</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义一个数组，将 1,3,5,7,9,11,15个数字添加到数组中。</span></span><br><span class="line">        extend(<span class="number">1</span>);</span><br><span class="line">        extend(<span class="number">3</span>);</span><br><span class="line">        extend(<span class="number">5</span>);</span><br><span class="line">        extend(<span class="number">7</span>);</span><br><span class="line">        extend(<span class="number">9</span>);</span><br><span class="line">        extend(<span class="number">11</span>);</span><br><span class="line">        <span class="comment">// 添加第7个数</span></span><br><span class="line">        <span class="keyword">int</span>[] arr4 = extend(<span class="number">15</span>);</span><br><span class="line">        System.out.println(<span class="string">"Arrays.toString(arr4) = "</span> + Arrays.toString(arr4));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	* 我们发现实现数组的动态扩容，其实是根据我们添加到数组的具体情况来进行适当扩容的</span></span><br><span class="line"><span class="comment">	* 当然我们也可以根据自己的情况和需求来改变扩容策略。</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] extend(<span class="keyword">int</span> num) &#123;</span><br><span class="line">        <span class="comment">// 数组初始长度为initNum = 8</span></span><br><span class="line">        <span class="comment">// 当数组的长度等于或大于初始长度的时候，进行以下操作 </span></span><br><span class="line">        <span class="keyword">if</span> (size &gt;= initNum) &#123;</span><br><span class="line">            <span class="comment">// 对数组进行扩容1.5倍</span></span><br><span class="line">            initNum = initNum + initNum &gt;&gt; <span class="number">2</span>;</span><br><span class="line">            <span class="comment">// 新建数组</span></span><br><span class="line">            <span class="keyword">int</span>[] arr3 = <span class="keyword">new</span> <span class="keyword">int</span>[initNum];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 将原来的数组复制到新数组中</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr2.length; i++) &#123;</span><br><span class="line">                arr3[i] = arr2[i];</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//让arr2指向新数组</span></span><br><span class="line">            arr2 = arr3;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 向数组中添加数据</span></span><br><span class="line">        arr2[size++] = num;</span><br><span class="line">        <span class="comment">// 返回数组</span></span><br><span class="line">        <span class="keyword">return</span> arr2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-1-ArrayList基础"><a href="#7-1-ArrayList基础" class="headerlink" title="7.1 ArrayList基础"></a>7.1 ArrayList基础</h4><blockquote>
+<ol>
+<li><p>对于<code>java.util.ArrayList &lt;E&gt;</code>来说  有一个<E> 代表的就是泛型</p>
+<ol>
+<li>泛型：指定在集合中的元素必须是什么数据类型的。</li>
+<li>要求：泛型必须是引用数据类型，不能是基本数据类型，所以，</li>
+<li>==如果填写数值的话要使用对应的数值的包装类作为泛型。==</li>
+<li><code>ArrayList&lt;String&gt;，ArrayList&lt;Student&gt;</code></li>
+</ol>
+</li>
+<li><p><strong>查看构造方法</strong></p>
+<ol>
+<li><p><code>public ArrayList()</code> ：构造一个内容为空的集合。 </p>
+</li>
+<li><pre><code class="java"><span class="comment">// 基本格式: </span>
+ArrayList&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();
+&lt;!--￼<span class="number">11</span>--&gt;</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h2 id="8-Date类"><a href="#8-Date类" class="headerlink" title="8. Date类"></a>8. Date类</h2><blockquote>
+<ol>
+<li>在使用println方法时，会自动调用Data类中的toString方法。Date类对Object类中的toString方法进行了覆··盖重写所以结果为指定格式的字符串。</li>
+<li>new Date();  返回的是当前时间–<code>Thu May 14 14:41:13 CST 2020</code></li>
+<li>new Date(0); 时间元年CST –<code>Thu Jan 01 08:00:00 CST 1970</code><ol>
+<li>由于我们处于东八区，所以我们的基准时间为1970年1月1日8时0分0秒。</li>
+</ol>
+</li>
+<li>date.getTime(); 返回的是定义的时间零点到当前时间的毫秒值–<code>1589438473138</code></li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    Date date = <span class="keyword">new</span> Date();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 返回的是当前时间  </span></span><br><span class="line">    System.out.println(<span class="string">"date = "</span> + date);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 返回的是定义的时间零点到当前时间的毫秒值</span></span><br><span class="line">    System.out.println(<span class="string">"date.getTime() = "</span> + date.getTime());</span><br><span class="line"></span><br><span class="line">    Date date1 = <span class="keyword">new</span> Date(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">// 时间元年CST（China Standard Time）</span></span><br><span class="line">    System.out.println(<span class="string">"date1 = "</span> + date1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-DateFormat-类"><a href="#9-DateFormat-类" class="headerlink" title="9. DateFormat 类"></a>9. DateFormat 类</h2><blockquote>
+<p><code>java.text.DateFormat</code> 是日期/时间格式化子类的抽象类，我们通过这个类可以帮我们完成日期和文本之间的转</p>
+<p>换,也就是可以在Date对象与String对象之间进行来回转换。由于DateFormat为抽象类，不能直接使用，所以需要常用的子类 <strong><code>java.text.SimpleDateFormat 。</code></strong></p>
+<ul>
+<li><strong>格式化</strong>：<code>public String format(Date date);</code>按照指定的格式，从Date对象转换为String对象。</li>
+<li><strong>解析</strong>：<code>public Date parse（String source）;</code>按照指定的格式，从String对象转换为Date对象。</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SimpleDateFormat format = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy年MM月dd日 HH:mm:ss"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// DateFormat类常用方法</span></span><br><span class="line"><span class="comment">// 把Date对象转换成String</span></span><br><span class="line">format.format();</span><br><span class="line"><span class="comment">// 把String转换成Date对象</span></span><br><span class="line">format.parse();</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-1-请使用日期时间相关的API，计算出一个人已经出生了多少天。"><a href="#9-1-请使用日期时间相关的API，计算出一个人已经出生了多少天。" class="headerlink" title="9.1 请使用日期时间相关的API，计算出一个人已经出生了多少天。"></a>9.1 请使用日期时间相关的API，计算出一个人已经出生了多少天。</h4><blockquote>
+<p><strong>思路：</strong></p>
+<ol>
+<li><p>获取当前时间对应的毫秒值</p>
+</li>
+<li><p>获取自己出生日期对应的毫秒值</p>
+</li>
+<li><p>两个时间相减（当前时间– 出生日期） </p>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">function</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"请输入出生日期 格式 YYYY‐MM‐dd"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取出生日期,键盘输入</span></span><br><span class="line">    String birthdayString = <span class="keyword">new</span> Scanner(System.in).next();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将字符串日期,转成Date对象</span></span><br><span class="line">    <span class="comment">// 创建SimpleDateFormat对象,写日期模式</span></span><br><span class="line">    SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy‐MM‐dd"</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 调用方法parse,字符串转成日期对象</span></span><br><span class="line">    Date birthdayDate = sdf.parse(birthdayString);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取今天的日期对象</span></span><br><span class="line">    Date todayDate = <span class="keyword">new</span> Date();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将两个日期转成毫秒值,Date类的方法getTime</span></span><br><span class="line">    <span class="keyword">long</span> birthdaySecond = birthdayDate.getTime();</span><br><span class="line">    <span class="keyword">long</span> todaySecond = todayDate.getTime();</span><br><span class="line">    <span class="keyword">long</span> secone = todaySecond‐birthdaySecond;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (secone &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        System.out.println(<span class="string">"还没出生呢"</span>);</span><br><span class="line">     &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        System.out.println(secone/<span class="number">1000</span>/<span class="number">60</span>/<span class="number">60</span>/<span class="number">24</span>);</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-Calendar-类"><a href="#10-Calendar-类" class="headerlink" title="10. Calendar 类"></a>10. Calendar 类</h2><blockquote>
+<ol>
+<li><p>java.util.Calendar 是日历类，在Date后出现，替换掉了许多Date的方法。该类将所有可能用到的时间信息封装为静态成员变量，方便获取。日历类就是方便获取各个时间属性的。</p>
+</li>
+<li><p><strong>获取方式</strong>Calendar为抽象类，由于语言敏感性，Calendar类在创建对象时并非直接创建，而是通过静态方法创建，返回子类对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用默认时区和语言环境获得一个日历</span></span><br><span class="line">Calendar calendar = Calendar.getInstance();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用方法：</p>
+<ol>
+<li>public int get(int field) ：返回给定日历字段的值。</li>
+<li>public void set(int field, int value) ：将给定的日历字段设置为给定值。</li>
+<li>public abstract void add(int field, int amount) ：根据日历的规则，为给定的日历字段添加或减去指定的时间量</li>
+<li>public Date getTime() ：返回一个表示此Calendar时间值（从历元到现在的毫秒偏移量）的Date对象。</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>字段值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YEAR</td>
+<td>年</td>
+</tr>
+<tr>
+<td>MONTH</td>
+<td>月（从0开始，可以+1使用）</td>
+</tr>
+<tr>
+<td>DAY_OF_MONTH</td>
+<td>月中的天（几号）</td>
+</tr>
+<tr>
+<td>HOUR</td>
+<td>时（12小时制）</td>
+</tr>
+<tr>
+<td>HOUR_OF_DAY</td>
+<td>时（24小时制）</td>
+</tr>
+<tr>
+<td>MINUTE</td>
+<td>分</td>
+</tr>
+<tr>
+<td>SECOND</td>
+<td>秒</td>
+</tr>
+<tr>
+<td>DAY_OF_WEEK</td>
+<td>==周中的天（周几，周日为1，可以使-1 使用）==</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>get/set方法</strong></p>
+<ol>
+<li>get方法用来获取指定字段的值</li>
+<li>set方法用来设置指定字段的值</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalendarUtil</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 创建Calendar对象</span></span><br><span class="line">        Calendar cal = Calendar.getInstance();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 设置年</span></span><br><span class="line">        <span class="keyword">int</span> year = cal.get(Calendar.YEAR);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 设置月</span></span><br><span class="line">        <span class="keyword">int</span> month = cal.get(Calendar.MONTH) + <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 设置日</span></span><br><span class="line">        <span class="keyword">int</span> dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);</span><br><span class="line">        </span><br><span class="line">        System.out.print(year + <span class="string">"年"</span> + month + <span class="string">"月"</span> + dayOfMonth + <span class="string">"日"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalendarMethod</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        Calendar cal = Calendar.getInstance();</span><br><span class="line">        </span><br><span class="line">        cal.set(Calendar.YEAR, <span class="number">2020</span>);</span><br><span class="line">         <span class="comment">// 2020年1月17日</span></span><br><span class="line">        System.out.print(year + <span class="string">"年"</span> + month + <span class="string">"月"</span> + dayOfMonth + <span class="string">"日"</span>); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li>add方法可以对指定日历字段的值进行加减操作，如果第二个参数为正数则加上偏移量，如果为负数则减去偏移量。</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo08CalendarMethod</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        Calendar cal = Calendar.getInstance();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2018年1月17日</span></span><br><span class="line">        System.out.print(year + <span class="string">"年"</span> + month + <span class="string">"月"</span> + dayOfMonth + <span class="string">"日"</span>); </span><br><span class="line">        <span class="comment">// 使用add方法</span></span><br><span class="line">        cal.add(Calendar.DAY_OF_MONTH, <span class="number">2</span>); <span class="comment">// 加2天</span></span><br><span class="line">        cal.add(Calendar.YEAR, ‐<span class="number">3</span>); <span class="comment">// 减3年</span></span><br><span class="line">        </span><br><span class="line">         <span class="comment">// 2015年1月18日;</span></span><br><span class="line">        System.out.print(year + <span class="string">"年"</span> + month + <span class="string">"月"</span> + dayOfMonth + <span class="string">"日"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Calendar中的getTime方法并不是获取毫秒时刻，而是拿到对应的Date对象。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo09CalendarMethod</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Calendar cal = Calendar.getInstance();</span><br><span class="line"></span><br><span class="line">        Date date = cal.getTime();</span><br><span class="line"></span><br><span class="line">        System.out.println(date); <span class="comment">// Tue Jan 16 16:03:09 CST 2018</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li>西方星期的开始为周日，中国为周一。</li>
+<li>在Calendar类中，月份的表示是以0-11代表1-12月。</li>
+<li>日期是有大小关系的，时间靠后，时间越大。</li>
+</ol>
+</blockquote>
+<h2 id="11-System类"><a href="#11-System类" class="headerlink" title="11. System类"></a>11. System类</h2><blockquote>
+<ol>
+<li><code>java.lang.System</code>类中提供了大量的静态方法，可以获取与系统相关的信息或系统级操作。</li>
+<li>在System类的API文档中，常用的方法有：<ol>
+<li><code>public static long currentTimeMillis()</code>：返回以毫秒为单位的当前时间.</li>
+<li><code>public static void arraycopy(Object src, int srcPos, Object dest, int destPos, int length)</code> ：<strong><code>将数组中指定的数据拷贝到另一个数组中</code></strong><ol>
+<li>src    ： 数据源</li>
+<li>srcPos :  起始位置</li>
+<li>dest   ： 目标位置</li>
+<li>destPos： 起始复制位置</li>
+<li>length :  复制长度</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr1 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span>[] arr2 = &#123;<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>&#125;;</span><br><span class="line">    System.arraycopy(arr1,<span class="number">0</span>,arr2,<span class="number">0</span>,<span class="number">4</span>);</span><br><span class="line">    <span class="comment">// [1, 2, 3, 4, 11]</span></span><br><span class="line">    System.out.println(Arrays.toString(arr2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE/09.Java%E5%B8%B8%E7%94%A8%E5%9F%BA%E7%A1%80%E7%B1%BB/">http://www.itbuild.cn/2020/12/19/JavaSE/09.Java%E5%B8%B8%E7%94%A8%E5%9F%BA%E7%A1%80%E7%B1%BB/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/10.static%E5%92%8Cfinal%E5%85%B3%E9%94%AE%E5%AD%97%E8%AF%A6%E8%A7%A3/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE/10.static和final关键字详解</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/08.Java%E5%9F%BA%E7%A1%80%E4%B9%8BObject%E7%B1%BB%E8%AF%A6%E8%A7%A3/"><span>JavaSE/08.Java基础之Object类详解</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

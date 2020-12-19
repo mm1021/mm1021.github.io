@@ -1,0 +1,382 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-JVM/13.JVM之执行引擎"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-JVM/13.JVM之执行引擎【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-执行引擎概述"><span class="toc-text">1. 执行引擎概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-执行引擎的工作流程"><span class="toc-text">2. 执行引擎的工作流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Java代码编译和执行过程"><span class="toc-text">3. Java代码编译和执行过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-什么是解释器？"><span class="toc-text">3.1 什么是解释器？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-什么是JIT编译器"><span class="toc-text">3.2 什么是JIT编译器?</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-为什么Java是半编译半解释型语言"><span class="toc-text">3.3 为什么Java是半编译半解释型语言?</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-机器码、指令、汇编语言"><span class="toc-text">4. 机器码、指令、汇编语言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-机器码"><span class="toc-text">4.1 机器码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-指令"><span class="toc-text">4.2 指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-指令集"><span class="toc-text">4.3 指令集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-汇编语言"><span class="toc-text">4.4 汇编语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-高级语言"><span class="toc-text">4.5 高级语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-C、C-源程序执行过程"><span class="toc-text">4.6 C、C++源程序执行过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-字节码"><span class="toc-text">4.7 字节码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-解释器"><span class="toc-text">5. 解释器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-解释器分类"><span class="toc-text">5.1 解释器分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-现状"><span class="toc-text">5.2 现状</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-JIT编译器"><span class="toc-text">6. JIT编译器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-Java代码的执行分类"><span class="toc-text">6.1 Java代码的执行分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-问题来了☆"><span class="toc-text">6.2 问题来了☆</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-HotSpot-JVM执行方式☆"><span class="toc-text">6.3 HotSpot JVM执行方式☆</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-4-案例"><span class="toc-text">6.4 案例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-5-概念解释"><span class="toc-text">6.5 概念解释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-6-热点代码及探测技术"><span class="toc-text">6.6 热点代码及探测技术</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#一、方法调用计数器"><span class="toc-text">一、方法调用计数器</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#热点衰减"><span class="toc-text">热点衰减</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#二、回边计数器"><span class="toc-text">二、回边计数器</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-7-HotSpotVM可以设置程序执行方法"><span class="toc-text">6.7 HotSpotVM可以设置程序执行方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-8-HotSpotVM中-JIT-分类"><span class="toc-text">6.8 HotSpotVM中 JIT 分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-9-小结"><span class="toc-text">6.9 小结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-10-写在最后"><span class="toc-text">6.10 写在最后</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#AOT-编译器"><span class="toc-text">AOT 编译器</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Graal-编译器"><span class="toc-text">Graal 编译器</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color6"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color4"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-JVM/13.JVM之执行引擎</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-JVM/">JavaSE-JVM</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>黛蛾长敛，任是春风吹不展。困倚危楼，过尽飞鸿字字愁。</p>
+<p align="right">——秦观《木兰花》</p>
+<a id="more"></a>
+## JVM之执行引擎
+
+<h3 id="1-执行引擎概述"><a href="#1-执行引擎概述" class="headerlink" title="1. 执行引擎概述"></a>1. 执行引擎概述</h3><blockquote>
+<p><code>执行引擎属于JVM的下层，里面包括 解释器、及时编译器、垃圾回收器。</code></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710080707873.png" alt="image-20200710080707873"></p>
+<blockquote>
+<p>执行引擎是Java虚拟机核心的组成部分之一。“虚拟机”是一个相对于“物理机”的概念，这两种机器都有代码执行能力，其区别是物理机的执行引擎是直接建立在处理器、缓存、指令集和操作系统层面上的，<code>而虚拟机的执行引擎则是由软件自行实现的</code>，因此可以不受物理条件制约地定制指令集与执行引擎的结构体系，<code>能够执行那些不被硬件直接支持的指令集格式。</code></p>
+<p>JVM的主要任务是负责装载字节码到其内部，但字节码并不能够直接运行在操作系统之上，<code>因为字节码指令并非等价于本地机器指令，它内部包含的仅仅只是一些能够被JVM所识别的字节码指令、符号表，以及其他辅助信息。</code></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710081118053.png" alt="image-20200710081118053"></p>
+<blockquote>
+<p>那么，如果想要让一个Java程序运行起来，执行引擎（Execution Engine）的任务就是<code>将字节码指令解释/编译为对应平台上的本地机器指令才可以。</code>简单来说，JVM中的执行引擎充当了将高级语言翻译为机器语言的译者。</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710081259276.png" alt="image-20200710081259276"></p>
+<h3 id="2-执行引擎的工作流程"><a href="#2-执行引擎的工作流程" class="headerlink" title="2. 执行引擎的工作流程"></a>2. 执行引擎的工作流程</h3><blockquote>
+<ol>
+<li>执行引擎在执行的过程中究竟需要执行什么样的字节码指令完全依赖于PC寄存器。</li>
+<li>每当执行完一项指令操作后，PC寄存器就会更新下一条需要被执行的指令地址。</li>
+<li>当然方法在执行的过程中，<code>执行引擎有可能会通过存储在局部变量表中的对象引用准确定位到存储在Java堆区中的对象实例信息，以及通过对象头中的元数据指针定位到目标对象的类型信息。</code></li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710081627217.png" alt="image-20200710081627217"></p>
+<blockquote>
+<ol start="4">
+<li>从外观上来看，<code>所有的Java虚拟机的执行引擎输入，输出都是一致的：输入的是字节码二进制流，处理过程是字节码解析执行的等效过程，输出的是执行过程。</code></li>
+</ol>
+</blockquote>
+<h3 id="3-Java代码编译和执行过程"><a href="#3-Java代码编译和执行过程" class="headerlink" title="3. Java代码编译和执行过程"></a>3. Java代码编译和执行过程</h3><blockquote>
+<p><code>大部分的程序代码转换成物理机的目标代码或虚拟机能执行的指令集之前，都需要经过下图中的各个步骤：</code></p>
+<ol>
+<li>前面橙色部分是生成字节码文件的过程和JVM无关（前端编译器）。</li>
+<li>后面蓝色和绿色才是JVM需要考虑的过程。</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710082141643.png" alt="image-20200710082141643"></p>
+<blockquote>
+<ol>
+<li>Java代码编译是由Java源码编译器来完成，流程图如下所示（橙色部分）：</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710082433146.png" alt="image-20200710082433146"></p>
+<blockquote>
+<ol start="2">
+<li>Java字节码的执行是由JVM执行引擎来完成，流程图如下所示（蓝色和绿色部分）：</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710083036258.png" alt="image-20200710083036258"></p>
+<blockquote>
+<ol start="3">
+<li><code>我们用一个总的图，来说说解释器和编译器。</code></li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710083656277.png" alt="image-20200710083656277"></p>
+<h4 id="3-1-什么是解释器？"><a href="#3-1-什么是解释器？" class="headerlink" title="3.1 什么是解释器？"></a>3.1 什么是解释器？</h4><blockquote>
+<p><code>当Java虚拟机启动时会根据预定义的规范对字节码采用逐行解释的方式执行，将每条字节码文件中的内容“翻译”为对应平台的本地机器指令执行。</code></p>
+</blockquote>
+<h4 id="3-2-什么是JIT编译器"><a href="#3-2-什么是JIT编译器" class="headerlink" title="3.2 什么是JIT编译器?"></a>3.2 什么是JIT编译器?</h4><blockquote>
+<p><code>JIT（Just In Time Compiler）编译器：就是虚拟机将源代码直接编译成和本地机器平台相关的机器语言。</code></p>
+</blockquote>
+<h4 id="3-3-为什么Java是半编译半解释型语言"><a href="#3-3-为什么Java是半编译半解释型语言" class="headerlink" title="3.3 为什么Java是半编译半解释型语言?"></a>3.3 为什么Java是半编译半解释型语言?</h4><blockquote>
+<ol>
+<li><code>JDK1.0时代，将Java语言定位为“解释执行”还是比较准确的。</code></li>
+<li><code>再后来，Java也发展出可以直接生成本地代码的编译器。现在JVM在执行Java代码的时候，通常都会将解释执行与编译执行二者结合起来进行。</code></li>
+<li><code>翻译成本地代码后，就可以做一个缓存操作，存储在方法区中</code></li>
+</ol>
+</blockquote>
+<h3 id="4-机器码、指令、汇编语言"><a href="#4-机器码、指令、汇编语言" class="headerlink" title="4. 机器码、指令、汇编语言"></a>4. 机器码、指令、汇编语言</h3><h4 id="4-1-机器码"><a href="#4-1-机器码" class="headerlink" title="4.1 机器码"></a>4.1 机器码</h4><blockquote>
+<ol>
+<li><p><code>各种用二进制编码方式表示的指令，叫做机器指令码。</code>开始，人们就用它采编写程序，这就是机器语言。</p>
+</li>
+<li><p>机器语言虽然能够被计算机理解和接受，但和人们的语言差别太大，不易被人们理解和记忆，并且用它编程容易出差错。</p>
+</li>
+<li><p>用它编写的程序一经输入计算机，CPU直接读取运行，因此和其他语言编的程序相比，执行速度最快。</p>
+</li>
+<li><p><code>机器指令与CPU紧密相关，所以不同种类的CPU所对应的机器指令也就不同。</code></p>
+</li>
+</ol>
+</blockquote>
+<h4 id="4-2-指令"><a href="#4-2-指令" class="headerlink" title="4.2 指令"></a>4.2 指令</h4><blockquote>
+<ol>
+<li><p>由于机器码是有0和1组成的二进制序列，可读性实在太差，于是人们发明了指令。</p>
+</li>
+<li><p><code>指令就是把机器码中特定的0和1序列，简化成对应的指令（一般为英文简写，如mov，inc等），可读性稍好点。</code></p>
+</li>
+<li><p>由于不同的硬件平台，执行同一个操作，对应的机器码可能不同，<code>所以不同的硬件平台的同一种指令（比如mov），对应的机器码也可能不同。</code></p>
+</li>
+</ol>
+</blockquote>
+<h4 id="4-3-指令集"><a href="#4-3-指令集" class="headerlink" title="4.3 指令集"></a>4.3 指令集</h4><blockquote>
+<p>不同的硬件平台，各自支持的指令，是有差别的。因此每个平台所支持的指令，称之为对应平台的指令集。<br>如常见的</p>
+<ul>
+<li>x86指令集，对应的是x86架构的平台</li>
+<li>ARM指令集，对应的是ARM架构的平台。</li>
+</ul>
+</blockquote>
+<h4 id="4-4-汇编语言"><a href="#4-4-汇编语言" class="headerlink" title="4.4 汇编语言"></a>4.4 汇编语言</h4><blockquote>
+<ol>
+<li><p>由于指令的可读性还是太差，于是人们又发明了汇编语言。</p>
+</li>
+<li><p>在汇编语言中，用<code>助记符（Mnemonics）</code>代替<code>机器指令的操作码</code>，用<code>地址符号（Symbol）</code>或<code>标号（Label）</code>代替<code>指令或操作数的地址</code>。</p>
+</li>
+<li><p>在不同的硬件平台，汇编语言对应着不同的机器语言指令集，通过汇编过程转换成机器指令。</p>
+</li>
+<li><p>由于计算机只认识指令码，所以用汇编语言编写的程序还必须翻译成机器指令码，计算机才能识别和执行。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="4-5-高级语言"><a href="#4-5-高级语言" class="headerlink" title="4.5 高级语言"></a>4.5 高级语言</h4><blockquote>
+<ol>
+<li><p>为了使计算机用户编程序更容易些，后来就出现了各种高级计算机语言。</p>
+</li>
+<li><p>高级语言比机器语言、汇编语言更接近人的语言当计算机执行高级语言编写的程序时，<code>仍然需要把程序解释和编译成机器的指令码</code>。完成这个过程的程序就叫做解释程序或编译程序。</p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710085323733.png" alt="image-20200710085323733"></p>
+<blockquote>
+<p>高级语言也不是直接翻译成 机器指令，而是翻译成汇编语言，如下面说的C和C++</p>
+</blockquote>
+<h4 id="4-6-C、C-源程序执行过程"><a href="#4-6-C、C-源程序执行过程" class="headerlink" title="4.6 C、C++源程序执行过程"></a>4.6 C、C++源程序执行过程</h4><blockquote>
+<p><code>编译过程又可以分成两个阶段：编译和汇编。</code></p>
+<ol>
+<li><p>编译过程：是读取源程序（字符流），对之进行词法和语法的分析，将高级语言指令转换为功能等效的汇编代码</p>
+</li>
+<li><p>汇编过程：实际上指把汇编语言代码翻译成目标机器指令的过程。</p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710085553258.png" alt="image-20200710085553258"></p>
+<h4 id="4-7-字节码"><a href="#4-7-字节码" class="headerlink" title="4.7 字节码"></a>4.7 字节码</h4><blockquote>
+<ol>
+<li><p>字节码是一种中间状态（中间码）的二进制代码（文件），它比机器码更抽象，需要<code>直译器</code>转译后才能成为机器码。</p>
+</li>
+<li><p><code>字节码主要为了实现特定软件运行和软件环境、与硬件环境无关。</code></p>
+</li>
+<li><p>字节码的实现方式是通过编译器和虚拟机器。<code>编译器（前端编译器）将源码编译成字节码，</code>特定平台上的虚拟机器将字节码转译为可以直接执行的指令。</p>
+<ul>
+<li>字节码典型的应用为：Java bytecode。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="5-解释器"><a href="#5-解释器" class="headerlink" title="5. 解释器"></a>5. 解释器</h3><blockquote>
+<p>JVM设计者们的初衷仅仅只是单纯地<code>为了满足Java程序实现跨平台特性</code>，因此避免采用静态编译的方式直接生成本地机器指令，<code>从而诞生了实现解释器在运行时采用逐行解释字节码执行程序的想法。</code></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710090203674.png" alt="image-20200710090203674"></p>
+<blockquote>
+<ol>
+<li><p>解释器真正意义上所承担的角色就是一个运行时“翻译者”，将字节码文件中的内容“翻译”为对应平台的本地机器指令执行。</p>
+</li>
+<li><p>当一条字节码指令被解释执行完成后，接着再根据PC寄存器中记录的下一条需要被执行的字节码指令执行解释操作。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="5-1-解释器分类"><a href="#5-1-解释器分类" class="headerlink" title="5.1 解释器分类"></a>5.1 解释器分类</h4><blockquote>
+<p>在Java的发展历史里，一共有两套解释执行器，<code>即古老的字节码解释器、现在普遍使用的模板解释器。</code></p>
+<ol>
+<li><p>字节码解释器在执行时通过纯软件代码模拟字节码的执行，效率非常低下。</p>
+</li>
+<li><p>而模板解释器<code>将每一条字节码和一个模板函数相关联，模板函数中直接产生这条字节码执行时的机器码</code>，从而很大程度上提高了解释器的性能。</p>
+</li>
+<li><p><code>在HotSpot VM中，解释器主要由Interpreter模块和Code模块构成。</code></p>
+<ul>
+<li>Interpreter模块：实现了解释器的核心功能。</li>
+<li>Code模块：用于管理HotSpot VM在运行时生成的本地机器指令。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h4 id="5-2-现状"><a href="#5-2-现状" class="headerlink" title="5.2 现状"></a>5.2 现状</h4><blockquote>
+<ol>
+<li><p>由于解释器在设计和实现上非常简单，因此除了Java语言之外，还有许多高级语言同样也是基于解释器执行的，比如Python、Perl、Ruby等。但是在今天，<code>基于解释器执行已经沦落为低效的代名词，并且时常被一些C/C++程序员所调侃。</code></p>
+</li>
+<li><p><code>为了解决这个问题，JVM平台支持一种叫作即时编译的技术。</code>即时编译的目的是避免函数被解释执行，而是<code>将整个函数体编译成为机器码，每次函数执行时，只执行编译后的机器码即可</code>，这种方式可以使执行效率大幅度提升。</p>
+</li>
+<li><p>不过无论如何，基于解释器的执行模式仍然为中间语言的发展做出了不可磨灭的贡献。</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="6-JIT编译器"><a href="#6-JIT编译器" class="headerlink" title="6. JIT编译器"></a>6. JIT编译器</h3><h4 id="6-1-Java代码的执行分类"><a href="#6-1-Java代码的执行分类" class="headerlink" title="6.1 Java代码的执行分类"></a>6.1 Java代码的执行分类</h4><blockquote>
+<ol>
+<li><code>第一种是将源代码编译成字节码文件，然后在运行时通过解释器将字节码文件转为机器码执行。</code></li>
+<li><code>第二种是编译执行（直接编译成机器码）。现代虚拟机为了提高执行效率，会使用即时编译技术（JIT，Just In Time）将方法编译成机器码后再执行</code><ul>
+<li><code>HotSpot VM</code>是目前市面上高性能虚拟机的代表作之一。它采用解释器与即时编译器并存的架构。在Java虚拟机运行时，解释器和即时编译器能够相互协作，各自取长补短，尽力去选择最合适的方式来权衡编译本地代码的时间和直接解释执行代码的时间。</li>
+<li>在今天，Java程序的运行性能早已脱胎换骨，已经达到了可以和C/C++ 程序一较高下的地步。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h4 id="6-2-问题来了☆"><a href="#6-2-问题来了☆" class="headerlink" title="6.2 问题来了☆"></a>6.2 问题来了☆</h4><ol>
+<li><p>有些开发人员会感觉到诧异，<code>既然HotSpot VM中已经内置JIT编译器了，那么为什么还需要再使用解释器来“拖累”程序的执行性能呢？</code>比如JRockit VM内部就不包含解释器，字节码全部都依靠即时编译器编译后执行。</p>
+<ul>
+<li><code>JRockit虚拟机是砍掉了解释器，也就是只采及时编译器。那是因为JRockit只部署在服务器上，一般已经有时间让他进行指令编译的过程了，对于响应来说要求不高，等及时编译器的编译完成后，就会提供更好的性能。</code></li>
+</ul>
+</li>
+<li><p>首先明确：</p>
+<ul>
+<li>当程序启动后，解释器可以马上发挥作用，省去编译的时间，立即执行。</li>
+<li><code>编译器要想发挥作用，把代码编译成本地代码，需要一定的执行时间。但编译为本地代码后，执行效率高。</code></li>
+</ul>
+</li>
+<li><p>所以：</p>
+<ul>
+<li><code>尽管JRockit VM中程序的执行性能会非常高效，但程序在启动时必然需要花费更长的时间来进行编译</code>。对于服务端应用来说，启动时间并非是关注重点，但对于那些看中启动时间的应用场景而言，或许就需要采用解释器与即时编译器并存的架构来换取一个平衡点。</li>
+<li>在此模式下，<code>当Java虚拟器启动时，解释器可以首先发挥作用，而不必等待即时编译器全部编译完成后再执行，这样可以省去许多不必要的编译时间。随着时间的推移，编译器发挥作用，把越来越多的代码编译成本地代码，获得更高的执行效率。</code></li>
+<li><code>同时，解释执行在编译器进行激进优化不成立的时候，作为编译器的“逃生门”。</code></li>
+</ul>
+</li>
+</ol>
+<h4 id="6-3-HotSpot-JVM执行方式☆"><a href="#6-3-HotSpot-JVM执行方式☆" class="headerlink" title="6.3 HotSpot JVM执行方式☆"></a>6.3 HotSpot JVM执行方式☆</h4><blockquote>
+<p>当虚拟机启动的时候，<code>解释器可以首先发挥作用</code>，而不必等待即时编译器全部编译完成再执行，这样可以<code>省去许多不必要的编译时间。</code>并且随着程序运行时间的推移，即时编译器逐渐发挥作用，<code>根据热点探测功能，将有价值的字节码编译为本地机器指令，</code>以换取更高的程序执行效率。</p>
+</blockquote>
+<h4 id="6-4-案例"><a href="#6-4-案例" class="headerlink" title="6.4 案例"></a>6.4 案例</h4><blockquote>
+<ol>
+<li>注意解释执行与编译执行在线上环境微妙的辩证关系。<code>机器在热机状态可以承受的负载要大于冷机状态。</code>如果以热机状态时的流量进行切流，可能使处于冷机状态的服务器因无法承载流量而假死。</li>
+<li>在生产环境发布过程中，以分批的方式进行发布，根据机器数量划分成多个批次，每个批次的机器数至多占到整个集群的1/8。曾经有这样的故障案例：某程序员在发布平台进行分批发布，在输入发布总批数时，误填写成分为两批发布。如果是热机状态，在正常情况下一半的机器可以勉强承载流量，但由于刚启动的JVM均是解释执行，还没有进行热点代码统计和JIT动态编译，导致机器启动之后，当前1/2发布成功的服务器马上全部宕机，此故障说明了JIT的存在。——阿里团队</li>
+<li><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710095417462.png" alt="image-20200710095417462"></li>
+</ol>
+</blockquote>
+<h4 id="6-5-概念解释"><a href="#6-5-概念解释" class="headerlink" title="6.5 概念解释"></a>6.5 概念解释</h4><blockquote>
+<ol>
+<li><code>Java 语言的“编译期”其实是一段“不确定”的操作过程</code>，因为它可能是：<ul>
+<li>指一个<code>前端编译器（其实叫“编译器的前端”更准确一些）把.java文件转变成.class文件的过程；</code></li>
+<li>也可能是指<code>虚拟机的后端运行期编译器（JIT编译器，Just In Time Compiler）。</code>把字节码转变成机器码的过程。</li>
+<li>还可能是指使用<code>静态提前编译器（AOT编译器，Ahead of Time Compiler）直接把.java文件编译成本地机器代码的过程。</code></li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>前端编译器</th>
+<th><code>Sun的Javac</code>、<code>Eclipse JDT中的增量式编译器（ECJ）</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>JIT</code>编译器</td>
+<td><code>HotSpot VM</code>的<code>C1</code>、<code>C2编译器</code>。</td>
+</tr>
+<tr>
+<td><code>AOT</code> 编译器</td>
+<td><code>GNU Compiler for the Java（GCJ）</code>、<code>Excelsior JET</code>。</td>
+</tr>
+</tbody></table>
+<h4 id="6-6-热点代码及探测技术"><a href="#6-6-热点代码及探测技术" class="headerlink" title="6.6 热点代码及探测技术"></a>6.6 热点代码及探测技术</h4><blockquote>
+<ol>
+<li><p>当然是否需要启动JIT编译器将字节码直接编译为对应平台的本地机器指令，则需要根据<code>代码被调用执行的频率</code>而定。关于那些需要被编译为本地代码的字节码，也被称之为<code>“热点代码”</code>，JIT编译器在运行时会针对那些频繁被调用的“热点代码”做出<code>深度优化</code>，将其直接编译为对应平台的本地机器指令，以此提升Java程序的执行性能。</p>
+</li>
+<li><p><code>一个被多次调用的方法，或者是一个方法体内部循环次数较多的循环体都可以被称之为“热点代码”</code>，因此都可以通过JIT编译器编译为本地机器指令。由于这种编译方式发生在方法的执行过程中，<code>因此被称之为栈上替换，或简称为OSR（On Stack Replacement）编译。</code></p>
+</li>
+<li><p>一个方法究竟<code>要被调用多少次</code>，或者一个循环体究竟需要执行多少次循环才可以达到这个标准？必然需要一个明确的阈值，JIT编译器才会将这些“热点代码”编译为本地机器指令执行。<code>这里主要依靠热点探测功能。</code></p>
+</li>
+<li><p><code>目前HotSpot VM所采用的热点探测方式是基于计数器的热点探测。</code></p>
+</li>
+<li><p>采用基于计数器的热点探测，HotSpot VM将会为每一个方法都建立2个不同类型的计数器，<code>分别为方法调用计数器（Invocation Counter）和回边计数器（Back Edge Counter）。</code></p>
+<ul>
+<li>方法调用计数器用于统计方法的调用次数。</li>
+<li>回边计数器则用于统计循环体执行的循环次数。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h5 id="一、方法调用计数器"><a href="#一、方法调用计数器" class="headerlink" title="一、方法调用计数器"></a>一、方法调用计数器</h5><blockquote>
+<ol>
+<li><p>这个计数器就用于统计方法被调用的次数，它的默认阀值在Client模式下是1500次，<code>在Server模式下是10000次。超过这个阈值，就会触发JIT编译。</code></p>
+</li>
+<li><p>这个阀值可以通过虚拟机参数 -XX:CompileThreshold 来人为设定。</p>
+</li>
+<li><p>当一个方法被调用时，会先检查该方法是否存在被JIT编译过的版本，如果存在，则优先使用编译后的本地代码来执行。如果不存在已被编译过的版本，则将此方法的调用计数器值加1，然后判断方法调用计数器与回边计数器值之和是否超过方法调用计数器的阀值。如果已超过阈值，那么将会向即时编译器提交一个该方法的代码编译请求。</p>
+</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710101829934.png" alt="image-20200710101829934"></p>
+<h6 id="热点衰减"><a href="#热点衰减" class="headerlink" title="热点衰减"></a>热点衰减</h6><blockquote>
+<ol>
+<li><p>如果不做任何设置，方法调用计数器统计的并不是方法被调用的绝对次数，而是一个相对的执行频率，即一段时间之内方法被调用的次数。<code>当超过一定的时间限度，如果方法的调用次数仍然不足以让它提交给即时编译器编译，那这个方法的调用计数器就会被减少一半，这个过程称为方法调用计数器热度的衰减（Counter Decay），而这段时间就称为此方法统计的半衰周期（Counter Half Life Time）</code></p>
+</li>
+<li><p>进行热度衰减的动作是在虚拟机进行垃圾收集时顺便进行的，<code>可以使用虚拟机参数-XX:-UseCounterDecay 来关闭热度衰减</code>，让方法计数器统计方法调用的绝对次数，这样，只要系统运行时间足够长，绝大部分方法都会被编译成本地代码。</p>
+</li>
+<li><p>另外，可以<code>使用-XX:CounterHalfLifeTime参数设置半衰周期的时间</code>，<code>单位是秒</code>。</p>
+</li>
+</ol>
+</blockquote>
+<h5 id="二、回边计数器"><a href="#二、回边计数器" class="headerlink" title="二、回边计数器"></a>二、回边计数器</h5><blockquote>
+<p>它的作用是统计一个方法中<code>循环体代码执行的次数</code>，在字节码中遇到控制流向后跳转的指令<code>称为“回边”（Back Edge）。</code>显然，建立回边计数器统计的目的就是为了<code>触发OSR编译</code>。</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710103103869.png" alt="image-20200710103103869"></p>
+<h4 id="6-7-HotSpotVM可以设置程序执行方法"><a href="#6-7-HotSpotVM可以设置程序执行方法" class="headerlink" title="6.7 HotSpotVM可以设置程序执行方法"></a>6.7 HotSpotVM可以设置程序执行方法</h4><blockquote>
+<p>缺省情况下HotSpot VM是采用解释器与即时编译器并存的架构，当然开发人员可以根据具体的应用场景，通过命令显式地为Java虚拟机指定在运行时到底是完全采用解释器执行，还是完全采用即时编译器执行。如下所示：</p>
+<ol>
+<li><code>-Xint</code>：完全采用解释器模式执行程序；</li>
+<li><code>-Xcomp</code>：完全采用即时编译器模式执行程序。如果即时编译出现问题，解释器会介入执行</li>
+<li><code>-Xmixed</code>：采用解释器+即时编译器的混合模式共同执行程序。</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-JVM/image-20200710103340273.png" alt="image-20200710103340273"></p>
+<h4 id="6-8-HotSpotVM中-JIT-分类"><a href="#6-8-HotSpotVM中-JIT-分类" class="headerlink" title="6.8 HotSpotVM中 JIT 分类"></a>6.8 HotSpotVM中 JIT 分类</h4><blockquote>
+<p><code>JIT的编译器还分为了两种，分别是C1和C2</code>，<code>在HotSpot VM中内嵌有两个JIT编译器，分别为Client Compiler和Server Compiler，但大多数情况下我们简称为C1编译器 和 C2编译器。</code>开发人员可以通过如下命令显式指定Java虚拟机在运行时到底使用哪一种即时编译器，如下所示：</p>
+<ol>
+<li><code>-client</code>：指定Java虚拟机运行在Client模式下，并使用<code>C1编译器</code>；<code>C1编译器会对字节码进行简单和可靠的优化，耗时短。以达到更快的编译速度。</code></li>
+<li><code>-server</code>：指定Java虚拟机运行在server模式下，并使用<code>C2编译器</code>。<code>C2进行耗时较长的优化，以及激进优化。但优化的代码执行效率更高。（使用C++）</code></li>
+</ol>
+<p><code>C1 和 C2编译器不同的优化策略：</code></p>
+<ol>
+<li>在不同的编译器上有不同的优化策略，<code>C1编译器上主要有方法内联，去虚拟化、元余消除。</code><ul>
+<li>方法内联：将引用的函数代码编译到引用点处，这样可以减少栈帧的生成，减少参数传递以及跳转过程。</li>
+<li>去虚拟化：对唯一的实现类进行内联。</li>
+<li>冗余消除：在运行期间把一些不会执行的代码折叠掉。</li>
+</ul>
+</li>
+<li>C2的优化主要是在全局层面，<code>逃逸分析是优化的基础</code>。基于逃逸分析在C2上有如下几种优化：<ul>
+<li>标量替换：用标量值代替聚合对象的属性值。</li>
+<li><code>栈上分配：对于未逃逸的对象分配对象在栈而不是堆。</code></li>
+<li>同步消除：清除同步操作，通常指synchronized。</li>
+</ul>
+</li>
+</ol>
+<p>分层编译策略：</p>
+<ol>
+<li><code>分层编译（Tiered Compilation）策略：程序解释执行（不开启性能监控）可以触发C1编译，将字节码编译成机器码，可以进行简单优化，也可以加上性能监控，C2编译会根据性能监控信息进行激进优化。</code></li>
+<li>不过在Java7版本之后，一旦开发人员在程序中显式指定命令“-server”时，默认将会开启分层编译策略，由C1编译器和C2编译器相互协作共同来执行编译任务。</li>
+</ol>
+</blockquote>
+<h4 id="6-9-小结"><a href="#6-9-小结" class="headerlink" title="6.9 小结"></a>6.9 小结</h4><blockquote>
+<ul>
+<li><code>一般来讲，JIT编译出来的机器码性能比解释器高。</code></li>
+<li><code>C2编译器启动时长比C1慢，系统稳定执行以后，C2编译器执行速度远快于C1编译器。</code></li>
+</ul>
+</blockquote>
+<h4 id="6-10-写在最后"><a href="#6-10-写在最后" class="headerlink" title="6.10 写在最后"></a>6.10 写在最后</h4><h6 id="AOT-编译器"><a href="#AOT-编译器" class="headerlink" title="AOT 编译器"></a>AOT 编译器</h6><blockquote>
+<ol>
+<li><p><code>jdk9引入了AOT编译器（静态提前编译器，Ahead of Time Compiler）</code></p>
+</li>
+<li><p><code>Java 9引入了实验性AOT编译工具jaotc。它借助了Graal编译器</code>，将所输入的Java类文件转换为机器码，并存放至生成的动态共享库之中。</p>
+</li>
+<li><p>所谓AOT编译，是与即时编译相对立的一个概念。我们知道，即时编译指的是在程序的运行过程中，将字节码转换为可在硬件上直接运行的机器码，并部署至托管环境中的过程。而AOT编译指的则是，在程序运行之前，便将字节码转换为机器码的过程。</p>
+</li>
+<li><pre><code class="java">.java -&gt; <span class="class">.<span class="keyword">class</span> -&gt; (使用<span class="title">jaotc</span>) -&gt; .<span class="title">so</span></span></code></pre>
+</li>
+<li><p>最大的好处：Java虚拟机加载已经预编译成二进制库，可以直接执行。不必等待及时编译器的预热，减少Java应用给人带来“第一次运行慢” 的不良体验</p>
+</li>
+<li><p>缺点：</p>
+<ul>
+<li><code>破坏了 java  “ 一次编译，到处运行”，必须为每个不同的硬件，OS编译对应的发行包。</code></li>
+<li>降低了Java链接过程的动态性，加载的代码在编译器就必须全部已知。</li>
+<li>还需要继续优化中，最初只支持Linux x64 java base。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h6 id="Graal-编译器"><a href="#Graal-编译器" class="headerlink" title="Graal 编译器"></a>Graal 编译器</h6><blockquote>
+<p>自JDK10起，HotSpot又加入了一个全新的及时编译器：Graal编译器。</p>
+<p>编译效果短短几年时间就追评了G2编译器，未来可期。</p>
+<p>目前，带着实验状态标签，需要使用<code>开关参数-XX:+UnlockExperimentalvMOptions -XX:+UseJVMCICompiler</code>去激活才能使用。</p>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE-JVM/13.JVM%E4%B9%8B%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E/">http://www.itbuild.cn/2020/12/19/JavaSE-JVM/13.JVM%E4%B9%8B%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/14.JVM%E4%B9%8BStringTable/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-JVM/14.JVM之StringTable</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-JVM/12.JVM%E4%B9%8B%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98/"><span>JavaSE-JVM/12.JVM之直接内存</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

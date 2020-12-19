@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE/02.Java语言概述,JDK安装和环境变量的配置"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE/02.Java语言概述,JDK安装和环境变量的配置【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java语言概述-JDK安装和环境变量的配置"><span class="toc-text">Java语言概述,JDK安装和环境变量的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Java基础知识图解"><span class="toc-text">1. Java基础知识图解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-程序设计"><span class="toc-text">1.1 程序设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-程序设计语言"><span class="toc-text">1.2 程序设计语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-软件开发介绍"><span class="toc-text">1.3 软件开发介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#语言发展趋势图统计网站：https-www-tiobe-com-tiobe-index"><span class="toc-text">语言发展趋势图统计网站：https:&#x2F;&#x2F;www.tiobe.com&#x2F;tiobe-index&#x2F;</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-计算机结构：硬件和软件"><span class="toc-text">2.计算机结构：硬件和软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-计算机硬件"><span class="toc-text">2.1 计算机硬件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-中央处理器CPU"><span class="toc-text">2.1.1 中央处理器CPU</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-比特-bit-和字节-byte"><span class="toc-text">2.1.2 比特(bit)和字节(byte)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-3-内存"><span class="toc-text">2.1.3 内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-4-存储设备"><span class="toc-text">2.1.4 存储设备</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-5-输入和输出设备"><span class="toc-text">2.1.5 输入和输出设备</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-6-通信设备"><span class="toc-text">2.1.6 通信设备</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-操作系统-OS"><span class="toc-text">2.2 操作系统 OS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-计算机发展史上的鼻祖"><span class="toc-text">3. 计算机发展史上的鼻祖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-阿兰·图灵-Alan-Turing"><span class="toc-text">3.1.阿兰·图灵(Alan Turing)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-冯·诺依曼-John-von-Neumann"><span class="toc-text">3.2.冯·诺依曼(John von Neumann)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-万维网"><span class="toc-text">4. 万维网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Java语言概述"><span class="toc-text">5. Java语言概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Java技术体系平台"><span class="toc-text">5.1 Java技术体系平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Java在各领域中的应用"><span class="toc-text">5.2 Java在各领域中的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Java语言的特点"><span class="toc-text">5.3 Java语言的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-Java两种核心机制"><span class="toc-text">5.4 Java两种核心机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-搭建Java语言的环境"><span class="toc-text">6. 搭建Java语言的环境</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#官网下载地址：https-www-oracle-com-downloads"><span class="toc-text">官网下载地址：https:&#x2F;&#x2F;www.oracle.com&#x2F;downloads&#x2F;</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#百度网盘：链接：https-pan-baidu-com-s-18khMY6bcJ0Rn1tYHW5JcEA-提取码：htku"><span class="toc-text">百度网盘：链接：https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;18khMY6bcJ0Rn1tYHW5JcEA 提取码：htku</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-JDK、JRE和JVM"><span class="toc-text">6.1 JDK、JRE和JVM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-JDK目录结构"><span class="toc-text">6.2 JDK目录结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-配置环境变量"><span class="toc-text">6.3 配置环境变量</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color7"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color4"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE/02.Java语言概述,JDK安装和环境变量的配置</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE/">JavaSE</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>大江东去，浪淘尽，千古风流人物。</p>
+<p align="right">——苏轼《念奴娇》</p>
+<a id="more"></a>
+[TOC]
+
+<h1 id="Java语言概述-JDK安装和环境变量的配置"><a href="#Java语言概述-JDK安装和环境变量的配置" class="headerlink" title="Java语言概述,JDK安装和环境变量的配置"></a>Java语言概述,JDK安装和环境变量的配置</h1><h2 id="1-Java基础知识图解"><a href="#1-Java基础知识图解" class="headerlink" title="1. Java基础知识图解"></a>1. Java基础知识图解</h2><blockquote>
+<p>JavaSE基础是学习JavaEE、大数据、Android开发的基石！</p>
+</blockquote>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5C%E7%AC%94%E8%AE%B0%5Cweb-justweb%5C%E7%AC%94%E8%AE%B0%5Cassets%5C1568533435076.png" alt="1568533435076"></p>
+<h3 id="1-1-程序设计"><a href="#1-1-程序设计" class="headerlink" title="1.1 程序设计"></a>1.1 程序设计</h3><ul>
+<li>定义：创建（或开发）软件。软件包含了指令，告诉计算机做什么。</li>
+<li>应用场景：软件遍布我们周围。除了个人计算机，飞机、汽车、手机甚至烤面包机中，同样运行着软件。</li>
+</ul>
+<h3 id="1-2-程序设计语言"><a href="#1-2-程序设计语言" class="headerlink" title="1.2 程序设计语言"></a>1.2 程序设计语言</h3><blockquote>
+<p>如何选择该学习哪种程序设计语言？</p>
+</blockquote>
+<ul>
+<li>程序设计语言有很多种，每种语言都是为了实现某个特定的目的而发明的。</li>
+<li>你会困惑哪种语言是最好的。事实上，没有“最好”的语言。每种语言都有它的长处和短处。</li>
+<li>关键是学习如何使用程序设计方法来解决问题。</li>
+</ul>
+<h3 id="1-3-软件开发介绍"><a href="#1-3-软件开发介绍" class="headerlink" title="1.3 软件开发介绍"></a>1.3 软件开发介绍</h3><ul>
+<li>软件开发<ul>
+<li>软件，即一系列按照特定顺序组织的计算机数据和指令的集合。</li>
+<li>有系统软件和应用软件之分。</li>
+<li>不同的计算机语言针对不同的软件各有各的优势。</li>
+</ul>
+</li>
+<li>人机交互方式<ul>
+<li>图形化界面(Graphical User Interface GUI)这种方式简单直观，使用者易于接受，容易上手操作。</li>
+<li>命令行方式(Command Line Interface CLI)：需要有一个控制台，输入特定的指令，让计算机完成一些操作。较为麻烦，需要记录住一些命令。</li>
+</ul>
+</li>
+</ul>
+<h6 id="语言发展趋势图统计网站：https-www-tiobe-com-tiobe-index"><a href="#语言发展趋势图统计网站：https-www-tiobe-com-tiobe-index" class="headerlink" title="语言发展趋势图统计网站：https://www.tiobe.com/tiobe-index/"></a><strong>语言发展趋势图统计网站：</strong><a href="https://www.tiobe.com/tiobe-index/" target="_blank" rel="noopener">https://www.tiobe.com/tiobe-index/</a></h6><h2 id="2-计算机结构：硬件和软件"><a href="#2-计算机结构：硬件和软件" class="headerlink" title="2.计算机结构：硬件和软件"></a>2.计算机结构：硬件和软件</h2><blockquote>
+<p>计算机包括<code>硬件</code>(hardware)和<code>软件</code>(software)两部分。</p>
+<ul>
+<li><p>硬件包括计算机中可以看得见的物理部分。</p>
+<ul>
+<li>CPU：中央处理器，负责计算机的核心运算，它是计算机的最核心部件，指挥官。</li>
+<li>内存：临时存储区域，程序在运行的过程当中，一些数据的临时存储区域。</li>
+<li>主板：链接各个部件</li>
+<li>显卡、声卡</li>
+<li>鼠标、键盘</li>
+<li>硬盘[外存]：永久性保存，断电之后再启动，数据仍然存在，等。</li>
+</ul>
+</li>
+<li><p>软件提供看不见的指令。这些指令控制硬件并且使得硬件完成特定的任务。</p>
+<ul>
+<li>系统软件    </li>
+<li>应用软件</li>
+</ul>
+</li>
+</ul>
+<p>应用软件是运行在系统软件当中的，系统软件和底层硬盘交互。</p>
+</blockquote>
+<h3 id="2-1-计算机硬件"><a href="#2-1-计算机硬件" class="headerlink" title="2.1 计算机硬件"></a>2.1 计算机硬件</h3><p>​    <strong>计算机组成图</strong></p>
+<p><img src="https://typora-yu.oss-cn-beijing.aliyuncs.com/justweb_course/javase/day01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90.png" alt=""></p>
+<p>​    <strong>计算机内部执行流程图</strong></p>
+<p><img src="https://typora-yu.oss-cn-beijing.aliyuncs.com/justweb_course/javase/day01/%E5%9B%BE%E7%89%871.png" alt=""></p>
+<blockquote>
+<p><strong>冯.诺依曼</strong>体系结构是现代计算机的基础，现在大多计算机仍是冯.诺依曼计算机的组织结构，只是作了一些改进而已，并没有从根本上突破冯体系结构的束缚。冯.诺依曼也因此被人们称为“计算机之父”。</p>
+</blockquote>
+<h4 id="2-1-1-中央处理器CPU"><a href="#2-1-1-中央处理器CPU" class="headerlink" title="2.1.1 中央处理器CPU"></a>2.1.1 中央处理器CPU</h4><ul>
+<li>中央处理器(Central Processing Unit,CPU)是计算机的大脑。它从内存中获取指令，然后执行这些指令。</li>
+<li>包括<ul>
+<li>控制单元：用于控制和协调其他组件的动作。</li>
+<li>算术/逻辑单元：用于完成数值运算(+、-、*、/)和逻辑运算(比较)。</li>
+</ul>
+</li>
+<li>每台计算机都有一个内部时钟，该时钟以固定速度发射电子脉冲。时钟速度越快，在给定的时间段内执行的指令就越多。速度的计量单位是赫兹(Hz)，1Hz 相当于每秒1个脉冲。随着CPU速度不断提高，目前以千兆赫(GHz)来表述。</li>
+<li>最初一个CPU只有一个核(core)。核是处理器中实现指令读取和执行的部分。一个多核CPU是一个具有两个或者更多独立核的组件。可提高CPU的处理能力。</li>
+</ul>
+<h4 id="2-1-2-比特-bit-和字节-byte"><a href="#2-1-2-比特-bit-和字节-byte" class="headerlink" title="2.1.2 比特(bit)和字节(byte)"></a>2.1.2 比特(bit)和字节(byte)</h4><ul>
+<li><p>计算机就是一系列的电路开关。每个开关存在两种状态：关(off)和开(on)。如果电路是开的，它的值是1。如果电路是关的，它的值是0。</p>
+</li>
+<li><p><strong>一个0或者一个1存储为一个比特(bit)。</strong> </p>
+</li>
+<li><p><strong>计算机中字节(byte)是最基本的存储单元。每个字节由8个比特构成。</strong></p>
+</li>
+<li><p>计算机的存储能力是以字节和多字节来衡量的。如下：</p>
+<blockquote>
+<p>千字节(kilobyte,KB)  = 1024B<br>兆字节(megabyte,MB) = 1024KB<br>千兆字节(gigabyte,GB) = 1024MB<br>万亿字节(terabyte,TB) = 1024GB</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="2-1-3-内存"><a href="#2-1-3-内存" class="headerlink" title="2.1.3 内存"></a>2.1.3 内存</h4><ul>
+<li>内存(也叫 Random-Access Memory,RAM)：由一个有序的字节序列组成，用于存储程序及程序需要的数据。</li>
+<li>一个程序和它的数据在被CPU执行前必须移到计算机的内存中。</li>
+<li>每个字节都有一个唯一的地址。使用这个地址确定字节的位置，以便于存储和获取数据。</li>
+<li>一个计算机具有的RAM越多，它的运行速度越快，但是此规律是有限制的。</li>
+<li>内存与CPU一样，也构建在表面嵌有数百万晶体管的硅半导体芯片上。但内存芯片更简单、更低速、更便宜。</li>
+</ul>
+<h4 id="2-1-4-存储设备"><a href="#2-1-4-存储设备" class="headerlink" title="2.1.4 存储设备"></a>2.1.4 存储设备</h4><ul>
+<li><p>内存中的信息在断电时会丢失。那我们可以考虑将程序和数据永久的保存在存储设备上。当计算机确实需要这些数据时，再移入内存，因为从内存中读取比从存储设备读取要快得多。</p>
+</li>
+<li><p>存储设备主要有以下三种：</p>
+<ul>
+<li><p>磁盘驱动器</p>
+<blockquote>
+<p>每台计算机至少有一个硬盘驱动器。硬盘(hard disk)用于永久的 保存数据和程序。</p>
+</blockquote>
+</li>
+<li><p>光盘驱动器(CD和DVD)</p>
+<blockquote>
+<p>CD的容量可达700MB。<br>DVD的容量可达4.7GB。</p>
+</blockquote>
+</li>
+<li><p>USB闪存驱动器</p>
+<blockquote>
+<p>USB: Universal Serial  Bus，<strong>通用串行总线</strong>。<br>可以使用USB将打印机、数码相机、鼠标、外部硬盘驱动器连接到计算机上。USB闪存驱动器很小,可用于存储和传输数据的设备。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-1-5-输入和输出设备"><a href="#2-1-5-输入和输出设备" class="headerlink" title="2.1.5 输入和输出设备"></a>2.1.5 输入和输出设备</h4><ul>
+<li>常见的输入设备：键盘（keyboard）和鼠标（mouse）</li>
+<li>常见的输出设备：显示器（monitor）和打印机（printer）</li>
+<li>显示器屏幕分辨率：是指显示设备水平和垂直方向上显示的像素数。分辨率可以手工设置。分辨率越高，图像越锐化、越清晰。</li>
+</ul>
+<h4 id="2-1-6-通信设备"><a href="#2-1-6-通信设备" class="headerlink" title="2.1.6 通信设备"></a>2.1.6 通信设备</h4><ul>
+<li>计算机可以通过通信设备进行联网。</li>
+<li>常见的设备有：<ul>
+<li>拨号调制解调器：使用的是电话线，传输速度可达56 000bps(bps:每秒比特)</li>
+<li>DSL（数字用户线）：使用的也是电话线，但传输速度叫上面的快20倍</li>
+<li>电缆调制解调器：利用有线电视电缆进行数据传输，通常速度比DSL快。</li>
+<li>网络接口卡（NIC）：将计算机接入局域网（LAN）的设备。局域网通常用于大学、商业组织和政府组织。速度甚至可达1000Mbps</li>
+<li>无线网络：在家庭、商业和学校中极其常见。计算机可通过无线适配器连接到局域网或 Internet 上。</li>
+</ul>
+</li>
+</ul>
+<p><strong>windows操作系统默认情况下是不显示文件扩展名的，作为程序员必须将文件的扩展名显示出来：</strong></p>
+<ul>
+<li>计算机 –&gt; 组织 –&gt; 文件夹和搜索选项 –&gt; 查看 –&gt; 隐藏已知文件类型的扩展名。</li>
+</ul>
+<h3 id="2-2-操作系统-OS"><a href="#2-2-操作系统-OS" class="headerlink" title="2.2 操作系统 OS"></a>2.2 操作系统 OS</h3><blockquote>
+<p>操作系统(Operating  System)是运行在计算机上的最<code>重要</code>的程序，它可以管理和控制计算机的活动。</p>
+</blockquote>
+<ul>
+<li><p>硬件、操作系统、应用软件和用户之间的关系如下图。</p>
+<p><img src="C:/Users/Administrator/Desktop/%E7%AC%94%E8%AE%B0/java-justweb/day1-10/day01/https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE/1549020645519.png" alt="1549020645519"></p>
+</li>
+<li><p>操作系统的主要任务：</p>
+<ul>
+<li>控制和监视系统的活动</li>
+<li>分配和调配系统资源</li>
+<li>调度操作</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-计算机发展史上的鼻祖"><a href="#3-计算机发展史上的鼻祖" class="headerlink" title="3. 计算机发展史上的鼻祖"></a>3. 计算机发展史上的鼻祖</h2><h3 id="3-1-阿兰·图灵-Alan-Turing"><a href="#3-1-阿兰·图灵-Alan-Turing" class="headerlink" title="3.1.阿兰·图灵(Alan Turing)"></a>3.1.阿兰·图灵(Alan Turing)</h3><blockquote>
+<p>​        最近半个世纪以来，世界计算机科学界的重大进步，离不开图灵等人的理论奠基作用和多方面的开创性研究成果。图灵是当之无愧的计算机科学和人工智能之父。甚至认为，他在技术上的贡献及对未来世界的影响几乎可与牛顿、爱因斯坦等巨人比肩。</p>
+<p>​        图灵论文中的“用有限的指令和有限的存储空间可算尽一切可算之物”理论让当时所有的科学家震惊.</p>
+<p>​        美国计算机学会（ACM）的年度“图灵奖”，自从1966年设立以来，一直是世界计算机科学领域的最高荣誉，相当于计算机科学界的诺贝尔奖。至今，中国人只有姚期智院士获该奖项。</p>
+</blockquote>
+<h3 id="3-2-冯·诺依曼-John-von-Neumann"><a href="#3-2-冯·诺依曼-John-von-Neumann" class="headerlink" title="3.2.冯·诺依曼(John von Neumann)"></a>3.2.冯·诺依曼(John von Neumann)</h3><blockquote>
+<p>​        20世纪最重要的数学家之一，在现代计算机、博弈论、核武器和生化武器等诸多领域内有杰出建树的最伟大的科学全才之一，被后人称为“<strong>计算机之父</strong>”和“博弈论之父”。</p>
+<p>​        计算机基本工作原理是存储程序和程序控制，它是由世界著名数学家冯·诺依曼提出的。最简单的来说，冯诺依曼理论的要点是：数字计算机的数制采用二进制；计算机应该按照程序顺序执行。</p>
+<p>​        同样有着“计算机之父”称号的冯·诺依曼的助手弗兰克尔在一封信中写到：“……计算机的基本概念属于图灵。按照我的看法，冯·诺依曼的基本作用是使世界认识了由图灵引入的计算机基本概念……</p>
+</blockquote>
+<p><strong>根据冯诺依曼体系结构构成的计算机，必须具有如下功能：</strong></p>
+<ul>
+<li>把需要的程序和数据送至计算机中。</li>
+<li>必须具有长期记忆程序、数据、中间结果及最终运算结果的能力。</li>
+<li>能够完成各种算术、逻辑运算和数据传送等数据加工处理的能力。</li>
+<li>能够根据需要控制程序走向，并能根据指令控制机器的各部件协调操作。</li>
+<li>能够按照要求将处理结果输出给用户。</li>
+</ul>
+<h2 id="4-万维网"><a href="#4-万维网" class="headerlink" title="4. 万维网"></a>4. 万维网</h2><blockquote>
+<p>万维网（World Wide Web, www）是从世界上任何地方的Internet都可以访问的电子信息宝库。Internet作为万维网的基础架构已经问世四十多年。丰富多彩的万维网和设计精良的Web浏览器是Internet流行的主要原因。</p>
+</blockquote>
+<p>还记得推动Java发展的两大动力吗？</p>
+<blockquote>
+<p>Java一开始富有吸引力是因为Java程序可以在Web浏览器中运行。这些java程序被称为java小程序（applet）。applet使用现代的图形用户界面与Web用户进行交互, applet内嵌在HTML代码中。万维网的兴起造就了如今Java语言的蓬勃发展。然而随着JDK版本的不断更新，在JDK9版本中已把applet标记为“不推荐使用”，取而代之的是更好的技术。</p>
+</blockquote>
+<h2 id="5-Java语言概述"><a href="#5-Java语言概述" class="headerlink" title="5. Java语言概述"></a>5. Java语言概述</h2><h3 id="5-1-Java技术体系平台"><a href="#5-1-Java技术体系平台" class="headerlink" title="5.1 Java技术体系平台"></a>5.1 Java技术体系平台</h3><ol>
+<li>Java SE ( Java Standard Edition ) 标准版<ul>
+<li>支持面向桌面级应用（如Windows下的应用程序）的Java平台，提供了完整的Java核心API，此版本以前称为J2SE。</li>
+</ul>
+</li>
+<li>Java EE ( Java Enterprise Edition )企业版<ul>
+<li>是为开发企业环境下的应用程序提供的一套解决方案。该技术体系中包含的技术如:Servlet 、Jsp等，主要针对于Web应用程序开发，版本以前称为J2EE。</li>
+</ul>
+</li>
+<li>Java ME(Java Micro Edition)小型版<ul>
+<li>支持Java程序运行在移动终端（手机、PDA）上的平台，对Java API有所精简，并加入了针对移动终端的支持，此版本以前称为J2ME。</li>
+</ul>
+</li>
+<li>Java Card<ul>
+<li>支持一些Java小程序（Applets）运行在小内存设备（如智能卡）上的平台。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-2-Java在各领域中的应用"><a href="#5-2-Java在各领域中的应用" class="headerlink" title="5.2 Java在各领域中的应用"></a>5.2 Java在各领域中的应用</h3><p><strong>从Java的应用领域来分，Java语言的应用方向主要表现在以下几个方面：</strong></p>
+<ul>
+<li><strong>企业级应用</strong>：主要指复杂的大企业的软件系统、各种类型的网站。Java的安全机制以及它的跨平台的优势，使它在分布式系统领域开发中有广泛应用。应用领域包括金融、电信、交通、电子商务等。</li>
+<li><strong>Android平台应用</strong>：Android应用程序使用Java语言编写。Android开发水平的高低很大程度上取决于Java语言核心能力是否扎实。</li>
+<li><strong>移动领域应用</strong>，主要表现在消费和嵌入式领域，是指在各种小型设备上的应用，包括手机、PDA、机顶盒、汽车通信设备等。</li>
+</ul>
+<h3 id="5-3-Java语言的特点"><a href="#5-3-Java语言的特点" class="headerlink" title="5.3 Java语言的特点"></a>5.3 Java语言的特点</h3><ol>
+<li>面向对象<ul>
+<li>两个基本概念：类、对象</li>
+<li>三大特性：封装、继承、多态</li>
+</ul>
+</li>
+<li>健壮性<ul>
+<li>吸收了C/C++语言的优点，但去掉了其影响程序健壮性的部分（如指针、内存的申请与释放等），提供了一个相对安全的内存管理和访问机制。</li>
+</ul>
+</li>
+<li>跨平台性<ul>
+<li>跨平台性：通过Java语言编写的应用程序在不同的系统平台上都可以运行。“Write once , Run Anywhere”</li>
+<li>原理：只要在需要运行 java 应用程序的操作系统上，先安装一个Java虚拟机 (JVM Java Virtual Machine) 即可。由JVM来负责Java程序在该系统中的运行。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://typora-yu.oss-cn-beijing.aliyuncs.com/justweb_course/javase/day01/java%E8%B7%A8%E5%B9%B3%E5%8F%B0.png" alt=""></p>
+<h3 id="5-4-Java两种核心机制"><a href="#5-4-Java两种核心机制" class="headerlink" title="5.4 Java两种核心机制"></a>5.4 Java两种核心机制</h3><ul>
+<li><p><strong>Java虚拟机  (Java Virtal Machine)</strong></p>
+<ul>
+<li>JVM是一个虚拟的计算机，具有指令集并使用不同的存储区域。负责执行指令，管理数据、内存、寄存器。</li>
+<li>对于不同的平台，有不同的虚拟机。</li>
+<li>Java虚拟机机制屏蔽了底层运行平台的差别，实现了“一次编译，到处运行”</li>
+<li><a href="https://detail.tmall.com/item.htm?spm=a230r.1.14.9.40e9a346hVe8XZ&id=529766776721&cm_id=140105335569ed55e27b&abbucket=8" target="_blank" rel="noopener">推荐研究…</a></li>
+</ul>
+</li>
+<li><p><strong>垃圾收集机制  (Garbage Collection)</strong></p>
+</li>
+<li><p>在C/C++等语言中，由程序员负责回收无用内存。</p>
+<ul>
+<li>Java 语言消除了程序员回收无用内存空间的责任：它提供一种系统级线程跟踪存储空间的分配情况。并在JVM空闲时，检查并释放那些可被释放的存储空间。</li>
+<li>垃圾回收在Java程序运行过程中自动进行，程序员无法精确控制和干预。</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-搭建Java语言的环境"><a href="#6-搭建Java语言的环境" class="headerlink" title="6. 搭建Java语言的环境"></a>6. 搭建Java语言的环境</h2><p>​        首先要下载安装JDK,在目前的学习中推荐使用JDK7和JDK8以及JDK9,在学习的过程中可以钻研其中的更新以及带来对开发的影响,建议:安装路径不要有中文或者特殊符号如空格等。。</p>
+<blockquote>
+<h6 id="官网下载地址：https-www-oracle-com-downloads"><a href="#官网下载地址：https-www-oracle-com-downloads" class="headerlink" title="官网下载地址：https://www.oracle.com/downloads/"></a>官网下载地址：<a href="https://www.oracle.com/downloads/" target="_blank" rel="noopener">https://www.oracle.com/downloads/</a></h6><h6 id="百度网盘：链接：https-pan-baidu-com-s-18khMY6bcJ0Rn1tYHW5JcEA-提取码：htku"><a href="#百度网盘：链接：https-pan-baidu-com-s-18khMY6bcJ0Rn1tYHW5JcEA-提取码：htku" class="headerlink" title="百度网盘：链接：https://pan.baidu.com/s/18khMY6bcJ0Rn1tYHW5JcEA 提取码：htku"></a>百度网盘：链接：<a href="https://pan.baidu.com/s/18khMY6bcJ0Rn1tYHW5JcEA" target="_blank" rel="noopener">https://pan.baidu.com/s/18khMY6bcJ0Rn1tYHW5JcEA</a> 提取码：htku</h6></blockquote>
+<h3 id="6-1-JDK、JRE和JVM"><a href="#6-1-JDK、JRE和JVM" class="headerlink" title="6.1 JDK、JRE和JVM"></a>6.1 JDK、JRE和JVM</h3><blockquote>
+<p><strong><code>JDK = JRE + 开发工具集（例如Javac编译工具等）</code></strong><br><strong><code>JRE = JVM + Java SE标准类库</code></strong></p>
+</blockquote>
+<ol>
+<li><p>JDK( Java Development Kit    Java开发工具包 )</p>
+<ul>
+<li>JDK是提供给Java开发人员使用的，其中包含了java的开发工具，也包括了JRE,<strong>所以安装了JDK，就不用在单独安装JRE了</strong>。其中的开发工具：编译工具(javac.exe)  打包工具(jar.exe)等</li>
+</ul>
+</li>
+<li><p>JRE( Java Runtime Environment    Java运行环境 )</p>
+<ul>
+<li>包括Java虚拟机(JVM Java Virtual Machine)和Java程序所需的核心类库等，如果想要运行一个开发好的Java程序，计算机中只需要安装JRE即可。</li>
+</ul>
+</li>
+<li><p>JVM( Java Virtual Machine    Java虚拟机 )</p>
+<ul>
+<li>JRE由Java API和JVM组成，JVM通过类加载器(Class Loader)加类Java应用，并通过Java API进行执行。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://typora-yu.oss-cn-beijing.aliyuncs.com/justweb_course/javase/day01/jdk_jvm_jre%E5%85%B3%E7%B3%BB%E5%9B%BE.png" alt=""></p>
+<h3 id="6-2-JDK目录结构"><a href="#6-2-JDK目录结构" class="headerlink" title="6.2 JDK目录结构"></a>6.2 JDK目录结构</h3><table>
+<thead>
+<tr>
+<th>目录</th>
+<th>作用/功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bin目录</td>
+<td>Java工具的可执行文件，包括: java、Java编译器javac、反编译.class文件javap、密钥管理工具keytool、Java文档工具javadoc等。</td>
+</tr>
+<tr>
+<td>db目录</td>
+<td>Java实现的数据库。</td>
+</tr>
+<tr>
+<td>include目录</td>
+<td>.h头文件，C语言开发时用到的头文件。比如jni.h是开发jni程序时必须引用的头文件。</td>
+</tr>
+<tr>
+<td>jre目录</td>
+<td>Java运行环境。</td>
+</tr>
+<tr>
+<td>lib目录</td>
+<td>Java类库，我们经常看到的dt.jar和tools.jar就在这个目录下。</td>
+</tr>
+<tr>
+<td>src.zip文件</td>
+<td>Java类库源码，包括了rt.jar库中的关键部分；除了Java类库，还包含了启动器（launcher）的源码（C语言实现）。</td>
+</tr>
+<tr>
+<td>COPYRIGHT文件</td>
+<td>版权信息。</td>
+</tr>
+</tbody></table>
+<h3 id="6-3-配置环境变量"><a href="#6-3-配置环境变量" class="headerlink" title="6.3 配置环境变量"></a>6.3 配置环境变量</h3><blockquote>
+<p>为什么要配置环境变量？</p>
+<ul>
+<li>在dos命令行中敲入java.exe 报错：“java.exe” 不是内部或外部命令，也不是可以运行的程序。</li>
+</ul>
+</blockquote>
+<p><strong>错误原因：</strong></p>
+<p>​        当前执行的程序在当前目录下如果不存在，windows系统会在系统中已有的一个名为path的环境变量指定的目录中查找。如果仍未找到，会出现以上的错误提示。所以进入到  jdk安装路径\bin目录下，执行java.exe，会看到java.exe 参数提示信息。</p>
+<p>​        每次执行 java 的工具都要进入到bin目录下，是非常麻烦的。可不可以在任何目录下都可以执行java的工具呢？根据windows系统在查找可执行程序的原理，可以将java工具所在路径定义到 path 环境变量中，让系统帮我们去找运行执行的程序。</p>
+<p><strong>环境变量配置方法：</strong></p>
+<p>==我的电脑–属性–高级系统设置–环境变量==</p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1568540478632.png" alt="1568540478632"></p>
+<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1568540519212.png" alt="1568540519212"></p>
+<blockquote>
+<p>打开DOS命令行，任意目录下敲入javac。如果出现javac 的参数信息，配置成功。这样配置的目的是：方便我们在JDK各个版本之间进行过切换，而且后面运行tomcat的时候如果不通过JAVA_HOME来配置，我们就不能运行（tomcat文件夹里面bin目录中的setclasspath.bat文件），有兴趣的童鞋可以看一下。</p>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE/02.Java%E8%AF%AD%E8%A8%80%E6%A6%82%E8%BF%B0,JDK%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E9%85%8D%E7%BD%AE/">http://www.itbuild.cn/2020/12/19/JavaSE/02.Java%E8%AF%AD%E8%A8%80%E6%A6%82%E8%BF%B0,JDK%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E9%85%8D%E7%BD%AE/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/03.Java%E7%9A%84%E6%B3%A8%E9%87%8A%E3%80%81%E5%8F%98%E9%87%8F%E5%92%8C%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE/03.Java的注释、变量和数据类型</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/01.Java%E7%9A%84%E5%8E%86%E5%8F%B2%E5%92%8C%E6%BC%94%E5%8F%98/"><span>JavaSE/01.Java的历史和演变</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

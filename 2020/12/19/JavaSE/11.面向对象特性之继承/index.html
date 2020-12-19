@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE/11.面向对象特性之继承"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE/11.面向对象特性之继承【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-继承定义"><span class="toc-text">1.1 继承定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-方法重写"><span class="toc-text">1.2 方法重写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-继承格式"><span class="toc-text">1.4 继承格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-继承关系中-父子类构造方法的访问特点"><span class="toc-text">1.5 继承关系中-父子类构造方法的访问特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-6-super和this"><span class="toc-text">1.6 super和this</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-7-继承的特点"><span class="toc-text">1.7 继承的特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-8-抽象类"><span class="toc-text">1.8 抽象类</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-8-1-抽象方法"><span class="toc-text">1.8.1 抽象方法</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-8-2-抽象类abstract"><span class="toc-text">1.8.2 抽象类abstract</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color9"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color8"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">74</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">6</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE/11.面向对象特性之继承</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE/">JavaSE</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>花自飘零水自流。一种相思，两处闲愁。</p>
+<p align="right">——李清照《一剪梅》</p>
+<a id="more"></a>
+## 1. 面向对象特性之继承
+
+<blockquote>
+<p><code>extends</code></p>
+</blockquote>
+<h4 id="1-1-继承定义"><a href="#1-1-继承定义" class="headerlink" title="1.1 继承定义"></a>1.1 继承定义</h4><blockquote>
+<ol>
+<li><p>就是子类继承父类的属性和行为，使得子类对象具有与父类相同的属性，相同的行为，子类可以直接询问父类中的非私有的属性和行为</p>
+</li>
+<li><p>格式：class  子类  extends  父类{ … };</p>
+</li>
+<li><p>好处</p>
+<ol>
+<li><p>提高代码的复用性</p>
+</li>
+<li><p>类与类之间产生了关系，是多态的前提</p>
+</li>
+</ol>
+</li>
+<li><p>继承和成员变量的特点</p>
+<ol>
+<li>不重名；无影响</li>
+<li>重名：子父类中出现了同名的成员变量时，在子类中需要访问父类中非私有成员变量时，需要使用 <code>super</code>关键字，修饰父类成员变量。</li>
+</ol>
+</li>
+<li><p>Fu 类中的成员变量是非私有的，子类中可以直接访问。若Fu 类中的成员变量私有了，子类是不能直接访问的。通常编码时，我们遵循封装的原则，使用private修饰成员变量，那么如何访问父类的私有成员变量呢？对！可以在父类中提供公共的getXxx方法和setXxx方法。</p>
+</li>
+<li><p>继承和成员方法的特点</p>
+<ol>
+<li>不重名：如果子类父类中出现不重名的成员方法，这时的调用是没有影响的。对象调用方法时，会先在子类中查找有没有对应的方法，若子类中存在就会执行子类中的方法，若子类中不存在就会执行父类中相应的方法。</li>
+<li>重名：如果子类父类中出现重名的成员方法，这时的访问是一种特殊情况，<strong>叫做方法重写 (Override)。</strong></li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h4 id="1-2-方法重写"><a href="#1-2-方法重写" class="headerlink" title="1.2 方法重写"></a>1.2 方法重写</h4><blockquote>
+<ol>
+<li><p>子类中出现与父类<code>一模一样的方法时</code>（返回值类型，方法名和参数列表都相同），会出现覆盖效果，也称为重写或者复写。声明不变，重新实现。</p>
+</li>
+<li><p>重载和重写：</p>
+<ol>
+<li>重载：方法名相同，参数列表不同。</li>
+<li>重写：方法名相同，参数列表相同。两个方法分布在子类和父类中。 又叫方法的覆盖、覆写。</li>
+</ol>
+</li>
+<li><p>重写的最主要的目的：==对原有方法进行功能上的增强。==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"打电话"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"显示号码"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Px</span> <span class="keyword">extends</span> <span class="title">Phone</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.show();</span><br><span class="line">        System.out.println(<span class="string">"显示来电号码的归属地"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="5">
+<li>==方法的重写的特别注意：==<ol>
+<li><code>@override</code> 检测当前注解下的（重写）方法是不是对父类方法进行了重写。</li>
+<li>访问权限：<code>public &gt; protected &gt;(default) &gt; private</code></li>
+<li>返回值类型  <code>Object &gt; String</code></li>
+<li>父类中被重写的方法的访问权限 &lt;= 子类的重写方法的访问权限。(==正常开发的时候父子类的访问修饰符都是相同的。==)</li>
+<li>父类中被重写的方法的返回值类型要 &gt;= 子类中被重写的方法的返回值类型。</li>
+</ol>
+</li>
+</ol>
+<p>/<strong><em>\</em>/@override**</strong> 检测当前注解下的（重写）方法是不是对父类方法进行了重写。创建的是子类的对象，那么就优先使用的是子类的方法。所以重写才有意义。</p>
+</blockquote>
+<h4 id="1-4-继承格式"><a href="#1-4-继承格式" class="headerlink" title="1.4 继承格式"></a>1.4 继承格式</h4><blockquote>
+<ol>
+<li>如果一个类没有使用extends 继承其他的类，那么默认继承的是Object. Object类是所有类的祖先。所有的类都继承了<a href="https://blog.csdn.net/weixin_45267102/article/details/106117366" target="_blank" rel="noopener">Object类</a>。</li>
+<li>子类继承了父类，那么子类就应该拥有了父亲的所有的属性和方法（局部变量，本类成员变量，父类的成员变量，继承的是父类成员属性和成员方法。）。</li>
+</ol>
+</blockquote>
+<h4 id="1-5-继承关系中-父子类构造方法的访问特点"><a href="#1-5-继承关系中-父子类构造方法的访问特点" class="headerlink" title="1.5 继承关系中-父子类构造方法的访问特点"></a>1.5 继承关系中-父子类构造方法的访问特点</h4><blockquote>
+<ol>
+<li><p>子类的构造方法中有一个默认super()会调用，所以一定是先调用了父类的构造方法，然后才执行的子类的构造方法</p>
+</li>
+<li><p>子类的构造方法中可以通过  super( )来调用父类的构造方法。</p>
+</li>
+<li><p>super的在子类的构造器中的位置，必须是在第一语句上。而且子类的构造方法中只能有一个super调用。</p>
+</li>
+<li><p>总结：子类是必须调用父类构造方法。不写的话，默认添加一个super()；写了的话，则调用指定的父类构造器。super只能有一个，而且必须是第一个语句。//正常来说  super只有在调用有参数的父类构造器的时候才会出现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Fu</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"调用了父类的构造器，无can父类构造器"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Fu</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"调用了父类的构造器,有can父类构造器"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zi</span> <span class="keyword">extends</span> <span class="title">Fu</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> age = <span class="number">10</span>;</span><br><span class="line">    </span><br><span class="line">    String name =<span class="string">"taoge"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Zi</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// super();</span></span><br><span class="line">        <span class="keyword">super</span>(<span class="number">10</span>);</span><br><span class="line">        <span class="comment">//正常来说   super只有在调用有参数的父类构造器的时候才会出现。</span></span><br><span class="line">        <span class="comment">// super();//子类构造器第一行默认有一个super调用了父类的构造器。 super可以不写，默认有，</span></span><br><span class="line">        <span class="comment">// 但是如果写了，只能放在第一行。</span></span><br><span class="line">        System.out.println(<span class="string">"调用了子类的构造器"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+</blockquote>
+<h4 id="1-6-super和this"><a href="#1-6-super和this" class="headerlink" title="1.6 super和this"></a>1.6 super和this</h4><blockquote>
+<ol>
+<li><p>super:代表的是父类的存储空间（可以理解为父类的引用）</p>
+</li>
+<li><p>this:代表的是当前对象的引用</p>
+</li>
+<li><p>访问成员方法：</p>
+<ol>
+<li><p>super.成员变量   父类的</p>
+</li>
+<li><p>this.成员变量    本类的</p>
+</li>
+<li><p>super.成员方法  父类的</p>
+</li>
+<li><p>this.成员方法  本类的</p>
+</li>
+<li><p>this();  //调用的本类的构造函数</p>
+</li>
+<li><p>super(); //调用的父类的构造函数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zi</span> <span class="keyword">extends</span> <span class="title">Fu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">30</span>;</span><br><span class="line">        <span class="comment">//30  局部变量</span></span><br><span class="line">        System.out.println(<span class="string">"num = "</span> + num);</span><br><span class="line">        <span class="comment">//10 本类的成员变量</span></span><br><span class="line">        System.out.println(<span class="string">"this.num = "</span> + <span class="keyword">this</span>.num);</span><br><span class="line">        <span class="comment">//5  父类的成员变量</span></span><br><span class="line">        System.out.println(<span class="string">"super.num = "</span> + <span class="keyword">super</span>.num);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methods</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 有对象调用 this  如果在不产生变量冲突的情况下，this可以省略</span></span><br><span class="line">        <span class="comment">//System.out.println("num = " + this.num);//10</span></span><br><span class="line">        <span class="comment">//10</span></span><br><span class="line">        System.out.println(<span class="string">"num = "</span> + num);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li><p>子类的每个构造方法中均有默认的super()调用父类的空参构造。</p>
+</li>
+<li><p>手动调用父类构造会覆盖默认的super()。</p>
+</li>
+<li><p>super() 和this();都在构造方法的第一行所以不能同时存在。</p>
+</li>
+<li><p>==只要创建子类的对象：父类的构造函数一定会被调用==。</p>
+</li>
+<li><p>子类的构造函数也一样会被调用，所以我们说：<code>创建对象一定会调用构造函数</code>。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="1-7-继承的特点"><a href="#1-7-继承的特点" class="headerlink" title="1.7 继承的特点"></a>1.7 继承的特点</h4><blockquote>
+<ul>
+<li><p>Java自支持单继承，不支持多继承</p>
+</li>
+<li><p>Java支持多层继承（继承体系），顶层父类是Object类所有的类默认继承Object,作为父类。</p>
+</li>
+<li><p>子类和父类是一种相对的概念</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="1-8-抽象类"><a href="#1-8-抽象类" class="headerlink" title="1.8 抽象类"></a>1.8 <strong>抽象类</strong></h4><blockquote>
+<ol>
+<li>父类中的方法，被它的子类们重写，子类各自的实现都不尽相同。那么父类的方法声明和方法主体，只有声明还有意义，而方法主体则没有存在的意义了。</li>
+<li>我们把没有方法主体的方法称为抽象方法。</li>
+<li>Java语法规定，包含抽象方法的类就是抽象类。</li>
+</ol>
+</blockquote>
+<h6 id="1-8-1-抽象方法"><a href="#1-8-1-抽象方法" class="headerlink" title="1.8.1 抽象方法"></a>1.8.1 抽象方法</h6><blockquote>
+<ol>
+<li>没有方法体的方法叫抽象方法。</li>
+<li><strong><code>public abstract void eat();</code></strong>所以当前方法的方法体是没有任何作用的。    </li>
+<li>抽象方法只有方法名，没有方法体。</li>
+<li>非抽象方法，不需要重写,但是可以重写</li>
+</ol>
+</blockquote>
+<h6 id="1-8-2-抽象类abstract"><a href="#1-8-2-抽象类abstract" class="headerlink" title="1.8.2 抽象类abstract"></a>1.8.2 抽象类abstract</h6><blockquote>
+<ol>
+<li>包含抽象方法的类叫抽象类。</li>
+<li>Abstract  class  Animal抽象类是无法创建对象的。</li>
+<li>因为每个子类都要去重写当前的方法</li>
+<li>抽象类无法实例化对象：编译不通过。</li>
+<li>一个类继承了抽象类的话，那么这个类应该实现抽象类（重写方法）</li>
+<li><strong>父类要有无参构造方法</strong>，如果不加构造方法，会报错。</li>
+</ol>
+</blockquote>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/JavaSE/11.%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%89%B9%E6%80%A7%E4%B9%8B%E7%BB%A7%E6%89%BF/">http://www.itbuild.cn/2020/12/19/JavaSE/11.%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%89%B9%E6%80%A7%E4%B9%8B%E7%BB%A7%E6%89%BF/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/12.Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8E%A5%E5%8F%A3interface/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE/12.Java基础之接口interface</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE/10.static%E5%92%8Cfinal%E5%85%B3%E9%94%AE%E5%AD%97%E8%AF%A6%E8%A7%A3/"><span>JavaSE/10.static和final关键字详解</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>
