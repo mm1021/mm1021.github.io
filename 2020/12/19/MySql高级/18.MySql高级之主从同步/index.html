@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySql高级/18.MySql高级之主从同步"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>MySql高级/18.MySql高级之主从同步【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySql高级之主从同步"><span class="toc-text">MySql高级之主从同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-复制概述"><span class="toc-text">1. 复制概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-复制原理"><span class="toc-text">2. 复制原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-复制优势"><span class="toc-text">3. 复制优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-搭建步骤"><span class="toc-text">4. 搭建步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-master"><span class="toc-text">4.1 master</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-slave"><span class="toc-text">4.2  slave</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-验证同步操作"><span class="toc-text">4.3 验证同步操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color7"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color5"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">117</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">9</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">MySql高级/18.MySql高级之主从同步</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/MySql%E9%AB%98%E7%BA%A7/">MySql高级</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>便作春江都是泪，流不尽，许多愁。</p>
+<p align="right">——秦观《江城子》</p>
+<a id="more"></a>
+
+
+<h2 id="MySql高级之主从同步"><a href="#MySql高级之主从同步" class="headerlink" title="MySql高级之主从同步"></a>MySql高级之主从同步</h2><h3 id="1-复制概述"><a href="#1-复制概述" class="headerlink" title="1. 复制概述"></a>1. 复制概述</h3><blockquote>
+<p>复制是指将主数据库的DDL 和 DML 操作通过二进制日志传到从库服务器中，然后在从库上对这些日志重新执行（也叫重做），从而使得从库和主库的数据保持同步。</p>
+<p><code>MySQL支持一台主库同时向多台从库进行复制， 从库同时也可以作为其他从服务器的主库，实现链状复制。</code></p>
+</blockquote>
+<h3 id="2-复制原理"><a href="#2-复制原理" class="headerlink" title="2. 复制原理"></a>2. 复制原理</h3><p>MySQL 的主从复制原理如下。</p>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1.jpg" alt="1554423698190"> </p>
+<blockquote>
+<p>从上层来看，复制分成三步：</p>
+<ul>
+<li><p><code>Master 主库在事务提交时，会把数据变更作为时间 Events 记录在二进制日志文件 Binlog 中。</code></p>
+</li>
+<li><p><code>主库推送二进制日志文件 Binlog 中的日志事件到从库的中继日志 Relay Log 。</code></p>
+</li>
+<li><p><code>slave重做中继日志中的事件，将改变反映它自己的数据。</code></p>
+</li>
+</ul>
+</blockquote>
+<h3 id="3-复制优势"><a href="#3-复制优势" class="headerlink" title="3. 复制优势"></a>3. 复制优势</h3><blockquote>
+<p>MySQL 复制的有点主要包含以下三个方面：</p>
+<ul>
+<li><p><code>主库出现问题，可以快速切换到从库提供服务。</code></p>
+</li>
+<li><p><code>可以在从库上执行查询操作，从主库中更新，实现读写分离，降低主库的访问压力。</code></p>
+</li>
+<li><p><code>可以在从库中执行备份，以避免备份期间影响主库的服务。</code></p>
+</li>
+</ul>
+</blockquote>
+<h3 id="4-搭建步骤"><a href="#4-搭建步骤" class="headerlink" title="4. 搭建步骤"></a>4. 搭建步骤</h3><h4 id="4-1-master"><a href="#4-1-master" class="headerlink" title="4.1 master"></a>4.1 master</h4><blockquote>
+<ol>
+<li><code>在master 的配置文件（/usr/my.cnf）中，配置如下内容：</code></li>
+</ol>
+</blockquote>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#mysql 服务ID,保证整个集群环境中唯一</span></span><br><span class="line"><span class="meta">server-id</span>=<span class="string">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mysql binlog 日志的存储路径和文件名</span></span><br><span class="line"><span class="meta">log-bin</span>=<span class="string">/var/lib/mysql/mysqlbin</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#错误日志,默认已经开启</span></span><br><span class="line"><span class="comment">#log-err</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mysql的安装目录</span></span><br><span class="line"><span class="comment">#basedir</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mysql的临时目录</span></span><br><span class="line"><span class="comment">#tmpdir</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mysql的数据存放目录</span></span><br><span class="line"><span class="comment">#datadir</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#是否只读,1 代表只读, 0 代表读写</span></span><br><span class="line"><span class="meta">read-only</span>=<span class="string">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#忽略的数据, 指不需要同步的数据库</span></span><br><span class="line"><span class="meta">binlog-ignore-db</span>=<span class="string">mysql</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#指定同步的数据库</span></span><br><span class="line"><span class="meta">binlog-do-db</span>=<span class="string">mysql_senior</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="2">
+<li>执行完毕之后，需要重启Mysql：</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql restart;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="3">
+<li>创建同步数据的账户，并且进行授权操作：</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">replication</span> <span class="keyword">slave</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> <span class="string">'justweb'</span>@<span class="string">'192.168.68.102'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'justweb'</span>;	</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="4">
+<li>查看master状态：</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">master</span> <span class="keyword">status</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1554477759735.png" alt="1554477759735"> </p>
+<blockquote>
+<p>字段含义：</p>
+<ul>
+<li><code>File : 从哪个日志文件开始推送日志文件</code> </li>
+<li><code>Position ： 从哪个位置开始推送日志</code></li>
+<li><code>Binlog_Ignore_DB : 指定不需要同步的数据库</code></li>
+</ul>
+</blockquote>
+<h4 id="4-2-slave"><a href="#4-2-slave" class="headerlink" title="4.2  slave"></a>4.2  slave</h4><blockquote>
+<ol>
+<li>在 slave 端配置文件中，配置如下内容：</li>
+</ol>
+</blockquote>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#mysql服务端ID,唯一</span></span><br><span class="line"><span class="meta">server-id</span>=<span class="string">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#指定binlog日志</span></span><br><span class="line"><span class="meta">log-bin</span>=<span class="string">/var/lib/mysql/mysqlbin</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="2">
+<li>执行完毕之后，需要重启Mysql：</li>
+</ol>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql restart;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="3">
+<li>执行如下指令 ：</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">change</span> <span class="keyword">master</span> <span class="keyword">to</span> master_host= <span class="string">'192.168.68.101'</span>, master_user=<span class="string">'justweb'</span>, master_password=<span class="string">'justweb'</span>, master_log_file=<span class="string">'mysqlbin.000001'</span>, master_log_pos=<span class="number">413</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>指定当前从库对应的主库的IP地址，用户名，密码，从哪个日志文件开始的那个位置开始同步推送日志。</p>
+<ol start="4">
+<li>开启同步操作</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span> <span class="keyword">slave</span>;</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">slave</span> <span class="keyword">status</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731180137143.png" alt="image-20200731180137143"> </p>
+<blockquote>
+<ol start="5">
+<li>停止同步操作</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stop slave;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-3-验证同步操作"><a href="#4-3-验证同步操作" class="headerlink" title="4.3 验证同步操作"></a>4.3 验证同步操作</h4><blockquote>
+<ol>
+<li>在主库中创建数据库，创建表，并插入数据 ：</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> mysql_senior <span class="keyword">default</span> <span class="keyword">charset</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> mysql_senior;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">user</span>(</span><br><span class="line">	<span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="literal">null</span> auto_increment,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	sex <span class="built_in">varchar</span>(<span class="number">1</span>),</span><br><span class="line">	primary <span class="keyword">key</span> (<span class="keyword">id</span>)</span><br><span class="line">)<span class="keyword">engine</span>=<span class="keyword">innodb</span> <span class="keyword">default</span> <span class="keyword">charset</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(<span class="keyword">id</span>,<span class="keyword">name</span>,sex) <span class="keyword">values</span>(<span class="literal">null</span>,<span class="string">'Tom'</span>,<span class="string">'1'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(<span class="keyword">id</span>,<span class="keyword">name</span>,sex) <span class="keyword">values</span>(<span class="literal">null</span>,<span class="string">'Trigger'</span>,<span class="string">'0'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">user</span>(<span class="keyword">id</span>,<span class="keyword">name</span>,sex) <span class="keyword">values</span>(<span class="literal">null</span>,<span class="string">'Dawn'</span>,<span class="string">'1'</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="2">
+<li>在从库中查询数据，进行验证 ：</li>
+<li>在从库中，可以查看到刚才创建的数据库：</li>
+</ol>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1554544658640.png" alt="1554544658640"> </p>
+<blockquote>
+<p>在该数据库中，查询user表中的数据：</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1554544679538.png" alt="1554544679538"> </p>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/18.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/">http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/18.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/18.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"><span>MySql高级/18.MySql高级之主从复制</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

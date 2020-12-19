@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySql基础/01.数据库基础知识"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>MySql基础/01.数据库基础知识【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#数据库基础"><span class="toc-text">数据库基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-内存，文件，数据库比较"><span class="toc-text">1.1 内存，文件，数据库比较</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-常见数据库介绍："><span class="toc-text">1.2 常见数据库介绍：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-数据库管理系统"><span class="toc-text">1.3 数据库管理系统</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-数据库（我们选择-MySQL）的安装与卸载："><span class="toc-text">1.4 数据库（我们选择 MySQL）的安装与卸载：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1安装"><span class="toc-text">1.1安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-MySQL-目录结构"><span class="toc-text">1.2 MySQL 目录结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-3卸载"><span class="toc-text">1.3卸载</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-启动数据库服务"><span class="toc-text">1.5 启动数据库服务</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-DOS命令启动（以管理员的身份运行）"><span class="toc-text">1.1 DOS命令启动（以管理员的身份运行）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-手动启动数据库"><span class="toc-text">1.2  手动启动数据库</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color3"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color4"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">117</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">9</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">MySql基础/01.数据库基础知识</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/MySql%E5%9F%BA%E7%A1%80/">MySql基础</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>便作春江都是泪，流不尽，许多愁。</p>
+<p align="right">——秦观《江城子》</p>
+<a id="more"></a>
+
+
+
+
+
+<h1 id="数据库基础"><a href="#数据库基础" class="headerlink" title="数据库基础"></a>数据库基础</h1><blockquote>
+<p><a href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E5%BA%93/103728?fr=aladdin" target="_blank" rel="noopener">数据库的概述</a></p>
+<ul>
+<li><p>存储数据的仓库，本质是一个文件系统，还是以文件的方式存在<strong>服务器的电脑</strong>上的。</p>
+</li>
+<li><p>所有的关系型数据库都可以使用通用的 <code>SQL</code> 语句进行管理 DBMS <code>DataBaseManagement System</code></p>
+</li>
+</ul>
+</blockquote>
+<h4 id="1-1-内存，文件，数据库比较"><a href="#1-1-内存，文件，数据库比较" class="headerlink" title="1.1 内存，文件，数据库比较"></a>1.1 内存，文件，数据库比较</h4><table>
+<thead>
+<tr>
+<th><strong>存储位置</strong></th>
+<th align="center"><strong>优点</strong></th>
+<th><strong>缺点</strong></th>
+<th><strong>举例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>内存</strong></td>
+<td align="center">速度快</td>
+<td>不能永久保存，数据是临时状态</td>
+<td>Java中创建的对象，对象储存的位置</td>
+</tr>
+<tr>
+<td><strong>文件</strong></td>
+<td align="center">数据可以永久保存</td>
+<td>操作数据不方便，查询某个据。</td>
+<td>在Java IO流中，把数据存储在文件中</td>
+</tr>
+<tr>
+<td><strong>数据库</strong></td>
+<td align="center">数据可以永久保存，查询速度更快，对数据的管理方便</td>
+<td>占用资源，需要购买（也有免费）。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="1-2-常见数据库介绍："><a href="#1-2-常见数据库介绍：" class="headerlink" title="1.2 常见数据库介绍："></a>1.2 常见数据库介绍：</h4><ul>
+<li><strong>MySQL</strong>：开源免费的数据库，小型的数据库，已经被 Oracle 收购了。MySQL6.x 版本也开始收费。后来 Sun公司收购了 MySQL，而 Sun 公司又被 Oracle 收购（mycat）</li>
+<li><strong>Oracle</strong>：收费的大型数据库，Oracle 公司的产品。(先知)</li>
+<li><strong>DB2</strong> ：IBM 公司的数据库产品,收费的。常应用在银行系统中。</li>
+<li><strong>SQL Server</strong>： MicroSoft 公司收费的中型的数据库。C#、.net 等语言常使用。</li>
+<li><strong>SQLite</strong>: 嵌入式的小型数据库，应用在手机端，如：Android。（Apache）</li>
+<li>Java相关的数据库：MySQL，Oracle．</li>
+</ul>
+<h4 id="1-3-数据库管理系统"><a href="#1-3-数据库管理系统" class="headerlink" title="1.3 数据库管理系统"></a>1.3 数据库管理系统</h4><blockquote>
+<p>数据库管理系统（DataBase Management System，DBMS）：指一种操作和管理数据库的大型软件，用于建立、使用和维护数据库，对数据库进行统一管理和控制，以保证数据库的安全性和完整性。用户通过数据库管理系统访问数据库中表内的数据</p>
+</blockquote>
+<ul>
+<li>一个数据库(MySQL)服务器包含多个数据库</li>
+<li>一个数据库包含多张表</li>
+<li>一张表包含多条记录</li>
+</ul>
+<h4 id="1-4-数据库（我们选择-MySQL）的安装与卸载："><a href="#1-4-数据库（我们选择-MySQL）的安装与卸载：" class="headerlink" title="1.4 数据库（我们选择 MySQL）的安装与卸载："></a>1.4 数据库（我们选择 MySQL）的安装与卸载：</h4><h5 id="1-1安装"><a href="#1-1安装" class="headerlink" title="1.1安装"></a>1.1安装</h5><h5 id="1-2-MySQL-目录结构"><a href="#1-2-MySQL-目录结构" class="headerlink" title="1.2 MySQL 目录结构"></a>1.2 MySQL 目录结构</h5><table>
+<thead>
+<tr>
+<th><strong>MySQL</strong> <strong>的目录结构</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>bin&lt;目录&gt;</strong></td>
+<td>所有 mysql 的可执行文件，如:mysql.exe</td>
+</tr>
+<tr>
+<td><strong>MySQLInstanceConfig.exe</strong></td>
+<td>数据库的配置向导，在安装时出现的内容</td>
+</tr>
+<tr>
+<td><strong>data&lt;目录&gt;</strong></td>
+<td>系统必须的数据库所在的目录</td>
+</tr>
+<tr>
+<td><strong>my.ini</strong> <strong>文件</strong></td>
+<td>mysql 的配置文件，一般不建议去修改。</td>
+</tr>
+</tbody></table>
+<h5 id="1-3卸载"><a href="#1-3卸载" class="headerlink" title="1.3卸载"></a>1.3卸载</h5><h4 id="1-5-启动数据库服务"><a href="#1-5-启动数据库服务" class="headerlink" title="1.5 启动数据库服务"></a>1.5 启动数据库服务</h4><h5 id="1-1-DOS命令启动（以管理员的身份运行）"><a href="#1-1-DOS命令启动（以管理员的身份运行）" class="headerlink" title="1.1 DOS命令启动（以管理员的身份运行）"></a>1.1 DOS命令启动（以管理员的身份运行）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">添加mysql服务：</span><br><span class="line">mysqld install </span><br><span class="line">删除mysql服务：</span><br><span class="line">mysqld remove </span><br><span class="line">启动mysql服务：</span><br><span class="line">net start mysql </span><br><span class="line">关闭mysql服务：</span><br><span class="line">net stop mysql</span><br><span class="line"></span><br><span class="line">登录mysql:   </span><br><span class="line">mysql -u用户名 -p密码</span><br><span class="line">mysql -uroot -p</span><br><span class="line">必须在登陆mysql之后在mysql的界面中使用：</span><br><span class="line">set password &#x3D; password(&#39;root&#39;);</span><br><span class="line"></span><br><span class="line">退出MySQL:</span><br><span class="line">quit或exit;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-2-手动启动数据库"><a href="#1-2-手动启动数据库" class="headerlink" title="1.2  手动启动数据库"></a>1.2  手动启动数据库</h5><p>​        MySQL会以windows服务的方式为我们提供数据存储功能。开启和关闭服务的操作：右键点击我的电脑→管理→服务→找到MySQL服务开启或停止。</p>
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/MySql%E5%9F%BA%E7%A1%80/01.%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">http://www.itbuild.cn/2020/12/19/MySql%E5%9F%BA%E7%A1%80/01.%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E5%9F%BA%E7%A1%80/02.SQL%E8%AF%AD%E6%B3%95/"><i class="fas fa-angle-left">&nbsp;</i><span>MySql基础/02.SQL语法</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/JavaSE-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/9.%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/"><span>JavaSE-设计模式/9.设计模式-桥接模式</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

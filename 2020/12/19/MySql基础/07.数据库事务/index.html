@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySql基础/07.数据库事务"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>MySql基础/07.数据库事务【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#事务"><span class="toc-text">事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-通过案例理解事务"><span class="toc-text">1. 通过案例理解事务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-提交事务的两种方式"><span class="toc-text">2. 提交事务的两种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-手动提交事务"><span class="toc-text">2.1 手动提交事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-自动提交事务"><span class="toc-text">2.2 自动提交事务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-事务原理"><span class="toc-text">3. 事务原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-事务执行步骤"><span class="toc-text">3.1 事务执行步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-回滚点"><span class="toc-text">4. 回滚点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-具体步骤"><span class="toc-text">4.1 具体步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-事务的隔离级别"><span class="toc-text">5. 事务的隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-事务的四大特性-ACID"><span class="toc-text">5.1 事务的四大特性 ACID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-并发访问的三种问题"><span class="toc-text">5.2 并发访问的三种问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-脏读"><span class="toc-text">5.2.1 脏读</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-不可重复读"><span class="toc-text">5.2.2 不可重复读</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-3-幻读"><span class="toc-text">5.2.3 幻读</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-数据库四种隔离级别"><span class="toc-text">5.3 数据库四种隔离级别</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color4"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color8"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">117</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">9</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">MySql基础/07.数据库事务</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/MySql%E5%9F%BA%E7%A1%80/">MySql基础</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>庭院深深深几许，杨柳堆烟，帘幕无重数。</p>
+<p align="right">——欧阳修《蝶恋花》</p>
+<a id="more"></a>
+
+
+
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><blockquote>
+<p>什么是事务？</p>
+<ul>
+<li><p><strong>在实际的开发过程中，一个业务操作</strong>如：转账，往往是要多次访问数据库才能完成的。转账是一个用户扣钱，另一个用户加钱。如果其中有一条 SQL 语句出现异常，这条 SQL 就可能执行失败。</p>
+</li>
+<li><p>事务执行是一个整体，所有的 SQL 语句都必须执行成功。如果其中有 1 条 SQL 语句出现异常，则所有的 SQL 语句都要回滚，整个业务执行失败。</p>
+</li>
+<li><p>例如转账的操作</p>
+</li>
+<li><p>如果你不是很明白可以通过下面这个例子来结合着理解！ </p>
+</li>
+</ul>
+</blockquote>
+<h2 id="1-通过案例理解事务"><a href="#1-通过案例理解事务" class="headerlink" title="1. 通过案例理解事务"></a>1. 通过案例理解事务</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 数据准备</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">account</span> (</span><br><span class="line"></span><br><span class="line"><span class="keyword">id</span> <span class="built_in">int</span> primary <span class="keyword">key</span> auto_increment,</span><br><span class="line"></span><br><span class="line"><span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>),</span><br><span class="line"></span><br><span class="line">money <span class="keyword">double</span></span><br><span class="line"></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">--	添加数据</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">account</span> (<span class="keyword">name</span>, money) <span class="keyword">values</span> (<span class="string">'dd'</span>, <span class="number">1000</span>), (<span class="string">'mm'</span>, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>模拟dd给mm转 500 元钱，一个转账的业务操作最少要执行下面的 2 条语句：</p>
+<ul>
+<li><p>dd          money-500</p>
+</li>
+<li><p>mm       money+500</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--	dd   money-500</span></span><br><span class="line"><span class="keyword">update</span> <span class="keyword">account</span> <span class="keyword">set</span> balance = money - <span class="number">500</span> <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'dd'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--	mm   money+500</span></span><br><span class="line"><span class="keyword">update</span> <span class="keyword">account</span> <span class="keyword">set</span> balance = money + <span class="number">500</span> <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'mm'</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>假设当张三账号上-500 元,服务器崩溃了。李四的账号并没有+500 元，数据就出现问题了。我们需要保证其中一条 SQL 语句出现问题，整个转账就算失败。只有两条 SQL 都成功了转账才算成功。这个时候就需要用到事务。</p>
+</blockquote>
+<h2 id="2-提交事务的两种方式"><a href="#2-提交事务的两种方式" class="headerlink" title="2. 提交事务的两种方式"></a>2. 提交事务的两种方式</h2><h3 id="2-1-手动提交事务"><a href="#2-1-手动提交事务" class="headerlink" title="2.1 手动提交事务"></a>2.1 手动提交事务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">start开启事务transaction--&gt;执行SQL语句</span><br><span class="line">执行SQL语句--&gt;成功</span><br><span class="line">执行SQL语句--&gt;失败</span><br><span class="line">成功--&gt;提交事务commit</span><br><span class="line">失败--&gt;回滚事务rollback</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>总结: </p>
+<ul>
+<li>如果事务中 SQL 语句没有问题，commit 提交事务，会对数据库数据的数据进行改变。 如果事务中 SQL 语句有问题，rollback 回滚事务，会回退到开启事务时的状态。</li>
+</ul>
+</blockquote>
+<h3 id="2-2-自动提交事务"><a href="#2-2-自动提交事务" class="headerlink" title="2.2 自动提交事务"></a>2.2 自动提交事务</h3><p><strong>默认我们执行的一次SQL语句都是一次事务</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看 MySQL 是否开启自动提交事务</span></span><br><span class="line"><span class="keyword">select</span> @@autocommit;</span><br><span class="line"><span class="comment">-- @@表示全局变量，1 表示开启，0 表示关闭</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 取消自动提交事务</span></span><br><span class="line"><span class="keyword">set</span> @@autocommit = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-事务原理"><a href="#3-事务原理" class="headerlink" title="3. 事务原理"></a>3. 事务原理</h2><blockquote>
+<p>事务开启之后, 所有的操作都会临时保存到<strong>事务日志</strong>中, 事务日志只有在得到 commit 命令才会同步到数据表中，其他任何情况都会清空事务日志(rollback，断开连接)</p>
+</blockquote>
+<h3 id="3-1-事务执行步骤"><a href="#3-1-事务执行步骤" class="headerlink" title="3.1 事务执行步骤"></a>3.1 事务执行步骤</h3><ol>
+<li><p>客户端连接数据库服务器，创建连接时创建此用户临时日志文件</p>
+</li>
+<li><p>开启事务以后，所有的操作都会先写入到临时日志文件中</p>
+</li>
+<li><p>所有的查询操作从表中查询，但会经过日志文件加工后才返回</p>
+</li>
+<li><p>如果事务提交则将日志文件中的数据写到表中，否则清空日志文件。</p>
+</li>
+</ol>
+<p><img src="C:%5CUsers%5CAdministrator%5CDesktop%5C%E7%AC%94%E8%AE%B0%5C%E6%95%B0%E6%8D%AE%E5%BA%93-justweb%5C%E7%AC%94%E8%AE%B0%5Cassets%5C1565545124408.png" alt=""></p>
+<h2 id="4-回滚点"><a href="#4-回滚点" class="headerlink" title="4. 回滚点"></a>4. 回滚点</h2><blockquote>
+<p>什么是回滚点？</p>
+<ul>
+<li>在某些成功的操作完成之后，后续的操作有可能成功有可能失败，但是不管成功还是失败，前面操作都已经成功，可以在当前成功的位置设置一个回滚点。可以供后续失败操作返回到该位置，而不是返回所有操作，这个点称之为回滚点。</li>
+</ul>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 设置回滚点： </span></span><br><span class="line"><span class="keyword">savepoint</span> 名字；</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 回到回滚点：</span></span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> 名字</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-1-具体步骤"><a href="#4-1-具体步骤" class="headerlink" title="4.1 具体步骤"></a>4.1 具体步骤</h3><ol>
+<li>将数据还原到 1000</li>
+<li>开启事务</li>
+<li>让dd账号减 3 次钱，每次 10 块</li>
+<li>设置回滚点：savepoint three_times;</li>
+<li>让dd账号减 4 次钱，每次 10 块</li>
+<li>回到回滚点：rollback to three_times;</li>
+<li>分析执行过程</li>
+</ol>
+<p><strong>设置回滚点可以让我们在失败的时候回到回滚点，而不是回到事务开启的时候。</strong></p>
+<h2 id="5-事务的隔离级别"><a href="#5-事务的隔离级别" class="headerlink" title="5. 事务的隔离级别"></a>5. 事务的隔离级别</h2><h3 id="5-1-事务的四大特性-ACID"><a href="#5-1-事务的四大特性-ACID" class="headerlink" title="5.1 事务的四大特性 ACID"></a>5.1 <strong>事务的四大特性 ACID</strong></h3><table>
+<thead>
+<tr>
+<th align="center">事务特性</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>原子性（Atomicity）</strong></td>
+<td align="left">每个事务都是一个整体，不可再拆分，事务中所有的 SQL 语句要么都执行成功，要么都失败。</td>
+</tr>
+<tr>
+<td align="center"><strong>一致性（Consistency）</strong></td>
+<td align="left">事务在执行前数据库的状态与执行后数据库的状态保持一致。如：转账前 2 个人的总金额是 2000，转账后 2 个人总金额也是 2000</td>
+</tr>
+<tr>
+<td align="center"><strong>隔离性（Isolation）</strong></td>
+<td align="left">事务与事务之间不应该相互影响，执行时保持隔离的状态。</td>
+</tr>
+<tr>
+<td align="center"><strong>持久性（Durability）</strong></td>
+<td align="left">一旦事务执行成功，对数据库的修改是持久的，就算关机，也是保存下来的。</td>
+</tr>
+</tbody></table>
+<h3 id="5-2-并发访问的三种问题"><a href="#5-2-并发访问的三种问题" class="headerlink" title="5.2 并发访问的三种问题"></a>5.2 <strong>并发访问的三种问题</strong></h3><blockquote>
+<p>事务在操作时的理想状态： </p>
+<ul>
+<li>所有的事务之间保持隔离，互不影响。因为并发操作，多个用户同时访问同一个数据。可能引发并发访问的问题：</li>
+</ul>
+</blockquote>
+<h4 id="5-2-1-脏读"><a href="#5-2-1-脏读" class="headerlink" title="5.2.1 脏读"></a>5.2.1 脏读</h4><blockquote>
+<p><strong>一个事务读取到了另一个事务中尚未提交的数据</strong></p>
+</blockquote>
+<p><strong>脏读演示：</strong></p>
+<ol>
+<li>设置隔离级别：Read Uncommitted</li>
+<li>打开A,B两个DOS窗口，分别开启两个事务</li>
+<li>A 窗口更新 2 个人的账户数据，不执行提交事务。</li>
+<li>B窗口查询账户数据，此时查询的是更新后的数据。</li>
+<li>A窗口回滚。</li>
+<li>B 窗口再次查询账户，发现又回到了A窗口执行更新数据之前的状态。</li>
+</ol>
+<p>​        所以脏读非常危险的，比如dd向mm购买商品，dd开启事务，向mm账号转入 500 块，然后打电话给mm说钱已经转了。mm一查询钱到账了，发货给dd。dd收到货后回滚事务，mm的再查看钱没了。</p>
+<blockquote>
+<p>Read Committed 的隔离级别可以避免脏读的发生</p>
+</blockquote>
+<p><strong>避免脏读演示:</strong></p>
+<ol>
+<li>设置隔离级别：Read Committed</li>
+<li>打开A,B两个DOS窗口，分别开启两个事务</li>
+<li>A 窗口更新 2 个人的账户数据，不执行提交事务。</li>
+<li>B窗口查询账户数据。这时候读到的A窗口更新之前的数据，即避免了脏读。</li>
+<li>A窗口执行提交事务。</li>
+<li>B窗口查询账户数据，得到的是正常的数据。</li>
+</ol>
+<h4 id="5-2-2-不可重复读"><a href="#5-2-2-不可重复读" class="headerlink" title="5.2.2 不可重复读"></a>5.2.2 不可重复读</h4><blockquote>
+<p>一个事务中两次读取的数据内容不一致，要求的是一个事务中多次读取时数据是一致的。</p>
+</blockquote>
+<p><strong>不可重复读演示：</strong></p>
+<ol>
+<li>设置隔离级别：Read Committed</li>
+<li>开启A窗口。</li>
+<li>开启 B 窗口，在 B 窗口开启事务，执行第一次查询账户数据。</li>
+<li>在 A 窗口开启事务，并更新数据，执行提交事务。</li>
+<li>B窗口执行第二次查询账户数据。</li>
+<li>两次查询输出的结果不同，到底哪次是对的？不知道以哪次为准。 很多人认为这种情况就对了，无须困惑，当然是后面的为准。</li>
+</ol>
+<p>​        比如银行程序需要将查询结果分别输出到电脑屏幕和发短信给客户，结果在一个事务中针对不同的输出目的地进行的两次查询不一致，导致文件和屏幕中的结果不一致，银行工作人员就不知道以哪个为准了。</p>
+<blockquote>
+<p>Repeatable Read 隔离级别可以避免脏读和不可重复读的发生</p>
+</blockquote>
+<p><strong>解决不可重复读演示：</strong></p>
+<ol>
+<li>设置隔离级别：Repeatable Read</li>
+<li>打开A,B两个DOS窗口，分别开启两个事务。</li>
+<li>B窗口执行第一次查询账户数据。</li>
+<li>A 窗口更新账户数据，提交事务。</li>
+<li>B窗口执行第二次查询账户数据，此时两次查询的账户数据是一致的。</li>
+</ol>
+<h4 id="5-2-3-幻读"><a href="#5-2-3-幻读" class="headerlink" title="5.2.3 幻读"></a>5.2.3 幻读</h4><blockquote>
+<p><strong>一个事务中两次读取的数据的数量不一致，要求在一个事务多次读取的数据的数量是一致的，这是 insert 或 delete 时引发的问题。</strong></p>
+</blockquote>
+<ol>
+<li>在<strong>MySQL</strong> 中无法看到幻读的效果，但我们可以将事务隔离级别设置到最高，以挡住幻读的发生 。</li>
+<li>设置隔离级别：Serializable</li>
+<li>打开A,B两个DOS窗口，分别开启两个事务。</li>
+<li>B窗口执行第一次查询，通过 <strong>聚合函数count(*)</strong> 账户表中记录的条数，不提交事务。</li>
+<li>A窗口执行插入一条记录，会发现这个操作无法进行，光标一直闪。</li>
+<li>在B窗口中 commit 提交事务，B 窗口中 insert 语句会在 A 窗口事务提交后立马运行。</li>
+<li>在 B窗口中接着查询，发现数据不变(是因为A窗口的事务还没有提交)。</li>
+<li>A 窗口中 commit 提交当前事务。</li>
+<li>B窗口就能看到最新的数据。</li>
+</ol>
+<blockquote>
+<p><strong>使用 Serializable 隔离级别，一个事务没有执行完，其他事务的 SQL 执行不了，可以挡住幻读。</strong></p>
+</blockquote>
+<h3 id="5-3-数据库四种隔离级别"><a href="#5-3-数据库四种隔离级别" class="headerlink" title="5.3 数据库四种隔离级别"></a>5.3 <strong>数据库四种隔离级别</strong></h3><blockquote>
+<p>隔离级别越高，性能越差，安全性越高。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>名字</th>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+<th>数据库默认隔离级别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>读未提交</strong></td>
+<td>read uncommitted</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>读已提交</strong></td>
+<td>read committed</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>Oracle 和 SQL Server</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>可重复读</strong></td>
+<td>repeatable read</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>MySQL<br>select   @@tx_isolation</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>串行化</strong></td>
+<td>serializable</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>查询全局事务隔离级别</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> @@tx_isolation;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​    </p>
+<p><strong>设置事务隔离级别</strong>，需要退出 MySQL 再重新登录才能看到隔离级别的变化</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> <span class="keyword">transaction</span> <span class="keyword">isolation</span> <span class="keyword">level</span> 级别字符串;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+</div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/MySql%E5%9F%BA%E7%A1%80/07.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/">http://www.itbuild.cn/2020/12/19/MySql%E5%9F%BA%E7%A1%80/07.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E5%9F%BA%E7%A1%80/08.%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E5%A4%A7%E8%8C%83%E5%BC%8F/"><i class="fas fa-angle-left">&nbsp;</i><span>MySql基础/08.数据库设计三大范式</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E5%9F%BA%E7%A1%80/06.MySQL%E6%95%B0%E6%8D%AE%E5%BA%93-%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E5%92%8C%E5%AD%90%E6%9F%A5%E8%AF%A2/"><span>MySql基础/06.MySQL数据库-多表查询和子查询</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

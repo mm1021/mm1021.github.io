@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySql高级/16.MySql高级之日志"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>MySql高级/16.MySql高级之日志【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-错误日志"><span class="toc-text">1. 错误日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-二进制日志"><span class="toc-text">2. 二进制日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-日志格式"><span class="toc-text">2.1 日志格式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#STATEMENT"><span class="toc-text">STATEMENT</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ROW"><span class="toc-text">ROW</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#MIXED"><span class="toc-text">MIXED</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-日志读取"><span class="toc-text">2.2 日志读取</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#查看STATEMENT格式日志"><span class="toc-text">查看STATEMENT格式日志</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看ROW格式日志"><span class="toc-text">查看ROW格式日志</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-日志删除"><span class="toc-text">2.3 日志删除</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#方式一"><span class="toc-text">方式一</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方式二"><span class="toc-text">方式二</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方式三"><span class="toc-text">方式三</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#方式四"><span class="toc-text">方式四</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查询日志"><span class="toc-text">3. 查询日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-慢查询日志"><span class="toc-text">4. 慢查询日志</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-文件位置和格式"><span class="toc-text">4.1 文件位置和格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-日志的读取"><span class="toc-text">4.2 日志的读取</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color4"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color4"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">117</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">9</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">MySql高级/16.MySql高级之日志</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/MySql%E9%AB%98%E7%BA%A7/">MySql高级</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>生怕离怀别苦，多少事、欲说还休。新来瘦，非干病酒，不是悲秋。</p>
+<p align="right">——李清照《凤凰台上忆吹箫》</p>
+<a id="more"></a>
+## MySql高级之日志
+
+<blockquote>
+<p>在任何一种数据库中，都会有各种各样的日志，记录着数据库工作的方方面面，以帮助数据库管理员追踪数据库曾经发生过的各种事件。MySQL 也不例外，<code>在 MySQL 中，有 4 种不同的日志，分别是错误日志、二进制日志（BINLOG 日志）、查询日志和慢查询日志，</code>这些日志记录着数据库在不同方面的踪迹。</p>
+</blockquote>
+<h3 id="1-错误日志"><a href="#1-错误日志" class="headerlink" title="1. 错误日志"></a>1. 错误日志</h3><p>错误日志是 MySQL 中最重要的日志之一，它记录了当 mysqld 启动和停止时，以及服务器在运行过程中发生任何严重错误时的相关信息。当数据库出现任何故障导致无法正常使用时，可以首先查看此日志。</p>
+<p>该日志是默认开启的 ， <code>默认存放目录为 mysql 的数据目录（var/lib/mysql）, 默认的日志文件名为  hostname.err（hostname是主机名）。</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看日志位置指令 ： </span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'log_error%'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731110017398.png" alt="image-20200731110017398"> </p>
+<blockquote>
+<p>查看日志内容 ： </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/lib/mysql/hadoop.err</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731110307436.png" alt="image-20200731110307436"></p>
+<h3 id="2-二进制日志"><a href="#2-二进制日志" class="headerlink" title="2. 二进制日志"></a>2. 二进制日志</h3><blockquote>
+<p><code>二进制日志（BINLOG）记录了所有的 DDL（数据定义语言）语句和 DML（数据操纵语言）语句，但是不包括数据查询语句。</code>此日志对于灾难时的数据恢复起着极其重要的作用，<code>MySQL的主从复制， 就是通过该binlog实现的。</code></p>
+<ol>
+<li><p>二进制日志，默认情况下是没有开启的，需要到MySQL的配置文件中开启，并配置MySQL日志的格式。 </p>
+</li>
+<li><p><code>配置文件位置 : /usr/my.cnf</code></p>
+</li>
+<li><p>日志存放位置 : 配置时，给定了文件名但是没有指定路径，日志默认写入Mysql的数据目录。</p>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">配置开启binlog日志， 日志的文件前缀为mysqlbin</span></span><br><span class="line"><span class="meta">#</span><span class="bash">生成的文件名如 mysqlbin.000001,mysqlbin.000002</span></span><br><span class="line">log_bin=mysqlbin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">配置二进制日志的格式</span></span><br><span class="line">binlog_format=STATEMENT</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-1-日志格式"><a href="#2-1-日志格式" class="headerlink" title="2.1 日志格式"></a>2.1 日志格式</h4><h5 id="STATEMENT"><a href="#STATEMENT" class="headerlink" title="STATEMENT"></a>STATEMENT</h5><blockquote>
+<p><code>该日志格式在日志文件中记录的都是SQL语句（statement）</code>，每一条对数据进行修改的SQL都会记录在日志文件中，通过Mysql提供的mysqlbinlog工具，可以清晰的查看到每条语句的文本。主从复制的时候，从库（slave）会将日志解析为原文本，并在从库重新执行一次。</p>
+</blockquote>
+<h5 id="ROW"><a href="#ROW" class="headerlink" title="ROW"></a>ROW</h5><blockquote>
+<p><code>该日志格式在日志文件中记录的是每一行的数据变更，而不是记录SQL语句。</code>比如，<code>执行SQL语句 ： update tb_book set status=&#39;1&#39; , 如果是STATEMENT 日志格式，在日志中会记录一行SQL文件； 如果是ROW，由于是对全表进行更新，也就是每一行记录都会发生变更，ROW 格式的日志中会记录每一行的数据变更。</code></p>
+</blockquote>
+<h5 id="MIXED"><a href="#MIXED" class="headerlink" title="MIXED"></a>MIXED</h5><blockquote>
+<p>这是目前MySQL默认的日志格式，即混合了STATEMENT 和 ROW两种格式。<code>默认情况下采用STATEMENT，但是在一些特殊情况下采用ROW来进行记录。</code>MIXED 格式能尽量利用两种模式的优点，而避开他们的缺点。</p>
+</blockquote>
+<h4 id="2-2-日志读取"><a href="#2-2-日志读取" class="headerlink" title="2.2 日志读取"></a>2.2 日志读取</h4><blockquote>
+<p><code>由于日志以二进制方式存储，不能直接读取，需要用mysqlbinlog工具来查看</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">语法如下 </span></span><br><span class="line">mysqlbinlog log-file；</span><br></pre></td></tr></table></figure>
+
+<h5 id="查看STATEMENT格式日志"><a href="#查看STATEMENT格式日志" class="headerlink" title="查看STATEMENT格式日志"></a>查看STATEMENT格式日志</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 执行插入语句 </span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> city <span class="keyword">values</span>(<span class="number">66</span>,<span class="string">'河南'</span>,<span class="number">55</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 查看日志文件 ：</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731111434308.png" alt="image-20200731111434308"> </p>
+<blockquote>
+<ol>
+<li><p><code>mysqlbin.index : 该文件是日志索引文件 ， 记录日志的文件名；</code></p>
+</li>
+<li><p><code>mysqlbing.000001 ：日志文件</code></p>
+</li>
+</ol>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">查看日志内容 ：</span></span><br><span class="line">mysqlbinlog mysqlbing.000001；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731111656035.png" alt="image-20200731111656035"> </p>
+<h5 id="查看ROW格式日志"><a href="#查看ROW格式日志" class="headerlink" title="查看ROW格式日志"></a>查看ROW格式日志</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">配置开启binlog日志， 日志的文件前缀为 mysqlbin</span></span><br><span class="line"><span class="meta">#</span><span class="bash">生成的文件名如 : mysqlbin.000001,mysqlbin.000002</span></span><br><span class="line">log_bin=mysqlbin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">配置二进制日志的格式</span></span><br><span class="line">binlog_format=ROW</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 插入数据 :</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> city <span class="keyword">values</span>(<span class="number">67</span>,<span class="string">'周口'</span>,<span class="number">55</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>如果日志格式是 ROW , 直接查看数据 , 是查看不懂的 ; 可以在mysqlbinlog 后面加上参数 -vv</code>  </p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlbinlog -vv mysqlbin.000002</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731112017880.png" alt="image-20200731112017880"> </p>
+<h4 id="2-3-日志删除"><a href="#2-3-日志删除" class="headerlink" title="2.3 日志删除"></a>2.3 日志删除</h4><blockquote>
+<p>对于比较繁忙的系统，由于每天生成日志量大 ，这些日志如果长时间不清楚，将会占用大量的磁盘空间。下面我们将会讲解几种删除日志的常见方法 </p>
+</blockquote>
+<h5 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a><strong>方式一</strong></h5><blockquote>
+<p><code>通过 Reset Master 指令删除全部 binlog 日志</code>，删除之后，日志编号，将从 xxxx.000001重新开始 。</p>
+<p>查询之前 ，先查询下日志文件 ： </p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1554118609489.png" alt="1554118609489">   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">执行删除日志指令</span></span><br><span class="line">Reset Master</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行之后， 查看日志文件 </p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1554118675264.png" alt="1554118675264"> </p>
+<h5 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h5><blockquote>
+<p>执行指令 <code>purge  master logs to &#39;mysqlbin.******&#39;</code> ，该命令将删除  <code>******</code> 编号之前的所有日志。 </p>
+</blockquote>
+<h5 id="方式三"><a href="#方式三" class="headerlink" title="方式三"></a>方式三</h5><blockquote>
+<p>执行指令 <code>purge master logs before &#39;yyyy-mm-dd hh24:mi:ss&#39;</code> ，<code>该命令将删除日志为 &quot;yyyy-mm-dd hh24:mi:ss&quot; 之前产生的所有日志 。</code></p>
+</blockquote>
+<h5 id="方式四"><a href="#方式四" class="headerlink" title="方式四"></a>方式四</h5><blockquote>
+<p>设置参数 –expire_logs_days=# ，此参数的含义是设置日志的过期天数， 过了指定的天数后日志将会被自动删除，这样将<code>有利于减少DBA 管理日志的工作量。</code></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">配置如下 </span></span><br><span class="line">log_bin=mysqlbin</span><br><span class="line">binlog_format=ROW</span><br><span class="line">--expire_logs_days=3</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-查询日志"><a href="#3-查询日志" class="headerlink" title="3. 查询日志"></a>3. 查询日志</h3><blockquote>
+<p>查询日志中记录了客户端的所有操作语句，而二进制日志不包含查询数据的SQL语句。</p>
+<p>默认情况下， 查询日志是未开启的。如果需要开启查询日志，可以<code>在 mysql 的配置文件 /usr/my.cnf 中配置如下内容 ：</code> </p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">该选项用来开启查询日志 ， 可选值 ： 0 或者 1 ； 0 代表关闭， 1 代表开启 </span></span><br><span class="line">general_log=1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">设置日志的文件名 ， 如果没有指定， 默认的文件名为 host_name.log </span></span><br><span class="line">general_log_file=mysql_query.log</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>配置完毕之后，在数据库执行以下操作 ：</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> city;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> city <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">66</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行完毕之后， 再次来查询日志文件 ： </p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731113058933.png" alt="image-20200731113058933"></p>
+<h3 id="4-慢查询日志"><a href="#4-慢查询日志" class="headerlink" title="4. 慢查询日志"></a>4. 慢查询日志</h3><blockquote>
+<p>慢查询日志记录了所有执行时间超过参数 long_query_time 设置值并且扫描记录数不小于 min_examined_row_limit 的所有的SQL语句的日志。<code>long_query_time 默认为 10 秒，最小为 0， 精度可以到微秒。</code></p>
+</blockquote>
+<h4 id="4-1-文件位置和格式"><a href="#4-1-文件位置和格式" class="headerlink" title="4.1 文件位置和格式"></a>4.1 文件位置和格式</h4><blockquote>
+<p>慢查询日志默认是关闭的 。可以通过两个参数来控制慢查询日志 ：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 该参数用来控制慢查询日志是否开启， 可取值： 1 和 0 ， 1 代表开启， 0 代表关闭</span></span><br><span class="line">slow_query_log=1 </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 该参数用来指定慢查询日志的文件名</span></span><br><span class="line">slow_query_log_file=slow_query.log</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 该选项用来配置查询的时间限制， 超过这个时间将认为值慢查询， 将需要进行日志记录， 默认10s</span></span><br><span class="line">long_query_time=10</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-2-日志的读取"><a href="#4-2-日志的读取" class="headerlink" title="4.2 日志的读取"></a>4.2 日志的读取</h4><blockquote>
+<p>和错误日志、查询日志一样，慢查询日志记录的格式也是纯文本，可以被直接读取。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询long_query_time 的值。</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'long%'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731113609223.png" alt="image-20200731113609223"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 执行查询操作</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> tb_user_dm;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731113723922.png" alt="image-20200731113723922"></p>
+<blockquote>
+<p>由于该语句执行时间很短，为0.69s ， 所以不会记录在慢查询日志中。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_user_dm <span class="keyword">limit</span> <span class="number">900000</span>,<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731113846295.png" alt="image-20200731113846295"> </p>
+<blockquote>
+<p>该SQL语句 ， 执行时长为 4.79s ，超过2s ， 所以会记录在慢查询日志文件中。</p>
+<p>查看慢查询日志文件</p>
+<ul>
+<li><code>直接通过cat 指令查询该日志文件 ：</code> </li>
+</ul>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200731113954392.png" alt="image-20200731113954392"> </p>
+<blockquote>
+<p>如果慢查询日志内容很多， 直接查看文件，比较麻烦， <code>这个时候可以借助于mysql自带的 mysqldumpslow 工具， 来对慢查询日志进行分类汇总。</code> </p>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/16.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E6%97%A5%E5%BF%97/">http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/16.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E6%97%A5%E5%BF%97/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/17.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/"><i class="fas fa-angle-left">&nbsp;</i><span>MySql高级/17.MySql高级之常用工具</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/15.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E5%B8%B8%E7%94%A8SQL%E6%8A%80%E5%B7%A7%E2%98%86/"><span>MySql高级/15.MySql高级之常用SQL技巧☆</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

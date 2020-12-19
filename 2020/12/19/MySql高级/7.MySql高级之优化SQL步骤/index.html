@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySql高级/7.MySql高级之优化SQL步骤"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>MySql高级/7.MySql高级之优化SQL步骤【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-查看SQL执行频率"><span class="toc-text">1. 查看SQL执行频率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-定位低效率执行SQL"><span class="toc-text">2. 定位低效率执行SQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-explain分析执行计划☆"><span class="toc-text">3. explain分析执行计划☆</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-环境准备"><span class="toc-text">3.1 环境准备</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-explain-之-id"><span class="toc-text">3.2 explain 之 id</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-explain-之-select-type"><span class="toc-text">3.3 explain 之 select_type</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-4-explain-之-table"><span class="toc-text">3.4 explain 之 table</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-5-explain-之-type"><span class="toc-text">3.5 explain 之 type</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-6-explain-之-key"><span class="toc-text">3.6 explain 之  key</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-7-explain-之-rows"><span class="toc-text">3.7 explain 之 rows</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-8-explain-之-extra"><span class="toc-text">3.8 explain 之 extra</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-show-profile分析SQL"><span class="toc-text">4. show profile分析SQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-trace分析优化器执行计划"><span class="toc-text">5. trace分析优化器执行计划</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color5"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color2"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">117</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">9</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">MySql高级/7.MySql高级之优化SQL步骤</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/MySql%E9%AB%98%E7%BA%A7/">MySql高级</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>和羞走，倚门回首，却把青梅嗅。</p>
+<p align="right">——李清照《点绛唇》</p>
+<a id="more"></a>
+## MySql高级之优化SQL步骤
+
+<blockquote>
+<ol>
+<li>在应用的的开发过程中，由于初期数据量小，开发人员写 SQL 语句时更重视功能上的实现，但是当应用系统正式上线后，随着生产数据量的急剧增长，很多 SQL 语句开始逐渐显露出性能问题，对生产的影响也越来越大，此时这些有问题的 SQL 语句就成为整个系统性能的瓶颈。</li>
+<li>因此我们必须要对它们进行优化，本文将介绍在 MySQL 中优化 SQL 语句的方法。</li>
+<li>当面对一个有 SQL 性能问题的数据库时，我们应该从何处入手来进行系统的分析，使得能够尽快定位问题 SQL 并尽快解决问题。</li>
+</ol>
+</blockquote>
+<h4 id="1-查看SQL执行频率"><a href="#1-查看SQL执行频率" class="headerlink" title="1. 查看SQL执行频率"></a>1. 查看SQL执行频率</h4><blockquote>
+<ol>
+<li>MySQL 客户端连接成功后，通过 <code>show [session|global] status 命令</code>可以提供服务器状态信息。</li>
+<li><code>show [session|global] status 可以根据需要加上参数“session”或者“global”来显示 session 级（当前连接）的计结果和 global 级（自数据库上次启动至今）的统计结果。如果不写，默认使用参数是“session”。</code></li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 显示了当前 session 中所有统计参数的值：</span></span><br><span class="line"><span class="comment">-- 注意是7个_</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span> <span class="string">'Com_______'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1552487172501.png" alt="1552487172501">  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show status like &#39;Innodb_rows_%&#39;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200727230000252.png" alt="image-20200727230000252"></p>
+<blockquote>
+<p><code>Com_xxx 表示每个 xxx 语句执行的次数</code>，我们通常比较关心的是以下几个统计参数。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Com_select</td>
+<td>执行 select 操作的次数，一次查询只累加 1。</td>
+</tr>
+<tr>
+<td align="left">Com_insert</td>
+<td>执行 INSERT 操作的次数，对于批量插入的 INSERT 操作，只累加一次。</td>
+</tr>
+<tr>
+<td align="left">Com_update</td>
+<td>执行 UPDATE 操作的次数。</td>
+</tr>
+<tr>
+<td align="left">Com_delete</td>
+<td>执行 DELETE 操作的次数。</td>
+</tr>
+<tr>
+<td align="left">Innodb_rows_read</td>
+<td>select 查询返回的行数。</td>
+</tr>
+<tr>
+<td align="left">Innodb_rows_inserted</td>
+<td>执行 INSERT 操作插入的行数。</td>
+</tr>
+<tr>
+<td align="left">Innodb_rows_updated</td>
+<td>执行 UPDATE 操作更新的行数。</td>
+</tr>
+<tr>
+<td align="left">Innodb_rows_deleted</td>
+<td>执行 DELETE 操作删除的行数。</td>
+</tr>
+<tr>
+<td align="left">Connections</td>
+<td>试图连接 MySQL 服务器的次数。</td>
+</tr>
+<tr>
+<td align="left">Uptime</td>
+<td>服务器工作时间。</td>
+</tr>
+<tr>
+<td align="left">Slow_queries</td>
+<td>慢查询的次数。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<ul>
+<li><code>Com_***      :</code>  这些参数对于所有存储引擎的表操作都会进行累计。</li>
+<li><code>Innodb_*** :</code>  这几个参数只是针对InnoDB 存储引擎的，累加的算法也略有不同。</li>
+</ul>
+</blockquote>
+<h4 id="2-定位低效率执行SQL"><a href="#2-定位低效率执行SQL" class="headerlink" title="2. 定位低效率执行SQL"></a>2. 定位低效率执行SQL</h4><blockquote>
+<p>可以通过以下两种方式定位执行效率较低的 SQL 语句。</p>
+<ul>
+<li><p><code>慢查询日志 :</code> 通过慢查询日志定位那些执行效率较低的 SQL 语句，用<code>--log-slow-queries[=file_name]选项启动时</code>，mysqld 写一个包含所有执行时间超过 long_query_time 秒的 SQL 语句的日志文件。</p>
+</li>
+<li><p><code>show processlist  :</code> 慢查询日志在查询结束以后才纪录，所以在应用反映执行效率出现问题的时候查询慢查询日志并不能定位问题，可以<code>使用show processlist命令查看当前MySQL在进行的线程，包括线程的状态、是否锁表等，可以实时地查看 SQL 的执行情况，同时对一些锁表操作进行优化。</code></p>
+</li>
+<li><p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200727231536379.png" alt="image-20200727231536379"></p>
+<ul>
+<li>id列，用户登录mysql时，系统分配的”connection_id”。</li>
+<li>user列，显示当前用户。如果不是root，这个命令就只显示用户权限范围的sql语句。</li>
+<li>host列，显示这个语句是从哪个<code>ip</code>的哪个端口上发的，可以用来跟踪出现问题语句的用户</li>
+<li>db列，显示这个进程目前连接的是哪个数据库</li>
+<li>command列，显示当前连接的执行的命令，一般取值为休眠（sleep），查询（query），连接（connect）等</li>
+<li>time列，显示这个状态持续的时间，单位是秒</li>
+<li><code>state列，</code>显示使用当前连接的<code>sql</code>语句的状态，很重要的列。<code>一个sql语句，以查询为例，可能需要经过copying to tmp table、sorting result、sending data等状态才可以完成。</code></li>
+<li>info列，显示这个<code>sql</code>语句，是判断问题语句的一个重要依据。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="3-explain分析执行计划☆"><a href="#3-explain分析执行计划☆" class="headerlink" title="3. explain分析执行计划☆"></a>3. explain分析执行计划☆</h4><p>通过以上步骤查询到效率低的 SQL 语句后，可以<code>通过  explain 或者 desc 命令获取 mysql 如何执行 select 语句的信息，包括在 select 语句执行过程中表如何连接和连接的顺序。</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询SQL语句的执行计划 ： </span></span><br><span class="line"><span class="keyword">explain</span>/<span class="keyword">desc</span> <span class="keyword">select</span> * <span class="keyword">from</span> tb_item <span class="keyword">where</span> <span class="keyword">id</span> = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1552487489859.png" alt="1552487489859"></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>id</code></td>
+<td><code>select查询的序列号，是一组数字，表示的是查询中执行select子句或者是操作表的顺序。</code></td>
+</tr>
+<tr>
+<td><code>select_type</code></td>
+<td><code>表示 SELECT 的类型，常见的取值有 SIMPLE（简单表，即不使用表连接或者子查询）、PRIMARY（主查询，即外层的查询）、UNION（UNION 中的第二个或者后面的查询语句）、SUBQUERY（子查询中的第一个 SELECT）等</code></td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td><code>输出结果集的表</code></td>
+</tr>
+<tr>
+<td><code>type</code>☆</td>
+<td><code>表示表的连接类型，性能由好到差的连接类型为( system  ---&gt;  const  -----&gt;  eq_ref  ------&gt;  ref  -------&gt;  ref_or_null----&gt;  index_merge  ---&gt;  index_subquery  -----&gt;  range  -----&gt;  index  ------&gt; all )</code></td>
+</tr>
+<tr>
+<td><code>possible_keys</code></td>
+<td><code>表示查询时，可能使用的索引</code></td>
+</tr>
+<tr>
+<td><code>key</code>☆</td>
+<td><code>表示实际使用的索引</code></td>
+</tr>
+<tr>
+<td><code>key_len</code>☆</td>
+<td><code>索引字段的长度</code></td>
+</tr>
+<tr>
+<td><code>rows</code>☆</td>
+<td><code>扫描行的数量</code></td>
+</tr>
+<tr>
+<td><code>extra</code></td>
+<td><code>执行情况的说明和描述</code></td>
+</tr>
+</tbody></table>
+<h5 id="3-1-环境准备"><a href="#3-1-环境准备" class="headerlink" title="3.1 环境准备"></a>3.1 环境准备</h5><blockquote>
+<p><a href="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/mysql_senior/%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96%E6%AD%A5%E9%AA%A4%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5.sql" target="_blank" rel="noopener">建表语句…</a></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1556122799330.png" alt="1556122799330"> </p>
+<h5 id="3-2-explain-之-id"><a href="#3-2-explain-之-id" class="headerlink" title="3.2 explain 之 id"></a>3.2 explain 之 id</h5><blockquote>
+<p>id 字段是 select查询的序列号，是一组数字，表示的是查询中执行select子句或者是操作表的顺序。id 情况有三种 </p>
+<ol>
+<li><code>id 相同表示加载表的顺序是从上到下。</code></li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">explain </span><br><span class="line">select 	* from t_role r, t_user u, user_role ur </span><br><span class="line">where r.id &#x3D; ur.role_id </span><br><span class="line">	and u.id &#x3D; ur.user_id;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728111527099.png" alt="image-20200728111527099"></p>
+<blockquote>
+<ol start="2">
+<li><code>id 不同id值越大，优先级越高，越先被执行。</code> </li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> t_role </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">id</span> = (<span class="keyword">select</span> role_id <span class="keyword">from</span> user_role <span class="keyword">where</span> user_id = (</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> t_user <span class="keyword">where</span> username = <span class="string">'stu1'</span></span><br><span class="line">))</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728111839258.png" alt="image-20200728111839258"> </p>
+<blockquote>
+<ol start="3">
+<li>id 有相同，也有不同，同时存在。<code>id相同的可以认为是一组，从上往下顺序执行；</code>在所有的组中，id的值越大，优先级越高，越先执行。</li>
+</ol>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">explain</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t_role r,(</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> user_role ur <span class="keyword">where</span> ur.user_id =<span class="string">'2'</span></span><br><span class="line">)a</span><br><span class="line"><span class="keyword">where</span> r.id = a.role_id;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728112425577.png" alt="image-20200728112425577"> </p>
+<h5 id="3-3-explain-之-select-type"><a href="#3-3-explain-之-select-type" class="headerlink" title="3.3 explain 之 select_type"></a>3.3 explain 之 select_type</h5><p><strong><font color='green' > 表示 SELECT 的类型，常见的取值,由上到下效率依次变低</font></strong></p>
+<table>
+<thead>
+<tr>
+<th><code>select_type</code></th>
+<th><code>含义</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SIMPLE</code></td>
+<td><code>简单的select查询，查询中不包含子查询或者UNION</code></td>
+</tr>
+<tr>
+<td><code>PRIMARY</code></td>
+<td><code>查询中若包含任何复杂的子查询，最外层查询标记为该标识</code></td>
+</tr>
+<tr>
+<td><code>SUBQUERY</code></td>
+<td><code>在SELECT 或 WHERE 列表中包含了子查询</code></td>
+</tr>
+<tr>
+<td><code>DERIVED</code></td>
+<td><code>在FROM 列表中包含的子查询，被标记为 DERIVED（衍生） MYSQL会递归执行这些子查询，把结果放在临时表中</code></td>
+</tr>
+<tr>
+<td><code>UNION</code></td>
+<td><code>若第二个SELECT出现在UNION之后，则标记为UNION ； 若UNION包含在FROM子句的子查询中，外层SELECT将被标记为 ： DERIVED</code></td>
+</tr>
+<tr>
+<td><code>UNION RESULT</code></td>
+<td><code>从UNION表获取结果的SELECT</code></td>
+</tr>
+</tbody></table>
+<h5 id="3-4-explain-之-table"><a href="#3-4-explain-之-table" class="headerlink" title="3.4 explain 之 table"></a>3.4 explain 之 table</h5><blockquote>
+<p>展示这一行的数据是关于哪一张表的 </p>
+</blockquote>
+<h5 id="3-5-explain-之-type"><a href="#3-5-explain-之-type" class="headerlink" title="3.5 explain 之 type"></a>3.5 explain 之 type</h5><blockquote>
+<p>type 显示的是访问类型，是较为重要的一个指标</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NULL</td>
+<td>MySQL不访问任何表，索引，直接返回结果</td>
+</tr>
+<tr>
+<td>system</td>
+<td>表只有一行记录(等于系统表)，这是const类型的特例，一般不会出现</td>
+</tr>
+<tr>
+<td><code>const</code></td>
+<td><code>表示通过索引一次就找到了，const 用于比较primary key 或者 unique 索引。因为只匹配一行数据，所以很快。如将主键置于where列表中，MySQL 就能将该查询转换为一个常亮。const于将 &quot;主键&quot; 或 &quot;唯一&quot; 索引的所有部分与常量值进行比较</code></td>
+</tr>
+<tr>
+<td><code>eq_ref</code></td>
+<td>类似ref，<code>区别在于使用的是唯一索引</code>，使用主键的关联查询，关联查询出的记录只有一条。常见于主键或唯一索引扫描</td>
+</tr>
+<tr>
+<td><code>ref</code></td>
+<td><code>非唯一性索引扫描，返回匹配某个单独值的所有行。本质上也是一种索引访问，返回所有匹配某个单独值的所有行（多个）</code></td>
+</tr>
+<tr>
+<td><code>range</code></td>
+<td><code>只检索给定返回的行，使用一个索引来选择行。 where 之后出现 between ， &lt; , &gt; , in 等操作。</code></td>
+</tr>
+<tr>
+<td>index</td>
+<td>index 与 ALL的区别为  index 类型只是遍历了索引树， 通常比ALL 快， ALL 是遍历数据文件。</td>
+</tr>
+<tr>
+<td><code>all</code></td>
+<td><code>将遍历全表以找到匹配的行</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>结果值从最好到最坏以此是：</p>
+<ol>
+<li><code>NULL &gt; system &gt; const &gt; eq_ref &gt; ref &gt; fulltext &gt; ref_or_null &gt; index_merge &gt; unique_subquery &gt; index_subquery &gt; range &gt; index &gt; ALL</code></li>
+<li>``system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL`</li>
+<li>==一般来说， 我们需要保证查询至少达到 range 级别， 最好达到ref 。==</li>
+</ol>
+</blockquote>
+<h5 id="3-6-explain-之-key"><a href="#3-6-explain-之-key" class="headerlink" title="3.6 explain 之  key"></a>3.6 explain 之  key</h5><blockquote>
+<ol>
+<li><code>possible_keys :</code> 显示可能应用在这张表的索引， 一个或多个。 </li>
+<li><code>key ：</code> 实际使用的索引， 如果为NULL， 则没有使用索引。</li>
+<li><code>key_len :</code> 表示索引中使用的字节数， 该值为索引字段最大可能长度，并非实际使用长度，<code>在不损失精确性的前提下， 长度越短越好 。</code></li>
+</ol>
+</blockquote>
+<h5 id="3-7-explain-之-rows"><a href="#3-7-explain-之-rows" class="headerlink" title="3.7 explain 之 rows"></a>3.7 explain 之 rows</h5><blockquote>
+<p>扫描行的数量。</p>
+</blockquote>
+<h5 id="3-8-explain-之-extra"><a href="#3-8-explain-之-extra" class="headerlink" title="3.8 explain 之 extra"></a>3.8 explain 之 extra</h5><p>其他的额外的执行计划信息，在该列展示 。</p>
+<table>
+<thead>
+<tr>
+<th>extra</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>using  filesort</td>
+<td>说明mysql会对数据使用一个外部的索引排序，而不是按照表内的索引顺序进行读取， 称为 “文件排序”, 效率低。</td>
+</tr>
+<tr>
+<td>using  temporary</td>
+<td>使用了临时表保存中间结果，MySQL在对查询结果排序时使用临时表。常见于 order by 和 group by； 效率低</td>
+</tr>
+<tr>
+<td><code>using  index</code></td>
+<td><code>表示相应的select操作使用了覆盖索引， 避免访问表的数据行， 效率不错。</code></td>
+</tr>
+</tbody></table>
+<h4 id="4-show-profile分析SQL"><a href="#4-show-profile分析SQL" class="headerlink" title="4. show profile分析SQL"></a>4. show profile分析SQL</h4><blockquote>
+<p>Mysql从5.0.37版本开始增加了对 show profiles 和 show profile 语句的支持。show profiles 能够在做SQL优化时帮助我们了解时间都耗费到哪里去了。</p>
+<p>通过 @@have_profiling 参数，能够看到当前MySQL是否支持profile：</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728142729100.png" alt="image-20200728142729100"> </p>
+<blockquote>
+<p>默认@@profiling是关闭的，可以通过set语句在Session级别开启profiling：</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728142825140.png" alt="image-20200728142825140"> </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 开启profiling 开关</span></span><br><span class="line"><span class="keyword">set</span> profiling=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>通过profile，我们能够更清楚地了解SQL执行的过程。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 首先，我们可以执行一系列的操作</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">databases</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> mysql_senior;</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">tables</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_seller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> tb_seller;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行完上述命令之后，<code>再执行show profiles 指令</code>， 来查看SQL语句执行的耗时：</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728143236741.png" alt="image-20200728143236741">  </p>
+<blockquote>
+<p><code>通过show  profile for  query  query_id 语句</code>可以查看到该SQL执行过程中每个线程的状态和消耗的时间：</p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728143350998.png" alt="image-20200728143350998"> </p>
+<blockquote>
+<p><code>Sending data 状态表示MySQL线程开始访问数据行并把结果返回给客户端，而不仅仅是返回个客户端。由于在Sending data状态下，MySQL线程往往需要做大量的磁盘读取操作，所以经常是整各查询中耗时最长的状态。</code></p>
+<p>在获取到最消耗时间的线程状态后，MySQL支持进一步选择all、cpu、block io 、context switch、page faults等明细类型类查看MySQL在使用什么资源上耗费了过高的时间。</p>
+<p>例如，<code>选择查看CPU的耗费时间  ：show profile cpu for query 4;</code></p>
+</blockquote>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/image-20200728143540168.png" alt="image-20200728143540168"> </p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Status</td>
+<td>sql 语句执行的状态</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>sql 执行过程中每一个步骤的耗时</td>
+</tr>
+<tr>
+<td>CPU_user</td>
+<td>当前用户占有的cpu</td>
+</tr>
+<tr>
+<td>CPU_system</td>
+<td>系统占有的cpu</td>
+</tr>
+</tbody></table>
+<h4 id="5-trace分析优化器执行计划"><a href="#5-trace分析优化器执行计划" class="headerlink" title="5. trace分析优化器执行计划"></a>5. trace分析优化器执行计划</h4><blockquote>
+<p>MySQL5.6提供了对SQL的跟踪trace, 通过trace文件能够进一步了解为什么优化器选择A计划, 而不是选择B计划。</p>
+<p>打开trace ， 设置格式为 JSON，并设置trace最大能够使用的内存大小，避免解析过程中因为默认内存过小而不能够完整展示。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> optimizer_trace=<span class="string">"enabled=on"</span>,end_markers_in_json=<span class="keyword">on</span>;</span><br><span class="line"><span class="keyword">set</span> optimizer_trace_max_mem_size=<span class="number">1000000</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行SQL语句 ：</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tb_seller <span class="keyword">where</span> <span class="keyword">id</span> &lt; <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>最后， 检查information_schema.optimizer_trace就可以知道MySQL是如何执行SQL的 ：</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> information_schema.optimizer_trace\G;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line">*************************** 1. row ***************************</span><br><span class="line">QUERY: select * from tb_item where id &lt; 4</span><br><span class="line">TRACE: &#123;</span><br><span class="line">  "steps": [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"join_preparation"</span>: &#123;</span><br><span class="line">        <span class="attr">"select#"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"steps"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"expanded_query"</span>: <span class="string">"/* select#1 */ select `tb_item`.`id` AS `id`,`tb_item`.`title` AS `title`,`tb_item`.`price` AS `price`,`tb_item`.`num` AS `num`,`tb_item`.`categoryid` AS `categoryid`,`tb_item`.`status` AS `status`,`tb_item`.`sellerid` AS `sellerid`,`tb_item`.`createtime` AS `createtime`,`tb_item`.`updatetime` AS `updatetime` from `tb_item` where (`tb_item`.`id` &lt; 4)"</span></span><br><span class="line">          &#125;</span><br><span class="line">        ] <span class="comment">/* steps */</span></span><br><span class="line">      &#125; <span class="comment">/* join_preparation */</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"join_optimization"</span>: &#123;</span><br><span class="line">        <span class="attr">"select#"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"steps"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"condition_processing"</span>: &#123;</span><br><span class="line">              <span class="attr">"condition"</span>: <span class="string">"WHERE"</span>,</span><br><span class="line">              <span class="attr">"original_condition"</span>: <span class="string">"(`tb_item`.`id` &lt; 4)"</span>,</span><br><span class="line">              <span class="attr">"steps"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="attr">"transformation"</span>: <span class="string">"equality_propagation"</span>,</span><br><span class="line">                  <span class="attr">"resulting_condition"</span>: <span class="string">"(`tb_item`.`id` &lt; 4)"</span></span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="attr">"transformation"</span>: <span class="string">"constant_propagation"</span>,</span><br><span class="line">                  <span class="attr">"resulting_condition"</span>: <span class="string">"(`tb_item`.`id` &lt; 4)"</span></span><br><span class="line">                &#125;,</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="attr">"transformation"</span>: <span class="string">"trivial_condition_removal"</span>,</span><br><span class="line">                  <span class="attr">"resulting_condition"</span>: <span class="string">"(`tb_item`.`id` &lt; 4)"</span></span><br><span class="line">                &#125;</span><br><span class="line">              ] <span class="comment">/* steps */</span></span><br><span class="line">            &#125; <span class="comment">/* condition_processing */</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"table_dependencies"</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="attr">"table"</span>: <span class="string">"`tb_item`"</span>,</span><br><span class="line">                <span class="attr">"row_may_be_null"</span>: <span class="literal">false</span>,</span><br><span class="line">                <span class="attr">"map_bit"</span>: <span class="number">0</span>,</span><br><span class="line">                <span class="attr">"depends_on_map_bits"</span>: [</span><br><span class="line">                ] <span class="comment">/* depends_on_map_bits */</span></span><br><span class="line">              &#125;</span><br><span class="line">            ] <span class="comment">/* table_dependencies */</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"ref_optimizer_key_uses"</span>: [</span><br><span class="line">            ] <span class="comment">/* ref_optimizer_key_uses */</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"rows_estimation"</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="attr">"table"</span>: <span class="string">"`tb_item`"</span>,</span><br><span class="line">                <span class="attr">"range_analysis"</span>: &#123;</span><br><span class="line">                  <span class="attr">"table_scan"</span>: &#123;</span><br><span class="line">                    <span class="attr">"rows"</span>: <span class="number">9816098</span>,</span><br><span class="line">                    <span class="attr">"cost"</span>: <span class="number">2.04e6</span></span><br><span class="line">                  &#125; <span class="comment">/* table_scan */</span>,</span><br><span class="line">                  <span class="attr">"potential_range_indices"</span>: [</span><br><span class="line">                    &#123;</span><br><span class="line">                      <span class="attr">"index"</span>: <span class="string">"PRIMARY"</span>,</span><br><span class="line">                      <span class="attr">"usable"</span>: <span class="literal">true</span>,</span><br><span class="line">                      <span class="attr">"key_parts"</span>: [</span><br><span class="line">                        <span class="string">"id"</span></span><br><span class="line">                      ] <span class="comment">/* key_parts */</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  ] <span class="comment">/* potential_range_indices */</span>,</span><br><span class="line">                  <span class="attr">"setup_range_conditions"</span>: [</span><br><span class="line">                  ] <span class="comment">/* setup_range_conditions */</span>,</span><br><span class="line">                  <span class="attr">"group_index_range"</span>: &#123;</span><br><span class="line">                    <span class="attr">"chosen"</span>: <span class="literal">false</span>,</span><br><span class="line">                    <span class="attr">"cause"</span>: <span class="string">"not_group_by_or_distinct"</span></span><br><span class="line">                  &#125; <span class="comment">/* group_index_range */</span>,</span><br><span class="line">                  <span class="attr">"analyzing_range_alternatives"</span>: &#123;</span><br><span class="line">                    <span class="attr">"range_scan_alternatives"</span>: [</span><br><span class="line">                      &#123;</span><br><span class="line">                        <span class="attr">"index"</span>: <span class="string">"PRIMARY"</span>,</span><br><span class="line">                        <span class="attr">"ranges"</span>: [</span><br><span class="line">                          <span class="string">"id &lt; 4"</span></span><br><span class="line">                        ] <span class="comment">/* ranges */</span>,</span><br><span class="line">                        <span class="attr">"index_dives_for_eq_ranges"</span>: <span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"rowid_ordered"</span>: <span class="literal">true</span>,</span><br><span class="line">                        <span class="attr">"using_mrr"</span>: <span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"index_only"</span>: <span class="literal">false</span>,</span><br><span class="line">                        <span class="attr">"rows"</span>: <span class="number">3</span>,</span><br><span class="line">                        <span class="attr">"cost"</span>: <span class="number">1.6154</span>,</span><br><span class="line">                        <span class="attr">"chosen"</span>: <span class="literal">true</span></span><br><span class="line">                      &#125;</span><br><span class="line">                    ] <span class="comment">/* range_scan_alternatives */</span>,</span><br><span class="line">                    <span class="attr">"analyzing_roworder_intersect"</span>: &#123;</span><br><span class="line">                      <span class="attr">"usable"</span>: <span class="literal">false</span>,</span><br><span class="line">                      <span class="attr">"cause"</span>: <span class="string">"too_few_roworder_scans"</span></span><br><span class="line">                    &#125; <span class="comment">/* analyzing_roworder_intersect */</span></span><br><span class="line">                  &#125; <span class="comment">/* analyzing_range_alternatives */</span>,</span><br><span class="line">                  <span class="attr">"chosen_range_access_summary"</span>: &#123;</span><br><span class="line">                    <span class="attr">"range_access_plan"</span>: &#123;</span><br><span class="line">                      <span class="attr">"type"</span>: <span class="string">"range_scan"</span>,</span><br><span class="line">                      <span class="attr">"index"</span>: <span class="string">"PRIMARY"</span>,</span><br><span class="line">                      <span class="attr">"rows"</span>: <span class="number">3</span>,</span><br><span class="line">                      <span class="attr">"ranges"</span>: [</span><br><span class="line">                        <span class="string">"id &lt; 4"</span></span><br><span class="line">                      ] <span class="comment">/* ranges */</span></span><br><span class="line">                    &#125; <span class="comment">/* range_access_plan */</span>,</span><br><span class="line">                    <span class="attr">"rows_for_plan"</span>: <span class="number">3</span>,</span><br><span class="line">                    <span class="attr">"cost_for_plan"</span>: <span class="number">1.6154</span>,</span><br><span class="line">                    <span class="attr">"chosen"</span>: <span class="literal">true</span></span><br><span class="line">                  &#125; <span class="comment">/* chosen_range_access_summary */</span></span><br><span class="line">                &#125; <span class="comment">/* range_analysis */</span></span><br><span class="line">              &#125;</span><br><span class="line">            ] <span class="comment">/* rows_estimation */</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"considered_execution_plans"</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="attr">"plan_prefix"</span>: [</span><br><span class="line">                ] <span class="comment">/* plan_prefix */</span>,</span><br><span class="line">                <span class="attr">"table"</span>: <span class="string">"`tb_item`"</span>,</span><br><span class="line">                <span class="attr">"best_access_path"</span>: &#123;</span><br><span class="line">                  <span class="attr">"considered_access_paths"</span>: [</span><br><span class="line">                    &#123;</span><br><span class="line">                      <span class="attr">"access_type"</span>: <span class="string">"range"</span>,</span><br><span class="line">                      <span class="attr">"rows"</span>: <span class="number">3</span>,</span><br><span class="line">                      <span class="attr">"cost"</span>: <span class="number">2.2154</span>,</span><br><span class="line">                      <span class="attr">"chosen"</span>: <span class="literal">true</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  ] <span class="comment">/* considered_access_paths */</span></span><br><span class="line">                &#125; <span class="comment">/* best_access_path */</span>,</span><br><span class="line">                <span class="attr">"cost_for_plan"</span>: <span class="number">2.2154</span>,</span><br><span class="line">                <span class="attr">"rows_for_plan"</span>: <span class="number">3</span>,</span><br><span class="line">                <span class="attr">"chosen"</span>: <span class="literal">true</span></span><br><span class="line">              &#125;</span><br><span class="line">            ] <span class="comment">/* considered_execution_plans */</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"attaching_conditions_to_tables"</span>: &#123;</span><br><span class="line">              <span class="attr">"original_condition"</span>: <span class="string">"(`tb_item`.`id` &lt; 4)"</span>,</span><br><span class="line">              <span class="attr">"attached_conditions_computation"</span>: [</span><br><span class="line">              ] <span class="comment">/* attached_conditions_computation */</span>,</span><br><span class="line">              <span class="attr">"attached_conditions_summary"</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="attr">"table"</span>: <span class="string">"`tb_item`"</span>,</span><br><span class="line">                  <span class="attr">"attached"</span>: <span class="string">"(`tb_item`.`id` &lt; 4)"</span></span><br><span class="line">                &#125;</span><br><span class="line">              ] <span class="comment">/* attached_conditions_summary */</span></span><br><span class="line">            &#125; <span class="comment">/* attaching_conditions_to_tables */</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="attr">"refine_plan"</span>: [</span><br><span class="line">              &#123;</span><br><span class="line">                <span class="attr">"table"</span>: <span class="string">"`tb_item`"</span>,</span><br><span class="line">                <span class="attr">"access_type"</span>: <span class="string">"range"</span></span><br><span class="line">              &#125;</span><br><span class="line">            ] <span class="comment">/* refine_plan */</span></span><br><span class="line">          &#125;</span><br><span class="line">        ] <span class="comment">/* steps */</span></span><br><span class="line">      &#125; <span class="comment">/* join_optimization */</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"join_execution"</span>: &#123;</span><br><span class="line">        <span class="attr">"select#"</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">"steps"</span>: [</span><br><span class="line">        ] <span class="comment">/* steps */</span></span><br><span class="line">      &#125; <span class="comment">/* join_execution */</span></span><br><span class="line">    &#125;</span><br><span class="line">  ] /* steps */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/7.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E4%BC%98%E5%8C%96SQL%E6%AD%A5%E9%AA%A4/">http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/7.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E4%BC%98%E5%8C%96SQL%E6%AD%A5%E9%AA%A4/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/8.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8/"><i class="fas fa-angle-left">&nbsp;</i><span>MySql高级/8.MySql高级之索引的使用</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/6.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/"><span>MySql高级/6.MySql高级之存储引擎</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

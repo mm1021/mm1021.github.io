@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySql高级/10.MySql高级之应用优化"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>MySql高级/10.MySql高级之应用优化【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-连接池"><span class="toc-text">1. 连接池</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-减少对MySQL的访问"><span class="toc-text">2. 减少对MySQL的访问</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-避免对数据进行重复检索"><span class="toc-text">2.1 避免对数据进行重复检索</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2-增加cache层"><span class="toc-text">2.2 增加cache层</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-负载均衡"><span class="toc-text">3. 负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-利用MySQL复制分流查询"><span class="toc-text">3.1 利用MySQL复制分流查询</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-采用分布式数据库架构"><span class="toc-text">3.2 采用分布式数据库架构</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color4"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color9"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">117</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">9</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">MySql高级/10.MySql高级之应用优化</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/MySql%E9%AB%98%E7%BA%A7/">MySql高级</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>大江东去，浪淘尽，千古风流人物。</p>
+<p align="right">——苏轼《念奴娇》</p>
+<a id="more"></a>
+## MySql高级之应用优化
+
+<blockquote>
+<p>前面我们学习了很多数据库的优化措施。但是在实际生产环境中，由于数据库本身的性能局限，就必须要对前台的应用进行一些优化，来降低数据库的访问压力。</p>
+</blockquote>
+<h4 id="1-连接池"><a href="#1-连接池" class="headerlink" title="1. 连接池"></a>1. 连接池</h4><blockquote>
+<p>对于访问数据库来说，<code>建立连接的代价是比较昂贵的</code>，因为我们频繁的创建关闭连接，是比较耗费资源的，我们有必要建立<code>数据库连接池</code>，以提高访问的性能。</p>
+</blockquote>
+<h4 id="2-减少对MySQL的访问"><a href="#2-减少对MySQL的访问" class="headerlink" title="2. 减少对MySQL的访问"></a>2. 减少对MySQL的访问</h4><h5 id="2-1-避免对数据进行重复检索"><a href="#2-1-避免对数据进行重复检索" class="headerlink" title="2.1 避免对数据进行重复检索"></a>2.1 避免对数据进行重复检索</h5><blockquote>
+<p>在编写应用代码时，需要能够理清对数据库的访问逻辑。能够一次连接就获取到结果的，就不用两次连接，这样可以大大减少对数据库无用的重复请求。</p>
+</blockquote>
+<blockquote>
+<p>比如 ，需要获取书籍的id 和name字段 ， 则查询如下： </p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> tb_book;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>之后，在业务逻辑中有需要获取到书籍状态信息， 则查询如下：</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">status</span> <span class="keyword">from</span> tb_book;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样，就需要向数据库提交两次请求，数据库就要做两次查询操作。其实完全可以用一条SQL语句得到想要的结果。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,<span class="keyword">status</span> <span class="keyword">from</span> tb_book;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-2-增加cache层"><a href="#2-2-增加cache层" class="headerlink" title="2.2 增加cache层"></a>2.2 增加cache层</h5><blockquote>
+<p>在应用中，我们可以在应用中增加 缓存 层来达到减轻数据库负担的目的。缓存层有很多种，也有很多实现方式，只要能达到降低数据库的负担又能满足应用需求就可以。</p>
+<p>因此可以部分数据从数据库中抽取出来放到应用端以文本方式存储， 或者使用框架(Mybatis, Hibernate)提供的一级缓存/二级缓存，或者使用redis数据库来缓存数据 。</p>
+</blockquote>
+<h4 id="3-负载均衡"><a href="#3-负载均衡" class="headerlink" title="3. 负载均衡"></a>3. 负载均衡</h4><blockquote>
+<p>负载均衡是应用中使用非常普遍的一种优化方法，它的机制就是利用某种均衡算法，将固定的负载量分布到不同的服务器上， 以此来降低单台服务器的负载，达到优化的效果。</p>
+</blockquote>
+<h5 id="3-1-利用MySQL复制分流查询"><a href="#3-1-利用MySQL复制分流查询" class="headerlink" title="3.1 利用MySQL复制分流查询"></a>3.1 利用MySQL复制分流查询</h5><blockquote>
+<p>通过MySQL的<code>主从复制</code>，实现读写分离，使增删改操作走主节点，查询操作走从节点，从而可以降低单台服务器的读写压力。</p>
+</blockquote>
+<p><img src="/https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/MySql%E9%AB%98%E7%BA%A7/1.jpg" alt="1"> </p>
+<h5 id="3-2-采用分布式数据库架构"><a href="#3-2-采用分布式数据库架构" class="headerlink" title="3.2 采用分布式数据库架构"></a>3.2 采用分布式数据库架构</h5><blockquote>
+<p>分布式数据库架构适合大数据量、负载高的情况，它有良好的拓展性和高可用性。通过在多台服务器之间分布数据，可以实现在多台服务器之间的负载均衡，提高访问效率。</p>
+</blockquote>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/10.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E5%BA%94%E7%94%A8%E4%BC%98%E5%8C%96/">http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/10.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E5%BA%94%E7%94%A8%E4%BC%98%E5%8C%96/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/11.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%96/"><i class="fas fa-angle-left">&nbsp;</i><span>MySql高级/11.MySql高级之查询缓存优化</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/9.MySql%E9%AB%98%E7%BA%A7%E4%B9%8BSQL%E4%BC%98%E5%8C%96/"><span>MySql高级/9.MySql高级之SQL优化</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>

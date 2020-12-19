@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySql高级/15.MySql高级之常用SQL技巧☆"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>MySql高级/15.MySql高级之常用SQL技巧☆【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-SQL执行顺序"><span class="toc-text">1. SQL执行顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-正则表达式使用"><span class="toc-text">2. 正则表达式使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-MySQL-常用函数"><span class="toc-text">3. MySQL 常用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-数字函数"><span class="toc-text">3.1 数字函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-字符串函数"><span class="toc-text">3.2 字符串函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-日期函数"><span class="toc-text">3.3 日期函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-聚合函数"><span class="toc-text">3.4 聚合函数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color1"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color6"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">117</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">9</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">MySql高级/15.MySql高级之常用SQL技巧☆</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-19 | 更新于 2020-12-19</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/MySql%E9%AB%98%E7%BA%A7/">MySql高级</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>惜别伤离方寸乱，忘了临行，酒盏深和浅。</p>
+<p align="right">——李清照《蝶恋花》</p>
+<a id="more"></a>
+## MySql高级之常用SQL技巧☆
+
+<h3 id="1-SQL执行顺序"><a href="#1-SQL执行顺序" class="headerlink" title="1. SQL执行顺序"></a>1. SQL执行顺序</h3><blockquote>
+<p>编写顺序</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span></span><br><span class="line">	&lt;<span class="keyword">select</span> <span class="keyword">list</span>&gt;</span><br><span class="line"><span class="keyword">from</span> </span><br><span class="line">	&lt;left_table&gt; &lt;join_type&gt;</span><br><span class="line"><span class="keyword">join</span> </span><br><span class="line">	&lt;right_table&gt; <span class="keyword">ON</span> &lt;join_condition&gt;</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">	&lt;where_condition&gt;</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">	&lt;group_by_list&gt;</span><br><span class="line"><span class="keyword">having</span></span><br><span class="line">	&lt;having_condition&gt;</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line">	&lt;order_by_condition&gt;</span><br><span class="line"><span class="keyword">limit</span></span><br><span class="line">	&lt;limit_params&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>执行顺序</code></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from 	&lt;left_table&gt;</span><br><span class="line">on 		&lt;join_condition&gt;</span><br><span class="line">&lt;join_type&gt;		join	&lt;right_table&gt;</span><br><span class="line">where		&lt;where_condition&gt;</span><br><span class="line">group by 	&lt;group_by_list&gt;</span><br><span class="line">having		&lt;having_condition&gt;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span>		&lt;<span class="keyword">select</span> <span class="keyword">list</span>&gt;</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> 	&lt;order_by_condition&gt;</span><br><span class="line"><span class="keyword">limit</span> 		&lt;limit_params&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-正则表达式使用"><a href="#2-正则表达式使用" class="headerlink" title="2. 正则表达式使用"></a>2. 正则表达式使用</h3><blockquote>
+<p><code>正则表达式（Regular Expression）是指一个用来描述或者匹配一系列符合某个句法规则的字符串的单个字符串。</code></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>^</code></td>
+<td><code>在字符串开始处进行匹配</code></td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td><code>在字符串末尾处进行匹配</code></td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td><code>匹配任意单个字符, 包括换行符</code></td>
+</tr>
+<tr>
+<td><code>[...]</code></td>
+<td><code>匹配出括号内的任意字符</code></td>
+</tr>
+<tr>
+<td><code>[^...]</code></td>
+<td><code>匹配不出括号内的任意字符</code></td>
+</tr>
+<tr>
+<td>a*</td>
+<td>匹配零个或者多个a(包括空串)</td>
+</tr>
+<tr>
+<td>a+</td>
+<td>匹配一个或者多个a(不包括空串)</td>
+</tr>
+<tr>
+<td>a?</td>
+<td>匹配零个或者一个a</td>
+</tr>
+<tr>
+<td>a1|a2</td>
+<td>匹配a1或a2</td>
+</tr>
+<tr>
+<td>a(m)</td>
+<td>匹配m个a</td>
+</tr>
+<tr>
+<td>a(m,)</td>
+<td>至少匹配m个a</td>
+</tr>
+<tr>
+<td>a(m,n)</td>
+<td>匹配m个a 到 n个a</td>
+</tr>
+<tr>
+<td>a(,n)</td>
+<td>匹配0到n个a</td>
+</tr>
+<tr>
+<td>(…)</td>
+<td>将模式元素组成单一元素</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> <span class="keyword">name</span> regexp <span class="string">'^T'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> <span class="keyword">name</span> regexp <span class="string">'2$'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> <span class="keyword">name</span> regexp <span class="string">'[uvw]'</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-MySQL-常用函数"><a href="#3-MySQL-常用函数" class="headerlink" title="3. MySQL 常用函数"></a>3. MySQL 常用函数</h3><h4 id="3-1-数字函数"><a href="#3-1-数字函数" class="headerlink" title="3.1 数字函数"></a>3.1 数字函数</h4><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ABS</code></td>
+<td><code>求绝对值</code></td>
+</tr>
+<tr>
+<td><code>SQRT</code></td>
+<td><code>求二次方根</code></td>
+</tr>
+<tr>
+<td><code>MOD</code></td>
+<td><code>求余数</code></td>
+</tr>
+<tr>
+<td><code>CEIL 和 CEILING</code></td>
+<td><code>两个函数功能相同，都是返回不小于参数的最小整数，即向上取整</code></td>
+</tr>
+<tr>
+<td><code>FLOOR</code></td>
+<td><code>向下取整，返回值转化为一个BIGINT</code></td>
+</tr>
+<tr>
+<td><code>RAND</code></td>
+<td><code>生成一个0~1之间的随机数，传入整数参数是，用来产生重复序列</code></td>
+</tr>
+<tr>
+<td><code>ROUND</code></td>
+<td><code>对所传参数进行四舍五入</code></td>
+</tr>
+<tr>
+<td>SIGN</td>
+<td>返回参数的符号</td>
+</tr>
+<tr>
+<td>POW 和 POWER</td>
+<td>两个函数的功能相同，都是所传参数的次方的结果值</td>
+</tr>
+<tr>
+<td>SIN</td>
+<td>求正弦值</td>
+</tr>
+<tr>
+<td>ASIN</td>
+<td>求反正弦值，与函数 SIN 互为反函数</td>
+</tr>
+<tr>
+<td>COS</td>
+<td>求余弦值</td>
+</tr>
+<tr>
+<td>ACOS</td>
+<td>求反余弦值，与函数 COS 互为反函数</td>
+</tr>
+<tr>
+<td>TAN</td>
+<td>求正切值</td>
+</tr>
+<tr>
+<td>ATAN</td>
+<td>求反正切值，与函数 TAN 互为反函数</td>
+</tr>
+<tr>
+<td>COT</td>
+<td>求余切值</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-字符串函数"><a href="#3-2-字符串函数" class="headerlink" title="3.2 字符串函数"></a>3.2 字符串函数</h4><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>LENGTH</code></td>
+<td><code>计算字符串长度函数，返回字符串的字节长度</code></td>
+</tr>
+<tr>
+<td><code>CONCAT</code></td>
+<td><code>合并字符串函数，返回结果为连接参数产生的字符串，参数可以使一个或多个</code></td>
+</tr>
+<tr>
+<td><code>INSERT</code></td>
+<td><code>替换字符串函数</code></td>
+</tr>
+<tr>
+<td><code>LOWER</code></td>
+<td><code>将字符串中的字母转换为小写</code></td>
+</tr>
+<tr>
+<td><code>UPPER</code></td>
+<td><code>将字符串中的字母转换为大写</code></td>
+</tr>
+<tr>
+<td><code>LEFT</code></td>
+<td><code>从左侧字截取符串，返回字符串左边的若干个字符</code></td>
+</tr>
+<tr>
+<td><code>RIGHT</code></td>
+<td><code>从右侧字截取符串，返回字符串右边的若干个字符</code></td>
+</tr>
+<tr>
+<td><code>TRIM</code></td>
+<td><code>删除字符串左右两侧的空格</code></td>
+</tr>
+<tr>
+<td>REPLACE</td>
+<td>字符串替换函数，返回替换后的新字符串</td>
+</tr>
+<tr>
+<td>SUBSTRING</td>
+<td>截取字符串，返回从指定位置开始的指定长度的字符换</td>
+</tr>
+<tr>
+<td>REVERSE</td>
+<td>字符串反转（逆序）函数，返回与原始字符串顺序相反的字符串</td>
+</tr>
+</tbody></table>
+<h4 id="3-3-日期函数"><a href="#3-3-日期函数" class="headerlink" title="3.3 日期函数"></a>3.3 日期函数</h4><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作 用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CURDATE 和 CURRENT_DATE</td>
+<td>两个函数作用相同，返回当前系统的日期值</td>
+</tr>
+<tr>
+<td>CURTIME 和 CURRENT_TIME</td>
+<td>两个函数作用相同，返回当前系统的时间值</td>
+</tr>
+<tr>
+<td><code>NOW 和  SYSDATE</code></td>
+<td><code>两个函数作用相同，返回当前系统的日期和时间值</code></td>
+</tr>
+<tr>
+<td><code>MONTH</code></td>
+<td><code>获取指定日期中的月份</code></td>
+</tr>
+<tr>
+<td>MONTHNAME</td>
+<td>获取指定日期中的月份英文名称</td>
+</tr>
+<tr>
+<td>DAYNAME</td>
+<td>获取指定曰期对应的星期几的英文名称</td>
+</tr>
+<tr>
+<td>DAYOFWEEK</td>
+<td>获取指定日期对应的一周的索引位置值</td>
+</tr>
+<tr>
+<td>WEEK</td>
+<td>获取指定日期是一年中的第几周，返回值的范围是否为 0〜52 或 1〜53</td>
+</tr>
+<tr>
+<td>DAYOFYEAR</td>
+<td>获取指定曰期是一年中的第几天，返回值范围是1~366</td>
+</tr>
+<tr>
+<td>DAYOFMONTH</td>
+<td>获取指定日期是一个月中是第几天，返回值范围是1~31</td>
+</tr>
+<tr>
+<td>YEAR</td>
+<td>获取年份，返回值范围是 1970〜2069</td>
+</tr>
+<tr>
+<td>TIME_TO_SEC</td>
+<td>将时间参数转换为秒数</td>
+</tr>
+<tr>
+<td>SEC_TO_TIME</td>
+<td>将秒数转换为时间，与TIME_TO_SEC 互为反函数</td>
+</tr>
+<tr>
+<td>DATE_ADD 和 ADDDATE</td>
+<td>两个函数功能相同，都是向日期添加指定的时间间隔</td>
+</tr>
+<tr>
+<td>DATE_SUB 和 SUBDATE</td>
+<td>两个函数功能相同，都是向日期减去指定的时间间隔</td>
+</tr>
+<tr>
+<td>ADDTIME</td>
+<td>时间加法运算，在原始时间上添加指定的时间</td>
+</tr>
+<tr>
+<td>SUBTIME</td>
+<td>时间减法运算，在原始时间上减去指定的时间</td>
+</tr>
+<tr>
+<td>DATEDIFF</td>
+<td>获取两个日期之间间隔，返回参数 1 减去参数 2 的值</td>
+</tr>
+<tr>
+<td>DATE_FORMAT</td>
+<td>格式化指定的日期，根据参数返回指定格式的值</td>
+</tr>
+<tr>
+<td>WEEKDAY</td>
+<td>获取指定日期在一周内的对应的工作日索引</td>
+</tr>
+</tbody></table>
+<h4 id="3-4-聚合函数"><a href="#3-4-聚合函数" class="headerlink" title="3.4 聚合函数"></a>3.4 聚合函数</h4><table>
+<thead>
+<tr>
+<th>函数名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MAX</code></td>
+<td><code>查询指定列的最大值</code></td>
+</tr>
+<tr>
+<td><code>MIN</code></td>
+<td><code>查询指定列的最小值</code></td>
+</tr>
+<tr>
+<td><code>COUNT</code></td>
+<td><code>统计查询结果的行数</code></td>
+</tr>
+<tr>
+<td><code>SUM</code></td>
+<td><code>求和，返回指定列的总和</code></td>
+</tr>
+<tr>
+<td><code>AVG</code></td>
+<td><code>求平均值，返回指定列数据的平均值</code></td>
+</tr>
+</tbody></table>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/15.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E5%B8%B8%E7%94%A8SQL%E6%8A%80%E5%B7%A7%E2%98%86/">http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/15.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E5%B8%B8%E7%94%A8SQL%E6%8A%80%E5%B7%A7%E2%98%86/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/16.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E6%97%A5%E5%BF%97/"><i class="fas fa-angle-left">&nbsp;</i><span>MySql高级/16.MySql高级之日志</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/19/MySql%E9%AB%98%E7%BA%A7/14.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E9%94%81%E9%97%AE%E9%A2%98/"><span>MySql高级/14.MySql高级之锁问题</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>
