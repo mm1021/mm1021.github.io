@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.itbuild.cn/2020/08/24/itbuild-JavaEE/</loc>
+    
+    <lastmod>2020-12-21</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.itbuild.cn/2020/08/06/itbuild-hadoop%E7%94%9F%E6%80%81%E5%9C%88/</loc>
     
     <lastmod>2020-12-21</lastmod>
@@ -129,13 +136,6 @@
   
   <url>
     <loc>http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/18.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</loc>
-    
-    <lastmod>2020-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.itbuild.cn/2020/12/19/MySql%E9%AB%98%E7%BA%A7/18.MySql%E9%AB%98%E7%BA%A7%E4%B9%8B%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/</loc>
     
     <lastmod>2020-12-19</lastmod>
     
