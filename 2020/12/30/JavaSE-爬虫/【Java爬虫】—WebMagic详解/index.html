@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="zh_CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="JavaSE-爬虫/【Java爬虫】—WebMagic详解"><meta name="keywords" content=""><meta name="author" content="DuanChaojie,undefined"><meta name="copyright" content="DuanChaojie"><title>JavaSE-爬虫/【Java爬虫】—WebMagic详解【it❤ld】</title><link rel="stylesheet" href="/css/fan.css"><link rel="stylesheet" href="/css/thirdparty/jquery.mCustomScrollbar.min.css"><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><link rel="icon" href="/images/itbui.ico"><!-- script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")--><script src="/js/mathjax/mathjax.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+});
+</script><script>var isPassword = '' || false;
+if (isPassword) {
+    if (prompt('请输入文章密码') !== '') {
+        alert('密码错误！');
+        history.back();
+    }
+}</script><script>window.GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  gitment: ,
+  valine: ,
+}</script><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="it❤ld" type="application/atom+xml">
+</head><body><canvas id="universe"></canvas><!--#body--><div id="sidebar"><div class="toggle-sidebar-info button-hover"><span data-toggle="文章目录">站点概览</span></div><div class="sidebar-toc"><div class="sidebar-toc-title">目录</div><div class="sidebar-toc-progress"><span class="progress-notice">您已阅读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc-progress-bar"></div></div><div class="sidebar-toc-content" id="sidebar-toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-WebMagic介绍"><span class="toc-text">1. WebMagic介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-架构介绍"><span class="toc-text">1.1 架构介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#WebMagic的四个组件"><span class="toc-text">WebMagic的四个组件</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#用于数据流传的对象"><span class="toc-text">用于数据流传的对象</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-入门案例"><span class="toc-text">1.2 入门案例</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#添加依赖"><span class="toc-text">添加依赖</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#加入配置文件"><span class="toc-text">加入配置文件</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#案例实现"><span class="toc-text">案例实现</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-WebMagic-功能"><span class="toc-text">2. WebMagic 功能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-实现PageProcessor"><span class="toc-text">2.1 实现PageProcessor</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#抽取元素-Selectable"><span class="toc-text">抽取元素 Selectable</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#抽取元素API"><span class="toc-text">抽取元素API</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#获取结果API"><span class="toc-text">获取结果API</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#获取链接"><span class="toc-text">获取链接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-使用Pipeline保存结果"><span class="toc-text">2.2 使用Pipeline保存结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-爬虫的配置、启动和终止"><span class="toc-text">2.3 爬虫的配置、启动和终止</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Spider"><span class="toc-text">Spider</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Site"><span class="toc-text">Site</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-爬虫分类"><span class="toc-text">3. 爬虫分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-通用网络爬虫"><span class="toc-text">3.1 通用网络爬虫</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-聚焦网络爬虫"><span class="toc-text">3.2 聚焦网络爬虫</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-增量式网络爬虫"><span class="toc-text">3.3 增量式网络爬虫</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-Deep-Web-爬虫☆"><span class="toc-text">3.4 Deep Web 爬虫☆</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#☆"><span class="toc-text">☆</span></a></div></div><div class="author-info hide"><div class="author-info-avatar"><img class="author-info-avatar-img" src="/images/qad.jpg"></div><div class="author-info-name">DuanChaojie</div><div class="author-info-description">DuanChaojie的个人博客</div><div class="links-buttons"><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">QQ: 1585636331<i class="icon-dot bg-color2"></i></a><a class="links-button button-hover" href="https://www.itbuild.cn" target="_blank">手机：17351015389<i class="icon-dot bg-color5"></i></a></div><div class="author-info-articles"><a class="author-info-articles-archives article-meta" href="/archives"><span class="pull-top">星星</span><span class="pull-bottom">122</span></a><a class="author-info-articles-categories article-meta" href="/categories"><span class="pull-top">分类</span><span class="pull-bottom">11</span></a></div><div class="friend-link"><a class="friend-link-text" href="http://www.cyc2018.xyz/" target="_blank">算法训练</a><a class="friend-link-text" href="https://www.bilibili.com/" target="_blank">相约B站</a><a class="friend-link-text" href="https://account.aliyun.com/" target="_blank">图床地址</a></div></div></div><div id="main-container"><header><div id="menu-outer"><i class="menu-list-icon fas fa-bars"></i><nav id="menu-inner"><a class="menu-item" href="/">首页</a><a class="menu-item" href="/categories">分类</a><a class="menu-item" href="/archives">归档</a><a class="menu-item" href="/about">关于</a></nav><div class="right-info"><a class="title-name" href="/">it❤ld</a><span id="now-time"></span></div></div></header><div id="content-outer"><div id="content-inner"><article id="post"><div class="post-header"><div class="title">JavaSE-爬虫/【Java爬虫】—WebMagic详解</div><div class="container"><time class="button-hover post-date"><i class="fas fa-calendar-alt article-icon" aria-hidden="true"></i> 发表于 2020-12-30 | 更新于 2020-12-30</time><!--time.button-hover.post-date #[i.fas.fa-calendar-alt.article-icon(aria-hidden="true")] #[=__('post.modified')] #[=date(page['updated'], config.date_format)]--><div class="button-hover categories"><i class="fa fa-inbox article-icon" aria-hidden="true"></i><a class="link-a" href="/categories/JavaSE-%E7%88%AC%E8%99%AB/">JavaSE-爬虫</a></div><div class="button-hover tags"></div></div></div><div class="main-content"><p>和羞走，倚门回首，却把青梅嗅。</p>
+<p align="right">——李清照《点绛唇》</p>
+<a id="more"></a>
+## WebMagic详解
+
+<h3 id="1-WebMagic介绍"><a href="#1-WebMagic介绍" class="headerlink" title="1. WebMagic介绍"></a>1. WebMagic介绍</h3><p>昨天完成了爬虫的入门的学习，是一个最基木的爬虫案例，今天我们要学习一款爬虫框架的使用就是WebMagic。其底层用到了我们上一天课程所使用的HttpClient和 Jsoup，让我们能够更方便的开发爬虫。</p>
+<p>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。</p>
+<p>WebMagic的设计目标是尽量的模块化，并体现爬虫的功能特点。这部分提供非常简单、灵活的API，在基木不改变开发模式的情况下，编写一个爬虫。</p>
+<p>扩展部分(webmagic-extension)提供一些便捷的功能，例如注解模式编写爬虫等。同时内置了一些常用的组件，便于爬虫开发。</p>
+<h4 id="1-1-架构介绍"><a href="#1-1-架构介绍" class="headerlink" title="1.1 架构介绍"></a>1.1 架构介绍</h4><p>WebMagic的结构分为<code>Downloader、PageProcessor、Scheduler、Pipeline四大组件</code>，并由Spider将它们彼此组织起来。这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能。WebMagic的设计参考了Scapy，但是实现方式更Java化一些。</p>
+<p>而Spider则将这几个组件组织起来，让它们可以互相交互，流程化的执行，可以认为Spider是一个大的容器，它也是WebMagic逻辑的核心。</p>
+<p>WebMagic总体架构图如下：</p>
+<p><img src="https://oss-blogs.oss-cn-hangzhou.aliyuncs.com/blogs/itbuild/JavaSE-%E7%88%AC%E8%99%AB/webmagic_spider.png" alt="webmagic_spider"></p>
+<h6 id="WebMagic的四个组件"><a href="#WebMagic的四个组件" class="headerlink" title="WebMagic的四个组件"></a>WebMagic的四个组件</h6><ol>
+<li>Downloader<ul>
+<li>Downloader负责从互联网上下载页面，以便后续处理。WebMagic默认使用了Apache HttpClient作为下载工具。</li>
+</ul>
+</li>
+<li>PageProcessor<ul>
+<li>PageProcessor负责解析页面，抽取有用信息，以及发现新的链接。WebMagic使用Jsoup作为HTML解析工具，并基于其开发了解析XPath的工具Xsoup。</li>
+<li>在这四个组件中，PageProcessor对于每个站点每个页面都不一样，是需要使用者定制的部分。</li>
+</ul>
+</li>
+<li>Scheduler<ul>
+<li>Scheduler负责管理待抓取的URL，以及一些去重的工作。WebMagic默认提供了<code>JDK的内存队列</code>来管理URL，并用集合来进行去重。也支持使用Redis进行分布式管理。</li>
+</ul>
+</li>
+<li>Pipeline<ul>
+<li>Pipeline负责抽取结果的处理，包括计算、持久化到文件、数据库等。WebMagic默认提供了“输出到控制台”和“保存到文件”两种结果处理方案。</li>
+<li>Pipeline定义了结果保存的方式，如果你要保存到指定数据库，则需要编写对应的Pipeline。对于一类需求一般只需编写一个Pipeline。</li>
+</ul>
+</li>
+</ol>
+<h6 id="用于数据流传的对象"><a href="#用于数据流传的对象" class="headerlink" title="用于数据流传的对象"></a>用于数据流传的对象</h6><ol>
+<li>Request<ul>
+<li>Request是对URL地址的一层封装，一个Request对应一个URL地址。</li>
+<li>它是PageProcessor与Downloader交互的载体，也是PageProcessor控制Downloader唯一方式。</li>
+<li>除了URL本身外，它还包含一个Key-Value结构的字段extra。你可以在extra中保存一些特殊的属性，然后在其他地方读取，以完成不同的功能。例如附加上一个页面的一些信息等。</li>
+</ul>
+</li>
+<li>Page<ul>
+<li>Page代表了从Downloader下载到的一个页面——可能是HTML，也可能是JSON或者其他文本格式的内容。</li>
+<li>Page是WebMagic抽取过程的核心对象，它提供一些方法可供抽取、结果保存等。</li>
+</ul>
+</li>
+<li>ResultItems<ul>
+<li>ResultItems相当于一个Map，它保存PageProcessor处理的结果，供Pipeline使用。它的API与Map很类似，值得注意的是它一个字段skip，若设置为true，则不应被Pipeline处理。</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-2-入门案例"><a href="#1-2-入门案例" class="headerlink" title="1.2 入门案例"></a>1.2 入门案例</h4><p>创建maven工程<code>itbuild-crawler-webmagic</code> </p>
+<h6 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!-- https://mvnrepository.com/artifact/us.codecraft/webmagic-core --&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--WebMagic核心包--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>us.codecraft<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>webmagic-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.7.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">       </span><br><span class="line">       <span class="comment">&lt;!-- https://mvnrepository.com/artifact/us.codecraft/webmagic-extension --&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--WebMagic扩展包--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>us.codecraft<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>webmagic-extension<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.7.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">       </span><br><span class="line">   	<span class="comment">&lt;!--解决日志报错--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-nop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="加入配置文件"><a href="#加入配置文件" class="headerlink" title="加入配置文件"></a>加入配置文件</h6><p><code>WebMagic内置使用 slf4j-log4j12 作为 slf4j 的实现。</code></p>
+<p>在resources目录添加 <code>log4j.properties</code> 配置文件</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">log4j.rootLogger</span>=<span class="string">INFO,A1 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">log4j.appender.A1</span>=<span class="string">org.apache.log4j.ConsoleAppender</span></span><br><span class="line"><span class="meta">log4j.appender.A1.layout</span>=<span class="string">org.apache.log4j.PatternLayout</span></span><br><span class="line"><span class="meta">log4j.appender.A1.layout.ConversionPattern</span>=<span class="string">%-d&#123;yyyy-MM-dd HH🇲🇲ss,SSS&#125; [%t] [%c]-[%p] %m%n</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="案例实现"><a href="#案例实现" class="headerlink" title="案例实现"></a>案例实现</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itbuild.webmagic.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Page;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Site;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Spider;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.processor.PageProcessor;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2020/12/22 21:42</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 10.21</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> DuanChaojie</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JobProcessor</span> <span class="keyword">implements</span> <span class="title">PageProcessor</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析页面</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> page</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Page page)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 解析返回的数据page, 并且把解析的结果放到ResultItems中</span></span><br><span class="line">        <span class="comment">// css表达式</span></span><br><span class="line">        page.putField(<span class="string">"title"</span>, page.getHtml().css(<span class="string">"title"</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// XPath</span></span><br><span class="line">        page.putField(<span class="string">"div"</span>, page.getHtml().xpath(<span class="string">"//div[@id=shortcut-2014]/div/ul/li/div/a/text()"</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 正则表达式</span></span><br><span class="line">        page.putField(<span class="string">"a"</span>, page.getHtml().css(<span class="string">"div#shortcut-2014 a"</span>).regex(<span class="string">".*京东.*"</span>).all());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Site site = Site.me();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Site <span class="title">getSite</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> site;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 主函数, 执行爬虫</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Spider.create(<span class="keyword">new</span> JobProcessor())</span><br><span class="line">                <span class="comment">//初始访问url地址</span></span><br><span class="line">                .addUrl(<span class="string">"https://kuaibao.jd.com/"</span>)</span><br><span class="line">                .run(); <span class="comment">// 执行爬虫</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-WebMagic-功能"><a href="#2-WebMagic-功能" class="headerlink" title="2. WebMagic 功能"></a>2. WebMagic 功能</h3><h4 id="2-1-实现PageProcessor"><a href="#2-1-实现PageProcessor" class="headerlink" title="2.1 实现PageProcessor"></a>2.1 实现PageProcessor</h4><h6 id="抽取元素-Selectable"><a href="#抽取元素-Selectable" class="headerlink" title="抽取元素 Selectable"></a>抽取元素 Selectable</h6><p>WebMagic里主要使用了三种抽取技术：XPath、正则表达式和 CSS选择器。另外，对于JSON格式的内容，可使用JsonPath进行解析。</p>
+<ol>
+<li><a href="https://www.w3cschool.cn/xpath/" target="_blank" rel="noopener">XPath</a>，使用路径表达式来选取 XML 文档中的节点或节点集。</li>
+<li>CSS选择器 (同<a href="https://blog.csdn.net/weixin_45267102/article/details/109564131" target="_blank" rel="noopener">JQuery</a>选择器用法)<ul>
+<li>可是使用<code>:nth-child(n)</code>选择第几个元素。</li>
+</ul>
+</li>
+<li><a href="https://www.w3cschool.cn/zhengzebiaodashi/" target="_blank" rel="noopener">正则表达式</a>，是一种通用的文本抽取语言一般用于获取url地址。</li>
+</ol>
+<h6 id="抽取元素API"><a href="#抽取元素API" class="headerlink" title="抽取元素API"></a>抽取元素API</h6><p>Selectable相关的抽取元素链式API是 WebMagic的一个核心功能。使用Selectable接口，可以直接完成页而元素的链式抽取，也无需去关心抽取的细节。</p>
+<p>在刚才的例子中可以看到，page.getHtml()返回的是一个 Html对象，它实现Selectable接口。这个接口包含的方法分为两类<code>：抽取部分和获取结果部分。</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">xpath(String xpath)</td>
+<td>使用XPath选择</td>
+<td><code>html.xpath(&quot;//div[@class=&#39;title&#39;]&quot;)</code></td>
+</tr>
+<tr>
+<td align="left">$(String selector)</td>
+<td>使用CSS选择器选择</td>
+<td><code>html.$(&quot;div.title&quot;)</code></td>
+</tr>
+<tr>
+<td align="left">$(String selector,String attr)</td>
+<td>使用CSS选择器选择</td>
+<td><code>html.$(&quot;div.title&quot;,&quot;text&quot;)</code></td>
+</tr>
+<tr>
+<td align="left">css(String selector)</td>
+<td><code>功能同$()，使用CSS选择器选择</code></td>
+<td><code>html.css(&quot;div.title&quot;)</code></td>
+</tr>
+<tr>
+<td align="left"><code>links()</code></td>
+<td><code>选择所有链接</code></td>
+<td><code>html.links()</code></td>
+</tr>
+<tr>
+<td align="left">regex(String regex)</td>
+<td>使用正则表达式抽取</td>
+<td><code>html.regex(&quot;(.*?)&quot;)</code></td>
+</tr>
+</tbody></table>
+<p>这部分抽取API返回的都是一个selectable接口，意思是说，是支持链式调用的。</p>
+<h6 id="获取结果API"><a href="#获取结果API" class="headerlink" title="获取结果API"></a>获取结果API</h6><p>当链式调用结束时，我们一般都想要拿到一个字符串类型的结果。这时候就需要用到获取结果的API了。</p>
+<p>我们知道，一条抽取规则，无论是xPath、CSS选择器或者正则表达式，总有可能抽取到多条元素。WebMagic对这些进行了统一，可以通过不同的API获取到一个或者多个元素。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>get()</td>
+<td>返回一条String类型的结果</td>
+<td><code>String link = html.links().get()</code></td>
+</tr>
+<tr>
+<td>toString()</td>
+<td>同get()，返回一条 String类型的结果</td>
+<td><code>String link = html.links().toString()</code></td>
+</tr>
+<tr>
+<td>all()</td>
+<td>返回所有抽取结果。</td>
+<td><code>List links = html.links().all()</code></td>
+</tr>
+</tbody></table>
+<h6 id="获取链接"><a href="#获取链接" class="headerlink" title="获取链接"></a>获取链接</h6><p>有了处理页面的逻辑，我们的爬虫就接近完工了，但是现在还有一个问题：一个站点的页面是很多的，一开始我们不可能全部列举出来，于是如何发现后续的链接，是一个爬虫不可缺少的一部分。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itbuild.webmagic.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Page;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Site;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Spider;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.processor.PageProcessor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2020/12/22 21:42</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 10.21</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> DuanChaojie</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JobProcessor</span> <span class="keyword">implements</span> <span class="title">PageProcessor</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析页面</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Page page)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = page.getHtml().css(<span class="string">"div#bd ul li"</span>).links().all();</span><br><span class="line">        page.addTargetRequests(list);</span><br><span class="line">        page.putField(<span class="string">"url"</span>,page.getHtml().css(<span class="string">"title"</span>).all());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Site site = Site.me();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Site <span class="title">getSite</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> site;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 主函数, 执行爬虫</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Spider.create(<span class="keyword">new</span> JobProcessor())</span><br><span class="line">                <span class="comment">//初始访问url地址</span></span><br><span class="line">                .addUrl(<span class="string">"https://news.hao123.com/wangzhi"</span>)</span><br><span class="line">                .run(); <span class="comment">// 执行爬虫</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-使用Pipeline保存结果"><a href="#2-2-使用Pipeline保存结果" class="headerlink" title="2.2 使用Pipeline保存结果"></a>2.2 使用Pipeline保存结果</h4><p>WebMagic用于保存结果的组件叫做Pipeline。我们现在通过“控制台输出结果”这件事也是通过一个内置的Pipeline完成的，它叫做ConsolePipeline。</p>
+<p>那么，我现在想要把结果用保存到文件中，怎么做呢？只将Pipeline的实现换成<code>&quot;FilePipeline&quot;</code>就可以了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 主函数, 执行爬虫</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Spider.create(<span class="keyword">new</span> JobProcessor())</span><br><span class="line">            <span class="comment">//初始访问url地址</span></span><br><span class="line">            .addUrl(<span class="string">"https://news.hao123.com/wangzhi"</span>)</span><br><span class="line">            .addPipeline(<span class="keyword">new</span> FilePipeline(<span class="string">"E:\\file\\gitee\\crawler\\output"</span>))</span><br><span class="line">            .thread(<span class="number">5</span>)<span class="comment">//设置由五个线程处理</span></span><br><span class="line">            .run(); <span class="comment">// 执行爬虫</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-爬虫的配置、启动和终止"><a href="#2-3-爬虫的配置、启动和终止" class="headerlink" title="2.3 爬虫的配置、启动和终止"></a>2.3 爬虫的配置、启动和终止</h4><h6 id="Spider"><a href="#Spider" class="headerlink" title="Spider"></a>Spider</h6><p>Spider是爬虫启动的入口。在启动爬虫之前,我们需要使用一个PageProcessor创建一个 Spider对象，然后使用run()进行启动。</p>
+<p>同时Spider的其他组件（Downloader、Scheduler、Pipeline）都可以通过set方法来进行设置。</p>
+<table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>create(PageProcessor)</td>
+<td>创建Spider</td>
+<td><code>Spider.create(new GithubRepoProcessor())</code></td>
+</tr>
+<tr>
+<td>addUrl(String…)</td>
+<td>添加初始的URL</td>
+<td>spider .addUrl(“<a href="http://webmagic.io/docs/&quot;" target="_blank" rel="noopener">http://webmagic.io/docs/&quot;</a>)</td>
+</tr>
+<tr>
+<td>thread(n)</td>
+<td>开启n个线程</td>
+<td>spider.thread(5)</td>
+</tr>
+<tr>
+<td>run()</td>
+<td>启动，会阻塞当前线程执行</td>
+<td>spider.run()</td>
+</tr>
+<tr>
+<td>start()/runAsync()</td>
+<td>异步启动，当前线程继续执行</td>
+<td>spider.start()</td>
+</tr>
+<tr>
+<td>stop()</td>
+<td>停止爬虫</td>
+<td>spider.stop()</td>
+</tr>
+<tr>
+<td>addPipeline(Pipeline)</td>
+<td>添加一个Pipeline，一个Spider可以有多个Pipeline</td>
+<td><code>spider .addPipeline(new ConsolePipeline())</code></td>
+</tr>
+<tr>
+<td>setScheduler(Scheduler)</td>
+<td>设置Scheduler，一个Spider只能有个一个Scheduler</td>
+<td><code>spider.setScheduler(new RedisScheduler())</code></td>
+</tr>
+<tr>
+<td>setDownloader(Downloader)</td>
+<td>设置Downloader，一个Spider只能有个一个Downloader</td>
+<td>spider .setDownloader(new SeleniumDownloader())</td>
+</tr>
+<tr>
+<td>get(String)</td>
+<td>同步调用，并直接取得结果</td>
+<td>ResultItems result = spider.get(“<a href="http://webmagic.io/docs/&quot;" target="_blank" rel="noopener">http://webmagic.io/docs/&quot;</a>)</td>
+</tr>
+<tr>
+<td>getAll(String…)</td>
+<td>同步调用，并直接取得一堆结果</td>
+<td>List results = spider .getAll(“<a href="http://webmagic.io/docs/&quot;" target="_blank" rel="noopener">http://webmagic.io/docs/&quot;</a>, “<a href="http://webmagic.io/xxx&quot;" target="_blank" rel="noopener">http://webmagic.io/xxx&quot;</a>)</td>
+</tr>
+</tbody></table>
+<h6 id="Site"><a href="#Site" class="headerlink" title="Site"></a>Site</h6><p><code>Site.me()可以对爬虫进行一些配置配置，包括编码、抓取间隔、超时时间、重试次数等</code>。在这里我们可以先简单设置一下：重试次数为3次，抓取间隔为一秒。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itbuild.webmagic.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Page;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Site;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Spider;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.pipeline.FilePipeline;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.processor.PageProcessor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2020/12/22 21:42</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 10.21</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> DuanChaojie</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JobProcessor</span> <span class="keyword">implements</span> <span class="title">PageProcessor</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解析页面</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Page page)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = page.getHtml().css(<span class="string">"div#bd ul li"</span>).links().all();</span><br><span class="line">        page.addTargetRequests(list);</span><br><span class="line">        page.putField(<span class="string">"url"</span>,page.getHtml().css(<span class="string">"title"</span>).all());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Site site = Site.me()</span><br><span class="line">            .setCharset(<span class="string">"utf8"</span>) <span class="comment">// 设置编码</span></span><br><span class="line">            .setTimeOut(<span class="number">1000</span>) <span class="comment">// 设置超时时间, 单位是ms毫秒</span></span><br><span class="line">            .setRetrySleepTime(<span class="number">3000</span>) <span class="comment">// 设置重试的间隔时间</span></span><br><span class="line">            .setSleepTime(<span class="number">3</span>); <span class="comment">// 设置重试次数</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Site <span class="title">getSite</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> site;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 主函数, 执行爬虫</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Spider.create(<span class="keyword">new</span> JobProcessor())</span><br><span class="line">                <span class="comment">//初始访问url地址</span></span><br><span class="line">                .addUrl(<span class="string">"https://news.hao123.com/wangzhi"</span>)</span><br><span class="line">                .addPipeline(<span class="keyword">new</span> FilePipeline(<span class="string">"E:\\file\\gitee\\crawler\\output"</span>))</span><br><span class="line">                .thread(<span class="number">5</span>)<span class="comment">//设置由五个线程处理</span></span><br><span class="line">                .run(); <span class="comment">// 执行爬虫</span></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"爬虫执行完成！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>站点本身的一些配置信息，<code>例如编码、HTTP头、超时时间、重试策略等、代理等</code>，都可以通过设置Site对象来进行配置。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setCharset(String)</td>
+<td>设置编码</td>
+<td><code>site.setCharset(&quot;utf-8&quot;)</code></td>
+</tr>
+<tr>
+<td>setUserAgent(String)</td>
+<td>设置UserAgent</td>
+<td><code>site.setUserAgent(&quot;Spider&quot;)</code></td>
+</tr>
+<tr>
+<td>setTimeOut(int)</td>
+<td>设置超时时间，单位是毫秒</td>
+<td><code>site.setTimeOut(3000)</code></td>
+</tr>
+<tr>
+<td>setRetryTimes(int)</td>
+<td>设置重试次数</td>
+<td><code>site.setRetryTimes(3)</code></td>
+</tr>
+<tr>
+<td>setCycleRetryTimes(int)</td>
+<td>设置循环重试次数</td>
+<td><code>site.setCycleRetryTimes(3)</code></td>
+</tr>
+<tr>
+<td>addCookie(String,String)</td>
+<td>添加一条cookie</td>
+<td><code>site.addCookie(&quot;dotcomt_user&quot;,&quot;code4craft&quot;)</code></td>
+</tr>
+<tr>
+<td>setDomain(String)</td>
+<td>设置域名，需设置域名后，addCookie才可生效</td>
+<td><code>site.setDomain(&quot;github.com&quot;)</code></td>
+</tr>
+<tr>
+<td>addHeader(String,String)</td>
+<td>添加一条addHeader</td>
+<td>site.addHeader(“Referer”,”<a href="https://github.com/" target="_blank" rel="noopener">https://github.com</a>“)</td>
+</tr>
+<tr>
+<td>setHttpProxy(HttpHost)</td>
+<td><code>设置Http代理</code></td>
+<td><code>site.setHttpProxy(new HttpHost(&quot;127.0.0.1&quot;,8080))</code></td>
+</tr>
+</tbody></table>
+<h3 id="3-爬虫分类"><a href="#3-爬虫分类" class="headerlink" title="3. 爬虫分类"></a>3. 爬虫分类</h3><p>网络爬虫按照系统结构和实现技术，大致可以分为以下几种类型：<code>通用网络爬虫、聚焦网络爬虫、增量式网络爬虫、深层网络爬虫。</code> 实际的网络爬虫系统通常是几种爬虫技术相结合实现的。</p>
+<h4 id="3-1-通用网络爬虫"><a href="#3-1-通用网络爬虫" class="headerlink" title="3.1 通用网络爬虫"></a>3.1 通用网络爬虫</h4><p>通用网络爬虫又称<code>全网爬虫（Scalable Web Crawler）</code>，爬行对象从一些种子 URL 扩充到整个 Web，主要为门户站点搜索引擎和大型 Web 服务提供商采集数据。</p>
+<p>这类网络爬虫的爬行范围和数量巨大，对于爬行速度和存储空间要求较高，对于爬行页面的顺序要求相对较低，同时由于待刷新的页面太多，通常<code>采用并行工作方式</code>，但需要较长时间才能刷新一次页面。 </p>
+<p><code>简单的说就是互联网上抓取所有数据。</code></p>
+<h4 id="3-2-聚焦网络爬虫"><a href="#3-2-聚焦网络爬虫" class="headerlink" title="3.2 聚焦网络爬虫"></a>3.2 聚焦网络爬虫</h4><p><code>聚焦网络爬虫（Focused Crawler），又称主题网络爬虫（Topical Crawler）</code>，是指选择性地爬行那些与预先定义好的主题相关页面的网络爬虫。</p>
+<p>和通用网络爬虫相比，聚焦爬虫只需要爬行与主题相关的页面，极大地节省了硬件和网络资源，保存的页面也由于数量少而更新快，还可以很好地满足一些特定人群对特定领域信息的需求 。</p>
+<p>简单的说就是互联网上只抓取某一种数据。</p>
+<h4 id="3-3-增量式网络爬虫"><a href="#3-3-增量式网络爬虫" class="headerlink" title="3.3 增量式网络爬虫"></a>3.3 增量式网络爬虫</h4><p>增量式网络爬虫（Incremental Web Crawler）是 指 对 已 下 载 网 页 采 取 增量式更新和只爬行新产生的或者已经发生变化网页的爬虫，它能够在一定程度上保证所爬行的页面是尽可能新的页面。</p>
+<p>和周期性爬行和刷新页面的网络爬虫相比，增量式爬虫只会在需要的时候爬行新产生或发生更新的页面 ，并不重新下载没有发生变化的页面，可有效减少数据下载量，及时更新已爬行的网页，减小时间和空间上的耗费，但是增加了爬行算法的复杂度和实现难度。</p>
+<p>简单的说就是互联网上只抓取刚刚更新的数据。</p>
+<h4 id="3-4-Deep-Web-爬虫☆"><a href="#3-4-Deep-Web-爬虫☆" class="headerlink" title="3.4 Deep Web 爬虫☆"></a>3.4 Deep Web 爬虫☆</h4><p>Web 页面按存在方式可以分为表层网页（Surface Web）和深层网页（Deep Web，也称 Invisible Web Pages 或 Hidden Web）。</p>
+<p>表层网页是指传统搜索引擎可以索引的页面，以超链接可以到达的静态网页为主构成的 Web 页面。</p>
+<p><code>Deep Web 是那些大部分内容不能通过静态链接获取的、隐藏在搜索表单后的，只有用户提交一些关键词或者登陆后才能获得的 Web 页面。</code></p>
+<h2 id="☆"><a href="#☆" class="headerlink" title="☆"></a>☆</h2></div><div class="post-copyright"><div class="post-copyright-author"><span class="post-copyright-meta">本文作者: </span><span class="post-copyright-info"><a href="mailto:undefined">DuanChaojie</a></span></div><div class="post-copyright-type"><span class="post-copyright-meta">本文链接: </span><span class="post-copyright-info"><a href="http://www.itbuild.cn/2020/12/30/JavaSE-%E7%88%AC%E8%99%AB/%E3%80%90Java%E7%88%AC%E8%99%AB%E3%80%91%E2%80%94WebMagic%E8%AF%A6%E8%A7%A3/">http://www.itbuild.cn/2020/12/30/JavaSE-%E7%88%AC%E8%99%AB/%E3%80%90Java%E7%88%AC%E8%99%AB%E3%80%91%E2%80%94WebMagic%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright-notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.itbuild.cn">it❤ld</a>！</span></div></div></article><div id="pagination"><div class="prev-post pull-left"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/30/JavaSE-%E7%88%AC%E8%99%AB/%E3%80%90Java%E7%88%AC%E8%99%AB%E3%80%91%E2%80%94%E4%BA%AC%E4%B8%9C%E6%89%8B%E6%9C%BA%E4%BF%A1%E6%81%AF%E7%88%AC%E5%8F%96%E6%A1%88%E4%BE%8B/"><i class="fas fa-angle-left">&nbsp;</i><span>JavaSE-爬虫/【Java爬虫】—京东手机信息爬取案例</span></a></div><div class="next-post pull-right"><span class="line line-top"></span><span class="line line-right"></span><span class="line line-bottom"></span><span class="line line-left"></span><a href="/2020/12/30/JavaSE-%E7%88%AC%E8%99%AB/%E3%80%90Java%E7%88%AC%E8%99%AB%E3%80%91%E2%80%94HttpClient%E5%92%8CJsoup%E8%AF%A6%E8%A7%A3/"><span>JavaSE-爬虫/【Java爬虫】—HttpClient和Jsoup详解</span><span>&nbsp;</span><i class="fas fa-angle-right"></i></a></div></div><!--div!= paginator()--></div></div><div class="button-hover" id="return-top"><i class="fas fa-arrow-up" aria-hidden="true"></i></div><footer><div id="footer"><div class="button-hover" id="side-button"><i class="fas fa-arrow-right"></i></div><div class="right-content"><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fas fa-file-o"></i></span><span id="busuanzi_value_page_pv"></span><span></span></div><div class="copyright">&copy;2020 By DuanChaojie</div></div></div></footer></div><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery-3.3.1.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/velocity.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/thirdparty/jquery.mCustomScrollbar.concat.min.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/fan.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/canvas_bg.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/utils.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/scroll.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/sidebar.js"></script><!--script(src=url)--><!--js(src=url_for(url) + '?version=' + version())--><script src="/js/copy.js"></script><!--script(src=url)--></body></html>
